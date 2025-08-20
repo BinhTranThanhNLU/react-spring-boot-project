@@ -26,4 +26,9 @@ public class ProductService {
                 .collect(Collectors.toList());
     }
 
+    public ProductDTO getProductById(int id) {
+        Product product = productRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Product not found"));
+        return productMapper.toDto(product);
+    }
 }

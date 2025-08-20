@@ -1,6 +1,7 @@
 package com.springboot.spring_boot_shoe.dto;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 public class ProductDTO {
 
@@ -10,14 +11,17 @@ public class ProductDTO {
     private String description;
     private String brand;
     private String category;
+    private List<ProductImageDTO> images;
 
-    public ProductDTO(int id, String name, BigDecimal price, String description, String brand, String category) {
+    public ProductDTO(int id, String name, BigDecimal price, String description,
+                      String brand, String category, List<ProductImageDTO> images) {
         this.id = id;
         this.name = name;
         this.price = price;
         this.description = description;
         this.brand = brand;
         this.category = category;
+        this.images = images;
     }
 
     public int getId() {
@@ -66,6 +70,14 @@ public class ProductDTO {
 
     public void setCategory(String category) {
         this.category = category;
+    }
+
+    public List<ProductImageDTO> getImages() {
+        return images;
+    }
+
+    public void setImages(List<ProductImageDTO> images) {
+        this.images = images;
     }
 
     @Override
