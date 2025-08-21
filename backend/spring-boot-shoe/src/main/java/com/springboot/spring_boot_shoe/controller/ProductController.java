@@ -19,8 +19,7 @@ public class ProductController {
     public List<ProductDTO> getAllProducts() {
         return productService.getAllProducts();
     }
-
-    // Thêm API lấy product theo id (nếu cần)
+    
     @GetMapping("/{id}")
     public ProductDTO getProductById(@PathVariable int id) {
         return productService.getProductById(id);

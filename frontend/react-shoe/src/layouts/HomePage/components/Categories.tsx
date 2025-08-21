@@ -27,7 +27,7 @@ export const Categories = () => {
                 alt="Model"
                 className="position-absolute bottom-0 end-0"
                 style={{
-                  height: "80%", // không che chữ
+                  height: "80%",
                   objectFit: "contain",
                   maxWidth: "60%",
                 }}
