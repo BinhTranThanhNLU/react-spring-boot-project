@@ -1,17 +1,25 @@
-export const ProductCard = () => {
+import React from "react";
+import { Product } from "../../../models/Product";
+import { ProductImage } from "../../../models/ProductImage";
+
+export const ProductCard:React.FC<{product: Product}> = ({product}) => {
+
+  const mainImage: string = product.images && product.images.length>0 ? product.images[0].imageUrl : "/assets/img/no-image.png";
+  const hoverImage: string = product.images && product.images.length>0 ? product.images[0].imageUrl : "/assets/img/no-image.png";
+
   return (
     <div className="col-6 col-xl-4">
       <div className="product-card" data-aos="zoom-in">
         <div className="product-image">
           <img
-            src="../../assets/img/product/product-f-1.webp"
+            src={mainImage}
             className="main-image img-fluid"
-            alt="Product"
+            alt={product.name}
           />
           <img
-            src="../../assets/img/product/product-f-2.webp"
+            src={hoverImage}
             className="hover-image img-fluid"
-            alt="Product Variant"
+            alt={`${product.name} hover`}
           />
           <div className="product-overlay">
             <div className="product-actions">
@@ -35,12 +43,14 @@ export const ProductCard = () => {
           </div>
         </div>
         <div className="product-details">
-          <div className="product-category">Women's Fashion</div>
+          <div className="product-category">{product.category}</div>
           <h4 className="product-title">
-            <a href="product-details.html">Tempor Incididunt</a>
+            <a href={`/products/${product.id}`}>{product.name}</a>
           </h4>
           <div className="product-meta">
-            <div className="product-price">$129.00</div>
+            <div className="product-price">
+              {product.price.toLocaleString("vi-VN", { style: "currency", currency: "VND" })}
+            </div>
             <div className="product-rating">
               <i className="bi bi-star-fill"></i>
               4.8 <span>(42)</span>

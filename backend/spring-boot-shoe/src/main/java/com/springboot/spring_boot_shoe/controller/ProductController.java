@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@CrossOrigin(origins = "http://localhost:3000") // Cho phép React frontend gọi API
+@CrossOrigin(origins = "http://localhost:3000")
 @RestController
 @RequestMapping("/api/products")
 public class ProductController {
@@ -23,6 +23,11 @@ public class ProductController {
     @GetMapping("/{id}")
     public ProductDTO getProductById(@PathVariable int id) {
         return productService.getProductById(id);
+    }
+
+    @GetMapping("/category/{id}")
+    public List<ProductDTO> getProductsByCategory(@PathVariable int id) {
+        return productService.getProductsByCategoryId(id);
     }
 }
 
