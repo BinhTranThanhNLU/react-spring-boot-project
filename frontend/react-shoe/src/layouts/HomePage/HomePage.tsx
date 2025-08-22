@@ -3,6 +3,8 @@ import { Product } from "../../models/Product";
 import { Categories } from "./components/Categories";
 import { Hero } from "./components/Hero";
 import { ListProductHome } from "./components/ListProductHome";
+import { SpinningLoading } from "../utils/SpinningLoading";
+import { ErrorMessage } from "../utils/ErrorMessage";
 
 export const HomePage = () => {
   const [products, setProducts] = useState<Product[]>([]);
@@ -30,13 +32,8 @@ export const HomePage = () => {
     });
   }, []);
 
-  if (isLoading) {
-    return <p>Loading...</p>;
-  }
-
-  if (httpError) {
-    return <p>{httpError}</p>;
-  }
+  if (isLoading) return <SpinningLoading />;
+  if (httpError) return <ErrorMessage message={httpError} />;
 
   return (
     <main className="main">

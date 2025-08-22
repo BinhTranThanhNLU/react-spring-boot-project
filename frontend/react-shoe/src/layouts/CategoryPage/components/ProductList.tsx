@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import { ProductCard } from "./ProductCard";
 import { Product } from "../../../models/Product";
 import { API_BASE_URL } from "../../../config/config";
+import { ErrorMessage } from "../../utils/ErrorMessage";
+import { SpinningLoading } from "../../utils/SpinningLoading";
 
 export const ProductList = () => {
   const [products, setProducts] = useState<Product[]>([]);
@@ -26,13 +28,8 @@ export const ProductList = () => {
     fetchProducts();
   }, []);
 
-  if (isLoading) {
-    return <p>Loading...</p>;
-  }
-
-  if (httpError) {
-    return <p>{httpError}</p>;
-  }
+  if (isLoading) return <SpinningLoading />;
+  if (httpError) return <ErrorMessage message={httpError} />;
 
   return (
     <section
