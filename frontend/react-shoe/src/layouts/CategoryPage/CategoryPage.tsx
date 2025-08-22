@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { BrandFilterWidget } from "./components/BrandFilterWidget";
 import { ColorFilterWidget } from "./components/ColorFilterWidget";
 import { FilterBar } from "./components/FilterBar";
@@ -8,6 +9,9 @@ import { ProductCategoriesWidget } from "./components/ProductCategoriesWidget";
 import { ProductList } from "./components/ProductList";
 
 export const CategoryPage = () => {
+
+  
+
   return (
     <main className="main">
       <PageTitle />
@@ -26,7 +30,7 @@ export const CategoryPage = () => {
           <div className="col-lg-8">
             <FilterBar />
             <ProductList />
-            <Pagination />
+            
           </div>
         </div>
       </div>

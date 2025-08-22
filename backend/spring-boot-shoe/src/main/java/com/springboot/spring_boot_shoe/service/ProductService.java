@@ -5,8 +5,13 @@ import com.springboot.spring_boot_shoe.dto.ProductDTO;
 import com.springboot.spring_boot_shoe.entity.Product;
 import com.springboot.spring_boot_shoe.mapper.ProductMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -32,10 +37,13 @@ public class ProductService {
         return productMapper.toDto(product);
     }
 
-    public List<ProductDTO> getProductsByCategoryId(int categoryId) {
-        return productRepository.findByCategoryOrSubCategory(categoryId)
+    public List<ProductDTO> getProductsByCategoryId(int categoryId, int page, int size) {
+        Pageable pageable = PageRequest.of(page, size, Sort.by("id").ascending());
+        return productRepository.findByCategoryOrSubCategory(categoryId, pageable)
                 .stream()
                 .map(productMapper::toDto)
                 .collect(Collectors.toList());
     }
+
+
 }
