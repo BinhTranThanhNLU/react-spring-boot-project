@@ -8,28 +8,21 @@ import { Pagination } from "./Pagination";
 import { ProductPageResponse } from "../../../models/ProductPageResponse";
 
 export const ProductList = () => {
-  //product
   const [products, setProducts] = useState<Product[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [httpError, setHttpError] = useState<string | null>(null);
 
-  //pagination
+  // pagination
   const [currentPage, setCurrentPage] = useState(1);
-  const [productsPerPage, setProductsPerPage] = useState(9);
-  const [totalAmountOfProducts, setTotalAmountOfProducts] = useState(0);
+  const productsPerPage = 9;
   const [totalPages, setTotalPages] = useState(0);
-
-  const indexOfLastProduct = currentPage * productsPerPage;
-  const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
-  let lastItem =
-    productsPerPage * currentPage <= totalAmountOfProducts
-      ? productsPerPage * currentPage
-      : totalAmountOfProducts;
+  const [totalItems, setTotalItems] = useState(0);
 
   const paginate = (pageNumber: number) => setCurrentPage(pageNumber);
 
   useEffect(() => {
     const fetchProducts = async () => {
+      setIsLoading(true);
       try {
         const url = `${API_BASE_URL}/products/category/1?page=${
           currentPage - 1
@@ -40,9 +33,8 @@ export const ProductList = () => {
         const data: ProductPageResponse = await response.json();
 
         setProducts(data.products);
-        setCurrentPage(data.currentPage + 1); // backend trả về page = 0-based, frontend = 1-based
         setTotalPages(data.totalPages);
-        setTotalAmountOfProducts(data.totalItems);
+        setTotalItems(data.totalItems);
       } catch (error: any) {
         setHttpError(error.message);
       } finally {
@@ -67,6 +59,11 @@ export const ProductList = () => {
             {products.map((product) => (
               <ProductCard key={product.id} product={product} />
             ))}
+          </div>
+
+          {/* hiển thị thông tin số lượng */}
+          <div className="mt-3 text-end text-muted small">
+            Trang {currentPage}/{totalPages} · Tổng {totalItems} sản phẩm
           </div>
         </div>
       </section>

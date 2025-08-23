@@ -1,6 +1,7 @@
 import React from "react";
 import { Product } from "../../../models/Product";
 import { ProductImage } from "../../../models/ProductImage";
+import { StarsReview } from "../../utils/StarsReview";
 
 export const ProductCard:React.FC<{product: Product}> = ({product}) => {
 
@@ -52,8 +53,7 @@ export const ProductCard:React.FC<{product: Product}> = ({product}) => {
               {product.price.toLocaleString("vi-VN", { style: "currency", currency: "VND" })}
             </div>
             <div className="product-rating">
-              <i className="bi bi-star-fill"></i>
-              4.8 <span>(42)</span>
+              <StarsReview rating={5} reviews={128} size={14}/>
             </div>
           </div>
         </div>
