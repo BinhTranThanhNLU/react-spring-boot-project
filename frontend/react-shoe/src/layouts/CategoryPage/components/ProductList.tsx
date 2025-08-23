@@ -5,6 +5,7 @@ import { API_BASE_URL } from "../../../config/config";
 import { ErrorMessage } from "../../utils/ErrorMessage";
 import { SpinningLoading } from "../../utils/SpinningLoading";
 import { Pagination } from "./Pagination";
+import { ProductPageResponse } from "../../../models/ProductPageResponse";
 
 export const ProductList = () => {
   //product
@@ -14,7 +15,7 @@ export const ProductList = () => {
 
   //pagination
   const [currentPage, setCurrentPage] = useState(1);
-  const [productsPerPage, setProductsPerPage] = useState(16);
+  const [productsPerPage, setProductsPerPage] = useState(9);
   const [totalAmountOfProducts, setTotalAmountOfProducts] = useState(0);
   const [totalPages, setTotalPages] = useState(0);
 
@@ -36,8 +37,12 @@ export const ProductList = () => {
         const response = await fetch(url);
         if (!response.ok) throw new Error("Something went wrong !!");
 
-        const data: Product[] = await response.json();
-        setProducts(data);
+        const data: ProductPageResponse = await response.json();
+
+        setProducts(data.products);
+        setCurrentPage(data.currentPage + 1); // backend trả về page = 0-based, frontend = 1-based
+        setTotalPages(data.totalPages);
+        setTotalAmountOfProducts(data.totalItems);
       } catch (error: any) {
         setHttpError(error.message);
       } finally {
@@ -46,7 +51,7 @@ export const ProductList = () => {
     };
 
     fetchProducts();
-  }, []);
+  }, [currentPage, productsPerPage]);
 
   if (isLoading) return <SpinningLoading />;
   if (httpError) return <ErrorMessage message={httpError} />;

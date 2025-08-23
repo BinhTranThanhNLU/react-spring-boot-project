@@ -10,8 +10,6 @@ import { ProductList } from "./components/ProductList";
 
 export const CategoryPage = () => {
 
-  
-
   return (
     <main className="main">
       <PageTitle />

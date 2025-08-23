@@ -1,11 +1,14 @@
 import React from "react";
 
-export const Pagination:React.FC<{currentPage:number, totalPage:number, paginate:any}> = ({currentPage, totalPage, paginate}) => {
-
+export const Pagination: React.FC<{
+  currentPage: number;
+  totalPage: number;
+  paginate: any;
+}> = ({ currentPage, totalPage, paginate }) => {
   const pageNumber = [];
 
-  for(let i=currentPage-2; i<=currentPage+2; i++) {
-    if(i>=1 && i<=totalPage) {
+  for (let i = currentPage - 2; i <= currentPage + 2; i++) {
+    if (i >= 1 && i <= totalPage) {
       pageNumber.push(i);
     }
   }
@@ -19,23 +22,40 @@ export const Pagination:React.FC<{currentPage:number, totalPage:number, paginate
         >
           <ul>
             <li>
-              <a href="#" aria-label="Previous page" onClick={() => {paginate(1)}}>
+              <a
+                href="#"
+                aria-label="Previous page"
+                onClick={(e) => {
+                  e.preventDefault();
+                  if (currentPage > 1) paginate(currentPage - 1);
+                }}
+              >
                 <i className="bi bi-arrow-left"></i>
                 <span className="d-none d-sm-inline">Previous</span>
               </a>
             </li>
 
-            {
-              pageNumber.map((page) => (
-                <li key={page} className={currentPage===page ? "active" : ""} onClick={() => {paginate(page)}}>
-                  <a>{page}</a>
-                </li>
-              ))
-            }
-
+            {pageNumber.map((page) => (
+              <li
+                key={page}
+                className={currentPage === page ? "active" : ""}
+                onClick={() => {
+                  paginate(page);
+                }}
+              >
+                <a>{page}</a>
+              </li>
+            ))}
 
             <li>
-              <a href="#" aria-label="Next page" onClick={() => {paginate(totalPage)}}>
+              <a
+                href="#"
+                aria-label="Next page"
+                onClick={(e) => {
+                  e.preventDefault();
+                  if (currentPage < totalPage) paginate(currentPage + 1);
+                }}
+              >
                 <span className="d-none d-sm-inline">Next</span>
                 <i className="bi bi-arrow-right"></i>
               </a>

@@ -39,15 +39,12 @@ public class ProductController {
     }
 
     @GetMapping("/category/{id}")
-    public List<ProductDTO> getProductsByCategory(
+    public ProductPageResponse getProductsByCategory(
             @PathVariable int id,
             @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "12") int size) {
+            @RequestParam(defaultValue = "9") int size) {
         return productService.getProductsByCategoryId(id, page, size);
     }
-
-
-
 
 }
 

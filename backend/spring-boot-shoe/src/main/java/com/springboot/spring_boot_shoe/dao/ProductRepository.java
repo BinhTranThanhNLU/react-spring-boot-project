@@ -11,8 +11,6 @@ import java.util.List;
 
 public interface ProductRepository extends JpaRepository<Product, Integer> {
 
-    List<Product> findByCategory_Id(int id);
-
     @Query("SELECT p FROM Product p " +
             "WHERE p.category.id = :categoryId " +
             "   OR p.category.parent.id = :categoryId")
