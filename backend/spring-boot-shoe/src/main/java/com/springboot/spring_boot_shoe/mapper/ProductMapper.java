@@ -7,6 +7,8 @@ import com.springboot.spring_boot_shoe.entity.ProductImage;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
+import java.util.List;
+
 @Mapper(componentModel = "spring")
 public interface ProductMapper {
 
@@ -16,5 +18,7 @@ public interface ProductMapper {
 
     // map từ ProductImage -> ProductImageDTO
     ProductImageDTO toDto(ProductImage image);
+
+    List<ProductDTO> toDtoList(List<Product> products);
 
 }

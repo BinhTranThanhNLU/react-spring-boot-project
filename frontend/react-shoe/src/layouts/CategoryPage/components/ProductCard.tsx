@@ -1,12 +1,13 @@
 import React from "react";
 import { Product } from "../../../models/Product";
-import { ProductImage } from "../../../models/ProductImage";
 import { StarsReview } from "../../utils/StarsReview";
 
 export const ProductCard:React.FC<{product: Product}> = ({product}) => {
 
-  const mainImage: string = product.images && product.images.length>0 ? product.images[0].imageUrl : "/assets/img/no-image.png";
-  const hoverImage: string = product.images && product.images.length>0 ? product.images[0].imageUrl : "/assets/img/no-image.png";
+  const mainImage =
+    product.images?.[0]?.imageUrl || "/assets/img/no-image.png";
+  const hoverImage =
+    product.images?.[0]?.imageUrl || "/assets/img/no-image.png";
 
   return (
     <div className="col-6 col-xl-4">

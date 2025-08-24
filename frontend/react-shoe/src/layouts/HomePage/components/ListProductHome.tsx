@@ -21,7 +21,6 @@ export const ListProductHome: React.FC<{ products: Product[] }> = ({products}) =
                   Giới hạn
                 </div>
 
-                {/* Hình ảnh (sau này có thể lấy từ product.imageUrl nếu backend có field) */}
                 <img
                   src={product.images && product.images.length > 0 ? product.images[0].imageUrl : "/placeholder.jpg"}
                   className="img-fluid mb-3"

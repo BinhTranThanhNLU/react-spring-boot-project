@@ -12,6 +12,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @CrossOrigin(origins = "http://localhost:3000")
@@ -21,12 +22,6 @@ public class ProductController {
 
     @Autowired
     private ProductService productService;
-
-    @Autowired
-    private ProductMapper productMapper;
-
-    @Autowired
-    private ProductRepository productRepository;
 
     @GetMapping
     public List<ProductDTO> getAllProducts() {
@@ -42,9 +37,12 @@ public class ProductController {
     public ProductPageResponse getProductsByCategory(
             @PathVariable int id,
             @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "9") int size) {
-        return productService.getProductsByCategoryId(id, page, size);
-    }
+            @RequestParam(defaultValue = "9") int size,
+            @RequestParam(required = false) BigDecimal minPrice,
+            @RequestParam(required = false) BigDecimal maxPrice) {
 
+        // chỉ gọi duy nhất 1 hàm service
+        return productService.getProductsByCategoryId(id, page, size, minPrice, maxPrice);
+    }
 }
 

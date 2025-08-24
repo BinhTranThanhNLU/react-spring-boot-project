@@ -11,7 +11,10 @@ import org.springframework.stereotype.Service;
 
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
+
+import java.math.BigDecimal;
 import java.util.List;
+import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 @Service
@@ -24,10 +27,7 @@ public class ProductService {
     private ProductMapper productMapper;
 
     public List<ProductDTO> getAllProducts() {
-        return productRepository.findAll()
-                .stream()
-                .map(productMapper::toDto)
-                .collect(Collectors.toList());
+        return productMapper.toDtoList(productRepository.findAll());
     }
 
     public ProductDTO getProductById(int id) {
@@ -36,22 +36,20 @@ public class ProductService {
         return productMapper.toDto(product);
     }
 
-    public ProductPageResponse getProductsByCategoryId(int categoryId, int page, int size) {
+    public ProductPageResponse getProductsByCategoryId(int categoryId, int page, int size,
+                                                                BigDecimal minPrice, BigDecimal maxPrice) {
+        if(minPrice != null && maxPrice != null && minPrice.compareTo(maxPrice) > 0) {
+            BigDecimal min = minPrice;
+            minPrice = maxPrice;
+            maxPrice = min;
+        }
+
         Pageable pageable = PageRequest.of(page, size, Sort.by("id").ascending());
-        Page<Product> productPage = productRepository.findByCategoryOrSubCategory(categoryId, pageable);
+        Page<Product> productPage = productRepository.findByCategoryOrSubCategory(categoryId, minPrice, maxPrice, pageable);
+        List<ProductDTO> productDTOs = productMapper.toDtoList(productPage.getContent());
 
-        List<ProductDTO> productDTOs = productPage.getContent()
-                .stream()
-                .map(productMapper::toDto)
-                .collect(Collectors.toList());
+        return new ProductPageResponse(productDTOs, productPage.getNumber(), productPage.getTotalPages(), productPage.getTotalElements());
 
-        return new ProductPageResponse(
-                productDTOs,
-                productPage.getNumber(),
-                productPage.getTotalPages(),
-                productPage.getTotalElements()
-        );
     }
-
 
 }
