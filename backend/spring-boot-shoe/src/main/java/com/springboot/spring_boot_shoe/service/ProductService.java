@@ -37,7 +37,7 @@ public class ProductService {
     }
 
     public ProductPageResponse getProductsByCategoryId(int categoryId, int page, int size,
-                                                                BigDecimal minPrice, BigDecimal maxPrice) {
+                                                                BigDecimal minPrice, BigDecimal maxPrice, Integer brandId, String color) {
         if(minPrice != null && maxPrice != null && minPrice.compareTo(maxPrice) > 0) {
             BigDecimal min = minPrice;
             minPrice = maxPrice;
@@ -45,7 +45,7 @@ public class ProductService {
         }
 
         Pageable pageable = PageRequest.of(page, size, Sort.by("id").ascending());
-        Page<Product> productPage = productRepository.findByCategoryOrSubCategory(categoryId, minPrice, maxPrice, pageable);
+        Page<Product> productPage = productRepository.findByCategoryOrSubCategory(categoryId, minPrice, maxPrice, brandId,color, pageable);
         List<ProductDTO> productDTOs = productMapper.toDtoList(productPage.getContent());
 
         return new ProductPageResponse(productDTOs, productPage.getNumber(), productPage.getTotalPages(), productPage.getTotalElements());

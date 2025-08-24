@@ -39,10 +39,11 @@ public class ProductController {
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "9") int size,
             @RequestParam(required = false) BigDecimal minPrice,
-            @RequestParam(required = false) BigDecimal maxPrice) {
+            @RequestParam(required = false) BigDecimal maxPrice,
+            @RequestParam(required = false) Integer brand,
+            @RequestParam(required = false) String color) {
 
-        // chỉ gọi duy nhất 1 hàm service
-        return productService.getProductsByCategoryId(id, page, size, minPrice, maxPrice);
+        return productService.getProductsByCategoryId(id, page, size, minPrice, maxPrice, brand, color);
     }
 }
 
