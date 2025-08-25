@@ -1,4 +1,4 @@
 export interface BrandFilterWigetProps {
-    brand: number | null;
-    setBrand: (vaule: number | null) => void
+  brands: number[];
+  setBrands: (value: number[]) => void;
 }

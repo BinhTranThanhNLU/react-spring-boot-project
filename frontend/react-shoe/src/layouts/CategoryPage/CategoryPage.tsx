@@ -11,7 +11,7 @@ export const CategoryPage = () => {
   //state filter
   const [minPrice, setMinPrice] = useState<number | null>(null);
   const [maxPrice, setMaxPrice] = useState<number | null>(null);
-  const [brand, setBrand] = useState<number | null>(null);
+  const [brands, setBrands] = useState<number[]>([]);
   const [color, setColor] = useState<string | null>(null);
 
   return (
@@ -29,8 +29,8 @@ export const CategoryPage = () => {
                 setMinPrice={setMinPrice}
                 setMaxPrice={setMaxPrice}
               />
-              <ColorFilterWidget color={color} setColor={setColor}/>
-              <BrandFilterWidget brand={brand} setBrand={setBrand}/>
+              <ColorFilterWidget color={color} setColor={setColor} />
+              <BrandFilterWidget brands={brands} setBrands={setBrands} />
             </div>
           </div>
 
@@ -39,7 +39,7 @@ export const CategoryPage = () => {
             <ProductList
               minPrice={minPrice}
               maxPrice={maxPrice}
-              brand={brand}
+              brands={brands}
               color={color}
             />
           </div>

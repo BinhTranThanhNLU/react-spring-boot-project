@@ -11,7 +11,7 @@ import { ProductListProps } from "../../../models/ProductListProps";
 export const ProductList: React.FC<ProductListProps> = ({
   minPrice,
   maxPrice,
-  brand,
+  brands,
   color,
 }) => {
   // state product
@@ -29,27 +29,28 @@ export const ProductList: React.FC<ProductListProps> = ({
 
   useEffect(() => {
     setCurrentPage(1);
-  }, [minPrice, maxPrice, brand, color]);
+  }, [minPrice, maxPrice, brands, color]);
 
   useEffect(() => {
     const fetchProducts = async () => {
       setIsLoading(true);
-
       try {
-        let url = `${API_BASE_URL}/products/category/1?page=${
-          currentPage - 1
-        }&size=${productsPerPage}`;
+        const params = new URLSearchParams();
+        params.set("page", String(currentPage - 1));
+        params.set("size", String(productsPerPage));
+        if (minPrice !== null) params.set("minPrice", String(minPrice));
+        if (maxPrice !== null) params.set("maxPrice", String(maxPrice));
+        if (color) params.set("color", color);
+        if (brands && brands.length > 0) {
+          brands.forEach((b) => params.append("brands", String(b))); // ⬅️ lặp param
+        }
 
-        if (minPrice !== null) url += `&minPrice=${minPrice}`;
-        if (maxPrice !== null) url += `&maxPrice=${maxPrice}`;
-        if (brand !== null) url += `&brand=${brand}`;
-        if (color) url += `&color=${encodeURIComponent(color)}`;
+        const url = `${API_BASE_URL}/products/category/1?${params.toString()}`;
 
         const response = await fetch(url);
         if (!response.ok) throw new Error("Something went wrong !!");
 
         const data: ProductPageResponse = await response.json();
-
         setProducts(data.products);
         setTotalPages(data.totalPages);
         setTotalItems(data.totalItems);
@@ -61,7 +62,7 @@ export const ProductList: React.FC<ProductListProps> = ({
     };
 
     fetchProducts();
-  }, [currentPage, productsPerPage, minPrice, maxPrice, brand, color]);
+  }, [currentPage, productsPerPage, minPrice, maxPrice, brands, color]);
 
   if (isLoading) return <SpinningLoading />;
   if (httpError) return <ErrorMessage message={httpError} />;

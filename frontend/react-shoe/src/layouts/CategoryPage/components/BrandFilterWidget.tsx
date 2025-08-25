@@ -13,33 +13,47 @@ const BRANDS = [
   { id: 9, name: "Under Armour", count: 4 },
 ];
 
-// bỏ dấu để search tiếng Việt
-function normalize(str: string) {
-  return str.normalize("NFD").replace(/\p{Diacritic}/gu, "").toLowerCase();
+function normalizeText(str: string) {
+  return str
+    .normalize("NFD")
+    .replace(/\p{Diacritic}/gu, "")
+    .toLowerCase();
 }
 
 export const BrandFilterWidget: React.FC<BrandFilterWigetProps> = ({
-  brand,
-  setBrand,
+  brands,
+  setBrands,
 }) => {
-  const [q, setQ] = useState("");
-  const [tempBrand, setTempBrand] = useState<number | null>(brand);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [selectedBrandIdsTemp, setSelectedBrandIdsTemp] =
+    useState<number[]>(brands); // state tạm để chọn brand
 
+  // Lọc brand theo từ khóa tìm kiếm
   const filteredBrands = useMemo(() => {
-    if (!q) return BRANDS;
-    const nq = normalize(q);
-    return BRANDS.filter((b) => normalize(b.name).includes(nq));
-  }, [q]);
+    if (!searchQuery) return BRANDS;
+    const normalizedQuery = normalizeText(searchQuery);
+    return BRANDS.filter((brand) =>
+      normalizeText(brand.name).includes(normalizedQuery)
+    );
+  }, [searchQuery]);
 
-  const toggle = (id: number) => {
-    setTempBrand((prev) => (prev === id ? null : id));
+  // Toggle chọn hoặc bỏ chọn brand
+  const toggleBrand = (brandId: number) => {
+    setSelectedBrandIdsTemp((prevSelected) =>
+      prevSelected.includes(brandId)
+        ? prevSelected.filter((id) => id !== brandId)
+        : [...prevSelected, brandId]
+    );
   };
 
-  const apply = () => setBrand(tempBrand);
-  const clear = () => {
-    setQ("");
-    setTempBrand(null);
-    setBrand(null);
+  // Áp dụng lọc
+  const applyFilter = () => setBrands(selectedBrandIdsTemp);
+
+  // Xóa lọc
+  const clearFilter = () => {
+    setSearchQuery("");
+    setSelectedBrandIdsTemp([]);
+    setBrands([]);
   };
 
   return (
@@ -47,41 +61,37 @@ export const BrandFilterWidget: React.FC<BrandFilterWigetProps> = ({
       <h3 className="widget-title">Thương hiệu</h3>
 
       <div className="brand-filter-content">
-        {/* Search box */}
         <div className="brand-search position-relative mb-2">
           <input
             type="text"
             className="form-control form-control-sm pe-5"
             placeholder="Tìm kiếm thương hiệu..."
-            value={q}
-            onChange={(e) => setQ(e.target.value)}
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
           />
           <i className="bi bi-search position-absolute top-50 end-0 translate-middle-y me-3"></i>
         </div>
 
-        {/* Danh sách brand (đơn chọn) */}
         <div
           className="brand-list"
           style={{ maxHeight: 240, overflowY: "auto" }}
         >
-          {filteredBrands.map((b) => (
-            <div className="brand-item" key={b.id}>
+          {filteredBrands.map((brand) => (
+            <div className="brand-item" key={brand.id}>
               <div className="form-check">
-                {/* radio: đơn chọn; nếu muốn giữ checkbox vẫn ok nhưng nhớ set checked */}
                 <input
                   className="form-check-input"
-                  type="radio"
-                  name="brand"
-                  id={`brand-${b.id}`}
-                  checked={tempBrand === b.id}
-                  onChange={() => toggle(b.id)}
+                  type="checkbox"
+                  id={`brand-${brand.id}`}
+                  checked={selectedBrandIdsTemp.includes(brand.id)}
+                  onChange={() => toggleBrand(brand.id)}
                 />
                 <label
                   className="form-check-label d-flex w-100 justify-content-between"
-                  htmlFor={`brand-${b.id}`}
+                  htmlFor={`brand-${brand.id}`}
                 >
-                  <span>{b.name}</span>
-                  <span className="text-muted small">({b.count})</span>
+                  <span>{brand.name}</span>
+                  <span className="text-muted small">({brand.count})</span>
                 </label>
               </div>
             </div>
@@ -94,15 +104,32 @@ export const BrandFilterWidget: React.FC<BrandFilterWigetProps> = ({
           )}
         </div>
 
-        {/* Actions */}
         <div className="brand-actions d-flex gap-2 mt-3">
-          <button className="btn btn-sm btn-dark w-100" onClick={apply}>
+          <button className="btn btn-sm btn-dark w-100" onClick={applyFilter}>
             Áp dụng lọc
           </button>
-          <button className="btn btn-sm btn-outline-secondary" onClick={clear}>
+          <button
+            className="btn btn-sm btn-outline-secondary"
+            onClick={clearFilter}
+          >
             Xóa
           </button>
         </div>
+
+        {/* Hiển thị chip đã chọn */}
+        {brands.length > 0 && (
+          <div className="mt-2 d-flex flex-wrap gap-2">
+            {brands.map((brandId) => {
+              const brand = BRANDS.find((b) => b.id === brandId);
+              if (!brand) return null;
+              return (
+                <span key={brandId} className="badge text-bg-secondary">
+                  {brand.name}
+                </span>
+              );
+            })}
+          </div>
+        )}
       </div>
     </div>
   );
