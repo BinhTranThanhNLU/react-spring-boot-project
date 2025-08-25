@@ -28,8 +28,13 @@ export const ProductList: React.FC<ProductListProps> = ({
   const paginate = (pageNumber: number) => setCurrentPage(pageNumber);
 
   useEffect(() => {
+    setCurrentPage(1);
+  }, [minPrice, maxPrice, brand, color]);
+
+  useEffect(() => {
     const fetchProducts = async () => {
       setIsLoading(true);
+
       try {
         let url = `${API_BASE_URL}/products/category/1?page=${
           currentPage - 1

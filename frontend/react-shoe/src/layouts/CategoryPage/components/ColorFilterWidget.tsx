@@ -1,4 +1,10 @@
-export const ColorFilterWidget = () => {
+import React from "react";
+import { ColorFilterWidgetProps } from "../../../models/ColorFilterWidgetProps";
+
+export const ColorFilterWidget: React.FC<ColorFilterWidgetProps> = ({
+  color,
+  setColor,
+}) => {
   return (
     <div className="color-filter-widget widget-item">
       <h3 className="widget-title">Màu sắc</h3>
@@ -9,8 +15,9 @@ export const ColorFilterWidget = () => {
             <input
               className="form-check-input"
               type="checkbox"
-              value="black"
+              value="Đen"
               id="color-black"
+              onChange={(e) => setColor(e.target.value)}
             />
             <label className="form-check-label" htmlFor="color-black">
               <span
@@ -25,8 +32,9 @@ export const ColorFilterWidget = () => {
             <input
               className="form-check-input"
               type="checkbox"
-              value="white"
+              value="Trắng"
               id="color-white"
+              onChange={(e) => setColor(e.target.value)}
             />
             <label className="form-check-label" htmlFor="color-white">
               <span
@@ -41,8 +49,9 @@ export const ColorFilterWidget = () => {
             <input
               className="form-check-input"
               type="checkbox"
-              value="red"
+              value="Đỏ"
               id="color-red"
+              onChange={(e) => setColor(e.target.value)}
             />
             <label className="form-check-label" htmlFor="color-red">
               <span
@@ -57,8 +66,9 @@ export const ColorFilterWidget = () => {
             <input
               className="form-check-input"
               type="checkbox"
-              value="blue"
+              value="Xanh Dương"
               id="color-blue"
+              onChange={(e) => setColor(e.target.value)}
             />
             <label className="form-check-label" htmlFor="color-blue">
               <span
@@ -73,8 +83,9 @@ export const ColorFilterWidget = () => {
             <input
               className="form-check-input"
               type="checkbox"
-              value="green"
+              value="Xanh Lá"
               id="color-green"
+              onChange={(e) => setColor(e.target.value)}
             />
             <label className="form-check-label" htmlFor="color-green">
               <span
@@ -89,8 +100,9 @@ export const ColorFilterWidget = () => {
             <input
               className="form-check-input"
               type="checkbox"
-              value="yellow"
+              value="Vàng"
               id="color-yellow"
+              onChange={(e) => setColor(e.target.value)}
             />
             <label className="form-check-label" htmlFor="color-yellow">
               <span
@@ -105,8 +117,9 @@ export const ColorFilterWidget = () => {
             <input
               className="form-check-input"
               type="checkbox"
-              value="purple"
+              value="Tím"
               id="color-purple"
+              onChange={(e) => setColor(e.target.value)}
             />
             <label className="form-check-label" htmlFor="color-purple">
               <span
@@ -121,8 +134,9 @@ export const ColorFilterWidget = () => {
             <input
               className="form-check-input"
               type="checkbox"
-              value="orange"
+              value="Cam"
               id="color-orange"
+              onChange={(e) => setColor(e.target.value)}
             />
             <label className="form-check-label" htmlFor="color-orange">
               <span
@@ -137,8 +151,9 @@ export const ColorFilterWidget = () => {
             <input
               className="form-check-input"
               type="checkbox"
-              value="pink"
+              value="Hồng"
               id="color-pink"
+              onChange={(e) => setColor(e.target.value)}
             />
             <label className="form-check-label" htmlFor="color-pink">
               <span
@@ -153,8 +168,9 @@ export const ColorFilterWidget = () => {
             <input
               className="form-check-input"
               type="checkbox"
-              value="brown"
+              value="Nâu"
               id="color-brown"
+              onChange={(e) => setColor(e.target.value)}
             />
             <label className="form-check-label" htmlFor="color-brown">
               <span

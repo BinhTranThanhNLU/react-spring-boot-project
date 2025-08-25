@@ -1,15 +1,10 @@
 package com.springboot.spring_boot_shoe.controller;
 
-import com.springboot.spring_boot_shoe.dao.ProductRepository;
-import com.springboot.spring_boot_shoe.entity.Product;
-import com.springboot.spring_boot_shoe.mapper.ProductMapper;
 import com.springboot.spring_boot_shoe.responsemodel.ProductPageResponse;
 import com.springboot.spring_boot_shoe.service.ProductService;
 import com.springboot.spring_boot_shoe.dto.ProductDTO;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.http.ResponseEntity;
+
 import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
@@ -40,10 +35,10 @@ public class ProductController {
             @RequestParam(defaultValue = "9") int size,
             @RequestParam(required = false) BigDecimal minPrice,
             @RequestParam(required = false) BigDecimal maxPrice,
-            @RequestParam(required = false) Integer brand,
+            @RequestParam(required = false, name = "brands") List<Integer> brands,
             @RequestParam(required = false) String color) {
 
-        return productService.getProductsByCategoryId(id, page, size, minPrice, maxPrice, brand, color);
+        return productService.getProductsByCategoryId(id, page, size, minPrice, maxPrice, brands, color);
     }
 }
 

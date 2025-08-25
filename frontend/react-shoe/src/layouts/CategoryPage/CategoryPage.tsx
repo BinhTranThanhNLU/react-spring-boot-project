@@ -29,8 +29,8 @@ export const CategoryPage = () => {
                 setMinPrice={setMinPrice}
                 setMaxPrice={setMaxPrice}
               />
-              <ColorFilterWidget />
-              <BrandFilterWidget />
+              <ColorFilterWidget color={color} setColor={setColor}/>
+              <BrandFilterWidget brand={brand} setBrand={setBrand}/>
             </div>
           </div>
 
