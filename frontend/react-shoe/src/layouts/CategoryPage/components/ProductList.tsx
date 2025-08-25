@@ -42,7 +42,7 @@ export const ProductList: React.FC<ProductListProps> = ({
         if (maxPrice !== null) params.set("maxPrice", String(maxPrice));
         if (color) params.set("color", color);
         if (brands && brands.length > 0) {
-          brands.forEach((b) => params.append("brands", String(b))); // ⬅️ lặp param
+          brands.forEach((brand) => params.append("brands", String(brand)));
         }
 
         const url = `${API_BASE_URL}/products/category/1?${params.toString()}`;
@@ -51,6 +51,7 @@ export const ProductList: React.FC<ProductListProps> = ({
         if (!response.ok) throw new Error("Something went wrong !!");
 
         const data: ProductPageResponse = await response.json();
+        
         setProducts(data.products);
         setTotalPages(data.totalPages);
         setTotalItems(data.totalItems);

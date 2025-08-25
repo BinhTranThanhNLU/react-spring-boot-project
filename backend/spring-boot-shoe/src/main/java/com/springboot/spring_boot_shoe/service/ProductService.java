@@ -14,8 +14,6 @@ import org.springframework.data.domain.Sort;
 
 import java.math.BigDecimal;
 import java.util.List;
-import java.util.stream.Collector;
-import java.util.stream.Collectors;
 
 @Service
 public class ProductService {
@@ -54,7 +52,7 @@ public class ProductService {
             productPage = productRepository.findByCategoryOrSubCategory_WithBrands(
                     categoryId, minPrice, maxPrice, brandIds, color, pageable);
         } else {
-            productPage = productRepository.findByCategoryOrSubCategory_NoBrands(
+            productPage = productRepository.findByCategoryOrSubCategory(
                     categoryId, minPrice, maxPrice, color, pageable);
         }
 

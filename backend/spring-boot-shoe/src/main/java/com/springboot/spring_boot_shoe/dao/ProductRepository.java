@@ -1,5 +1,6 @@
 package com.springboot.spring_boot_shoe.dao;
 
+import com.springboot.spring_boot_shoe.dto.BrandDTO;
 import com.springboot.spring_boot_shoe.entity.Product;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -28,17 +29,23 @@ public interface ProductRepository extends JpaRepository<Product, Integer> {
             @Param("color") String color,
             Pageable pageable);
 
-    // KHÔNG lọc theo brand (khi brandIds null/empty)
+    // khong loc
     @Query("SELECT DISTINCT p FROM Product p " +
             "LEFT JOIN p.variants v " +
             "WHERE (p.category.id = :categoryId OR p.category.parent.id = :categoryId) " +
             "AND (:minPrice IS NULL OR p.price >= :minPrice) " +
             "AND (:maxPrice IS NULL OR p.price <= :maxPrice) " +
             "AND (:color IS NULL OR v.color = :color)")
-    Page<Product> findByCategoryOrSubCategory_NoBrands(
+    Page<Product> findByCategoryOrSubCategory(
             @Param("categoryId") int categoryId,
             @Param("minPrice") BigDecimal minPrice,
             @Param("maxPrice") BigDecimal maxPrice,
             @Param("color") String color,
             Pageable pageable);
+
+    @Query("SELECT new com.springboot.spring_boot_shoe.dto.BrandDTO(b.id, b.name, COUNT(p)) " +
+            "FROM Brand b " +
+            "LEFT JOIN Product p ON p.brand.id = b.id " +
+            "GROUP BY b.id, b.name")
+    List<BrandDTO> findAllBrandsWithProductCount(); //DTO Projection
 }
