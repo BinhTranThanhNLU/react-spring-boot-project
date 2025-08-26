@@ -12,7 +12,7 @@ export const ProductList: React.FC<ProductListProps> = ({
   minPrice,
   maxPrice,
   brands,
-  color,
+  colors,
 }) => {
   // state product
   const [products, setProducts] = useState<Product[]>([]);
@@ -29,7 +29,7 @@ export const ProductList: React.FC<ProductListProps> = ({
 
   useEffect(() => {
     setCurrentPage(1);
-  }, [minPrice, maxPrice, brands, color]);
+  }, [minPrice, maxPrice, brands, colors]);
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -40,7 +40,9 @@ export const ProductList: React.FC<ProductListProps> = ({
         params.set("size", String(productsPerPage));
         if (minPrice !== null) params.set("minPrice", String(minPrice));
         if (maxPrice !== null) params.set("maxPrice", String(maxPrice));
-        if (color) params.set("color", color);
+        if (colors && colors.length > 0) {
+          colors.forEach((color) => params.append("colors", color));
+        }
         if (brands && brands.length > 0) {
           brands.forEach((brand) => params.append("brands", String(brand)));
         }
@@ -51,7 +53,7 @@ export const ProductList: React.FC<ProductListProps> = ({
         if (!response.ok) throw new Error("Something went wrong !!");
 
         const data: ProductPageResponse = await response.json();
-        
+
         setProducts(data.products);
         setTotalPages(data.totalPages);
         setTotalItems(data.totalItems);
@@ -63,7 +65,7 @@ export const ProductList: React.FC<ProductListProps> = ({
     };
 
     fetchProducts();
-  }, [currentPage, productsPerPage, minPrice, maxPrice, brands, color]);
+  }, [currentPage, minPrice, maxPrice, brands, colors]);
 
   if (isLoading) return <SpinningLoading />;
   if (httpError) return <ErrorMessage message={httpError} />;

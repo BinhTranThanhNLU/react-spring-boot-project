@@ -36,9 +36,9 @@ public class ProductController {
             @RequestParam(required = false) BigDecimal minPrice,
             @RequestParam(required = false) BigDecimal maxPrice,
             @RequestParam(required = false, name = "brands") List<Integer> brands,
-            @RequestParam(required = false) String color) {
+            @RequestParam(required = false, name = "colors") List<String> colors) {
 
-        return productService.getProductsByCategoryId(id, page, size, minPrice, maxPrice, brands, color);
+        return productService.getProductsByCategoryId(id, page, size, minPrice, maxPrice, brands, colors);
     }
 }
 

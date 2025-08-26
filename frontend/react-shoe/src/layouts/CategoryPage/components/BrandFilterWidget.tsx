@@ -1,41 +1,28 @@
 import React, { useMemo, useState } from "react";
 import { BrandFilterWigetProps } from "../../../models/BrandFilterWidgetProps";
-
-const BRANDS = [
-  { id: 1, name: "Nike", count: 24 },
-  { id: 2, name: "Adidas", count: 18 },
-  { id: 3, name: "Puma", count: 12 },
-  { id: 4, name: "Mizuno", count: 9 },
-  { id: 5, name: "Asics", count: 7 },
-  { id: 6, name: "NMS", count: 6 },
-  { id: 7, name: "Kamito", count: 5 },
-  { id: 8, name: "Jordan", count: 4 },
-  { id: 9, name: "Under Armour", count: 4 },
-];
-
-function normalizeText(str: string) {
-  return str
-    .normalize("NFD")
-    .replace(/\p{Diacritic}/gu, "")
-    .toLowerCase();
-}
+import { normalizeText } from "../../utils/StringUtil";
 
 export const BrandFilterWidget: React.FC<BrandFilterWigetProps> = ({
   brands,
   setBrands,
+  allBrands,
 }) => {
+  // state function
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedBrandIdsTemp, setSelectedBrandIdsTemp] =
-    useState<number[]>(brands); // state tạm để chọn brand
+    useState<number[]>(brands);
 
   // Lọc brand theo từ khóa tìm kiếm
+  const normalizedQuery = useMemo(
+    () => normalizeText(searchQuery),
+    [searchQuery]
+  );
   const filteredBrands = useMemo(() => {
-    if (!searchQuery) return BRANDS;
-    const normalizedQuery = normalizeText(searchQuery);
-    return BRANDS.filter((brand) =>
+    if (!normalizedQuery) return allBrands;
+    return allBrands.filter((brand) =>
       normalizeText(brand.name).includes(normalizedQuery)
     );
-  }, [searchQuery]);
+  }, [normalizedQuery, allBrands]);
 
   // Toggle chọn hoặc bỏ chọn brand
   const toggleBrand = (brandId: number) => {
@@ -61,6 +48,7 @@ export const BrandFilterWidget: React.FC<BrandFilterWigetProps> = ({
       <h3 className="widget-title">Thương hiệu</h3>
 
       <div className="brand-filter-content">
+        {/* Search box */}
         <div className="brand-search position-relative mb-2">
           <input
             type="text"
@@ -72,6 +60,7 @@ export const BrandFilterWidget: React.FC<BrandFilterWigetProps> = ({
           <i className="bi bi-search position-absolute top-50 end-0 translate-middle-y me-3"></i>
         </div>
 
+        {/* Brand list */}
         <div
           className="brand-list"
           style={{ maxHeight: 240, overflowY: "auto" }}
@@ -104,6 +93,7 @@ export const BrandFilterWidget: React.FC<BrandFilterWigetProps> = ({
           )}
         </div>
 
+        {/* Actions */}
         <div className="brand-actions d-flex gap-2 mt-3">
           <button className="btn btn-sm btn-dark w-100" onClick={applyFilter}>
             Áp dụng lọc
@@ -120,7 +110,7 @@ export const BrandFilterWidget: React.FC<BrandFilterWigetProps> = ({
         {brands.length > 0 && (
           <div className="mt-2 d-flex flex-wrap gap-2">
             {brands.map((brandId) => {
-              const brand = BRANDS.find((b) => b.id === brandId);
+              const brand = allBrands.find((b) => b.id === brandId);
               if (!brand) return null;
               return (
                 <span key={brandId} className="badge text-bg-secondary">

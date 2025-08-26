@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { BrandFilterWidget } from "./components/BrandFilterWidget";
 import { ColorFilterWidget } from "./components/ColorFilterWidget";
 import { FilterBar } from "./components/FilterBar";
@@ -6,13 +6,32 @@ import { PageTitle } from "./components/PageTitle";
 import { PricingRangeWidget } from "./components/PricingRangeWidget";
 import { ProductCategoriesWidget } from "./components/ProductCategoriesWidget";
 import { ProductList } from "./components/ProductList";
+import { Brand } from "../../models/Brand";
+import { API_BASE_URL } from "../../config/config";
 
 export const CategoryPage = () => {
+  //state brand
+  const [brandsList, setBrandsList] = useState<Brand[]>([]);
+
   //state filter
   const [minPrice, setMinPrice] = useState<number | null>(null);
   const [maxPrice, setMaxPrice] = useState<number | null>(null);
   const [brands, setBrands] = useState<number[]>([]);
-  const [color, setColor] = useState<string | null>(null);
+  const [colors, setColors] = useState<string[]>([]);
+
+  useEffect(() => {
+    const fetchBrands = async () => {
+      try {
+        const response = await fetch(`${API_BASE_URL}/brands`);
+        if (!response.ok) throw new Error("Something went wrong");
+        const data: Brand[] = await response.json();
+        setBrandsList(data);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+    fetchBrands();
+  }, []);
 
   return (
     <main className="main">
@@ -29,8 +48,8 @@ export const CategoryPage = () => {
                 setMinPrice={setMinPrice}
                 setMaxPrice={setMaxPrice}
               />
-              <ColorFilterWidget color={color} setColor={setColor} />
-              <BrandFilterWidget brands={brands} setBrands={setBrands} />
+              <ColorFilterWidget colors={colors} setColors={setColors} />
+              <BrandFilterWidget brands={brands} setBrands={setBrands} allBrands={brandsList}/>
             </div>
           </div>
 
@@ -40,7 +59,7 @@ export const CategoryPage = () => {
               minPrice={minPrice}
               maxPrice={maxPrice}
               brands={brands}
-              color={color}
+              colors={colors}
             />
           </div>
         </div>
