@@ -1,131 +1,118 @@
-export const ProductCategoriesWidget = () => {
+import React, { useEffect, useState } from "react";
+import { Category } from "../../../models/Category";
+import { API_BASE_URL } from "../../../config/config";
+import { SpinningLoading } from "../../utils/SpinningLoading";
+import { CategoryWidgetProps } from "../../../models/CategoryWidgetProps";
+
+export const ProductCategoriesWidget: React.FC<CategoryWidgetProps> = ({
+  setSelectedCategoryId,
+}) => {
+  const [categories, setCategories] = useState<Category[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        const url = `${API_BASE_URL}/categories`;
+        const response = await fetch(url);
+        if (!response.ok) throw new Error("Something went wrong !!!");
+
+        const data: Category[] = await response.json();
+        setCategories(data);
+      } catch (error) {
+        console.error(error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchCategories();
+  }, []);
+
+  if (isLoading) return <SpinningLoading />;
+
   return (
     <div className="product-categories-widget widget-item">
       <h3 className="widget-title">Danh mục</h3>
 
       <ul className="category-tree list-unstyled mb-0">
-        {/* Sport Shoe Category */}
+        {categories.map((category) => (
+          <li className="category-item" key={category.id}>
+            <div
+              className="d-flex justify-content-between align-items-center category-header collapsed"
+              data-bs-toggle="collapse"
+              data-bs-target={`#category-root-${category.id}`}
+              aria-expanded="false"
+              aria-controls={`category-root-${category.id}`}
+            >
+              <a
+                href="javascript:void(0)"
+                className="category-link"
+                onClick={() => setSelectedCategoryId(category.id)}
+              >
+                {category.name}
+              </a>
+              {category.subCategories?.length > 0 && (
+                <span className="category-toggle">
+                  <i className="bi bi-chevron-down"></i>
+                  <i className="bi bi-chevron-up"></i>
+                </span>
+              )}
+            </div>
 
-        <li className="category-item">
-          <div
-            className="d-flex justify-content-between align-items-center category-header collapsed"
-            data-bs-toggle="collapse"
-            data-bs-target="#categories-1-clothing-subcategories"
-            aria-expanded="false"
-            aria-controls="categories-1-clothing-subcategories"
-          >
-            <a href="javascript:void(0)" className="category-link">
-              Giày thể thao
-            </a>
-            <span className="category-toggle">
-              <i className="bi bi-chevron-down"></i>
-              <i className="bi bi-chevron-up"></i>
-            </span>
-          </div>
-          <ul
-            id="categories-1-clothing-subcategories"
-            className="subcategory-list list-unstyled collapse ps-3 mt-2"
-          >
-            <li>
-              <a href="#" className="subcategory-link">
-                Bóng đá
-              </a>
-            </li>
-            <li>
-              <a href="#" className="subcategory-link">
-                Bóng rổ
-              </a>
-            </li>
-            <li>
-              <a href="#" className="subcategory-link">
-                Bóng chuyền
-              </a>
-            </li>
-            <li>
-              <a href="#" className="subcategory-link">
-                Chạy bộ
-              </a>
-            </li>
-          </ul>
-        </li>
+            {category.subCategories?.length > 0 && (
+              <ul
+                id={`category-root-${category.id}`}
+                className="subcategory-list list-unstyled collapse ps-3 mt-2"
+              >
+                {category.subCategories.map((sub) => (
+                  <li className="category-item" key={sub.id}>
+                    <div
+                      className="d-flex justify-content-between align-items-center category-header collapsed"
+                      data-bs-toggle="collapse"
+                      data-bs-target={`#category-${category.id}-${sub.id}`}
+                      aria-expanded="false"
+                      aria-controls={`category-${category.id}-${sub.id}`}
+                    >
+                      <a
+                        href="javascript:void(0)"
+                        className="category-link"
+                        onClick={() => setSelectedCategoryId(sub.id)}
+                      >
+                        {sub.name}
+                      </a>
+                      {sub.subCategories?.length > 0 && (
+                        <span className="category-toggle">
+                          <i className="bi bi-chevron-down"></i>
+                          <i className="bi bi-chevron-up"></i>
+                        </span>
+                      )}
+                    </div>
 
-        {/* Fashion Shoe Category */}
-        <li className="category-item">
-          <div
-            className="d-flex justify-content-between align-items-center category-header collapsed"
-            data-bs-toggle="collapse"
-            data-bs-target="#categories-1-electronics-subcategories"
-            aria-expanded="false"
-            aria-controls="categories-1-electronics-subcategories"
-          >
-            <a href="javascript:void(0)" className="category-link">
-              Giày thời trang
-            </a>
-            <span className="category-toggle">
-              <i className="bi bi-chevron-down"></i>
-              <i className="bi bi-chevron-up"></i>
-            </span>
-          </div>
-          <ul
-            id="categories-1-electronics-subcategories"
-            className="subcategory-list list-unstyled collapse ps-3 mt-2"
-          >
-            <li>
-              <a href="#" className="subcategory-link">
-                Thời trang nam
-              </a>
-            </li>
-            <li>
-              <a href="#" className="subcategory-link">
-                Thời trang nữ
-              </a>
-            </li>
-          </ul>
-        </li>
-
-        {/* Sports Accessories Category */}
-        <li className="category-item">
-          <div
-            className="d-flex justify-content-between align-items-center category-header collapsed"
-            data-bs-toggle="collapse"
-            data-bs-target="#categories-1-home-subcategories"
-            aria-expanded="false"
-            aria-controls="categories-1-home-subcategories"
-          >
-            <a href="javascript:void(0)" className="category-link">
-              Phụ kiện thể thao
-            </a>
-            <span className="category-toggle">
-              <i className="bi bi-chevron-down"></i>
-              <i className="bi bi-chevron-up"></i>
-            </span>
-          </div>
-          <ul
-            id="categories-1-home-subcategories"
-            className="subcategory-list list-unstyled collapse ps-3 mt-2"
-          >
-            <li>
-              <a href="#" className="subcategory-link">
-                Bình nước
-              </a>
-            </li>
-            <li>
-              <a href="#" className="subcategory-link">
-                Áo
-              </a>
-            </li>
-            <li>
-              <a href="#" className="subcategory-link">
-                Quần
-              </a>
-            </li>
-            <li>
-              <a href="#" className="subcategory-link">
-                Khác
-              </a>
-            </li>
-          </ul>
-        </li>
+                    {sub.subCategories?.length > 0 && (
+                      <ul
+                        id={`category-${category.id}-${sub.id}`}
+                        className="subcategory-list list-unstyled collapse ps-3 mt-2"
+                      >
+                        {sub.subCategories.map((child) => (
+                          <li className="category-item" key={child.id}>
+                            <a
+                              href="javascript:void(0)"
+                              className="category-link"
+                              onClick={() => setSelectedCategoryId(child.id)}
+                            >
+                              {child.name}
+                            </a>
+                          </li>
+                        ))}
+                      </ul>
+                    )}
+                  </li>
+                ))}
+              </ul>
+            )}
+          </li>
+        ))}
       </ul>
     </div>
   );

@@ -9,6 +9,7 @@ import { ProductPageResponse } from "../../../models/ProductPageResponse";
 import { ProductListProps } from "../../../models/ProductListProps";
 
 export const ProductList: React.FC<ProductListProps> = ({
+  categoryId,
   minPrice,
   maxPrice,
   brands,
@@ -47,7 +48,7 @@ export const ProductList: React.FC<ProductListProps> = ({
           brands.forEach((brand) => params.append("brands", String(brand)));
         }
 
-        const url = `${API_BASE_URL}/products/category/1?${params.toString()}`;
+        const url = `${API_BASE_URL}/products/category/${categoryId}?${params.toString()}`;
 
         const response = await fetch(url);
         if (!response.ok) throw new Error("Something went wrong !!");
@@ -65,7 +66,7 @@ export const ProductList: React.FC<ProductListProps> = ({
     };
 
     fetchProducts();
-  }, [currentPage, minPrice, maxPrice, brands, colors]);
+  }, [currentPage, minPrice, maxPrice, brands, colors, categoryId]);
 
   if (isLoading) return <SpinningLoading />;
   if (httpError) return <ErrorMessage message={httpError} />;

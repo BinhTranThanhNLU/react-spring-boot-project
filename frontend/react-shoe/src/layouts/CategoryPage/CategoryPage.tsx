@@ -10,6 +10,10 @@ import { Brand } from "../../models/Brand";
 import { API_BASE_URL } from "../../config/config";
 
 export const CategoryPage = () => {
+
+  //state category
+  const [selectedCategoryId, setSelectedCategoryId] = useState<number>(1);
+
   //state brand
   const [brandsList, setBrandsList] = useState<Brand[]>([]);
 
@@ -41,7 +45,7 @@ export const CategoryPage = () => {
         <div className="row">
           <div className="col-lg-4 sidebar">
             <div className="widgets-container">
-              <ProductCategoriesWidget />
+              <ProductCategoriesWidget setSelectedCategoryId={setSelectedCategoryId}/>
               <PricingRangeWidget
                 minPrice={minPrice}
                 maxPrice={maxPrice}
@@ -56,6 +60,7 @@ export const CategoryPage = () => {
           <div className="col-lg-8">
             <FilterBar />
             <ProductList
+              categoryId={selectedCategoryId}
               minPrice={minPrice}
               maxPrice={maxPrice}
               brands={brands}
