@@ -5,7 +5,6 @@ import com.springboot.spring_boot_shoe.dto.ProductDTO;
 import com.springboot.spring_boot_shoe.entity.Product;
 import com.springboot.spring_boot_shoe.mapper.ProductMapper;
 import com.springboot.spring_boot_shoe.responsemodel.ProductPageResponse;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
 
@@ -18,11 +17,13 @@ import java.util.List;
 @Service
 public class ProductService {
 
-    @Autowired
     private ProductRepository productRepository;
-
-    @Autowired
     private ProductMapper productMapper;
+
+    public ProductService(ProductRepository productRepository, ProductMapper productMapper) {
+        this.productRepository = productRepository;
+        this.productMapper = productMapper;
+    }
 
     public List<ProductDTO> getAllProducts() {
         return productMapper.toDtoList(productRepository.findAll());

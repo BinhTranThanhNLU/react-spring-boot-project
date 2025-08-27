@@ -59,20 +59,20 @@ public class Category {
         this.description = description;
     }
 
-    public Category getParentCategory() {
+    public Category getParent() {
         return parent;
     }
 
-    public void setParentCategory(Category parentCategory) {
-        this.parent = parentCategory;
+    public void setParent(Category parent) {
+        this.parent = parent;
     }
 
-    public List<Category> getSubCategories() {
+    public List<Category> getSubs() {
         return subs;
     }
 
-    public void setSubCategories(List<Category> subCategories) {
-        this.subs = subCategories;
+    public void setSubs(List<Category> subs) {
+        this.subs = subs;
     }
 
     @Override
