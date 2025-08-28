@@ -22,6 +22,7 @@ export const CategoryPage = () => {
   const [maxPrice, setMaxPrice] = useState<number | null>(null);
   const [brands, setBrands] = useState<number[]>([]);
   const [colors, setColors] = useState<string[]>([]);
+  const [keyword, setKeyword] = useState<string>("");
 
   useEffect(() => {
     const fetchBrands = async () => {
@@ -58,8 +59,9 @@ export const CategoryPage = () => {
           </div>
 
           <div className="col-lg-8">
-            <FilterBar />
+            <FilterBar keyword={keyword} setKeyword={setKeyword}/>
             <ProductList
+              keyword={keyword}
               categoryId={selectedCategoryId}
               minPrice={minPrice}
               maxPrice={maxPrice}

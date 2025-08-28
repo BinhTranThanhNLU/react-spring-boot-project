@@ -9,6 +9,7 @@ import { ProductPageResponse } from "../../../models/ProductPageResponse";
 import { ProductListProps } from "../../../models/ProductListProps";
 
 export const ProductList: React.FC<ProductListProps> = ({
+  keyword,
   categoryId,
   minPrice,
   maxPrice,
@@ -47,8 +48,11 @@ export const ProductList: React.FC<ProductListProps> = ({
         if (brands && brands.length > 0) {
           brands.forEach((brand) => params.append("brands", String(brand)));
         }
+        if (keyword) params.set("keyword", keyword);
 
-        const url = `${API_BASE_URL}/products/category/${categoryId}?${params.toString()}`;
+        const url = keyword
+          ? `${API_BASE_URL}/products/search?${params.toString()}`
+          : `${API_BASE_URL}/products/category/${categoryId}?${params.toString()}`;
 
         const response = await fetch(url);
         if (!response.ok) throw new Error("Something went wrong !!");
@@ -66,7 +70,7 @@ export const ProductList: React.FC<ProductListProps> = ({
     };
 
     fetchProducts();
-  }, [currentPage, minPrice, maxPrice, brands, colors, categoryId]);
+  }, [currentPage, minPrice, maxPrice, brands, colors, categoryId, keyword]);
 
   if (isLoading) return <SpinningLoading />;
   if (httpError) return <ErrorMessage message={httpError} />;

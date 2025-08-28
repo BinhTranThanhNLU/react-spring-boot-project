@@ -61,4 +61,31 @@ public class ProductService {
         );
     }
 
+    public ProductPageResponse searchProducts(
+            String keyword, int page, int size,
+            BigDecimal minPrice, BigDecimal maxPrice,
+            List<Integer> brandIds, List<String> colors) {
+
+        if (minPrice != null && maxPrice != null && minPrice.compareTo(maxPrice) > 0) {
+            BigDecimal temp = minPrice;
+            minPrice = maxPrice;
+            maxPrice = temp;
+        }
+
+        Pageable pageable = PageRequest.of(page, size, Sort.by("id").ascending());
+
+        Page<Product> productPage = productRepository.searchProducts(
+                keyword, minPrice, maxPrice, brandIds, colors, pageable);
+
+        List<ProductDTO> productDTOs = productMapper.toDtoList(productPage.getContent());
+
+        return new ProductPageResponse(
+                productDTOs,
+                productPage.getNumber(),
+                productPage.getTotalPages(),
+                productPage.getTotalElements()
+        );
+    }
+
+
 }

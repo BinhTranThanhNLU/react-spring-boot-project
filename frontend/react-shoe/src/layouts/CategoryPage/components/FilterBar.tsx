@@ -1,8 +1,17 @@
-export const FilterBar = () => {
+import React, { useState } from "react";
+import { FilterBarProps } from "../../../models/FilterBarProps";
+
+export const FilterBar:React.FC<FilterBarProps> = ({keyword, setKeyword}) => {
+
+  const [inputValue, setInputValue] = useState(keyword);
+
+  const handleSearch = () => {
+    setKeyword(inputValue);
+  };
+
   return (
     <section id="category-header" className="category-header section">
       <div className="container" data-aos="fade-up">
-        {/* Filter and Sort Options */}
         <div
           className="filter-container mb-4"
           data-aos="fade-up"
@@ -19,10 +28,12 @@ export const FilterBar = () => {
                     type="text"
                     className="form-control"
                     id="productSearch"
+                    value={inputValue}
+                    onChange={(e) => setInputValue(e.target.value)}
                     placeholder="Tìm kiếm sản phẩm..."
                     aria-label="Search for products"
                   />
-                  <button className="btn search-btn" type="button">
+                  <button className="btn search-btn" type="button" onClick={handleSearch}>
                     <i className="bi bi-search"></i>
                   </button>
                 </div>

@@ -33,4 +33,20 @@ public interface ProductRepository extends JpaRepository<Product, Integer> {
             "LEFT JOIN Product p ON p.brand.id = b.id " +
             "GROUP BY b.id, b.name")
     List<BrandDTO> findAllBrandsWithProductCount(); //DTO Projection
+
+    @Query("SELECT DISTINCT p FROM Product p " +
+            "LEFT JOIN p.variants v " +
+            "WHERE (:keyword IS NULL OR LOWER(p.name) LIKE LOWER(CONCAT('%', :keyword, '%'))) " +
+            "AND (:minPrice IS NULL OR p.price >= :minPrice) " +
+            "AND (:maxPrice IS NULL OR p.price <= :maxPrice) " +
+            "AND (:brandIds IS NULL OR p.brand.id IN :brandIds) " +
+            "AND (:colors IS NULL OR v.color IN :colors)")
+    Page<Product> searchProducts(
+            @Param("keyword") String keyword,
+            @Param("minPrice") BigDecimal minPrice,
+            @Param("maxPrice") BigDecimal maxPrice,
+            @Param("brandIds") List<Integer> brandIds,
+            @Param("colors") List<String> colors,
+            Pageable pageable);
+
 }

@@ -40,5 +40,18 @@ public class ProductController {
 
         return productService.getProductsByCategoryId(id, page, size, minPrice, maxPrice, brands, colors);
     }
+
+    @GetMapping("/search")
+    public ProductPageResponse searchProducts(
+            @RequestParam(required = false) String keyword,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "9") int size,
+            @RequestParam(required = false) BigDecimal minPrice,
+            @RequestParam(required = false) BigDecimal maxPrice,
+            @RequestParam(required = false, name = "brands") List<Integer> brands,
+            @RequestParam(required = false, name = "colors") List<String> colors) {
+
+        return productService.searchProducts(keyword, page, size, minPrice, maxPrice, brands, colors);
+    }
 }
 
