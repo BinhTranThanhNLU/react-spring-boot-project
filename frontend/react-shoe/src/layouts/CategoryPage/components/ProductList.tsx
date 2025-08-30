@@ -15,6 +15,8 @@ export const ProductList: React.FC<ProductListProps> = ({
   maxPrice,
   brands,
   colors,
+  page,
+  setPage
 }) => {
   // state product
   const [products, setProducts] = useState<Product[]>([]);
@@ -22,15 +24,14 @@ export const ProductList: React.FC<ProductListProps> = ({
   const [httpError, setHttpError] = useState<string | null>(null);
 
   // state pagination
-  const [currentPage, setCurrentPage] = useState(1);
   const productsPerPage = 9;
   const [totalPages, setTotalPages] = useState(0);
   const [totalItems, setTotalItems] = useState(0);
 
-  const paginate = (pageNumber: number) => setCurrentPage(pageNumber);
+  const paginate = (pageNumber: number) => setPage(pageNumber);
 
   useEffect(() => {
-    setCurrentPage(1);
+    setPage(1);
   }, [minPrice, maxPrice, brands, colors, categoryId]);
 
   useEffect(() => {
@@ -38,7 +39,7 @@ export const ProductList: React.FC<ProductListProps> = ({
       setIsLoading(true);
       try {
         const params = new URLSearchParams();
-        params.set("page", String(currentPage - 1));
+        params.set("page", String(page - 1));
         params.set("size", String(productsPerPage));
         if (minPrice !== null) params.set("minPrice", String(minPrice));
         if (maxPrice !== null) params.set("maxPrice", String(maxPrice));
@@ -70,7 +71,7 @@ export const ProductList: React.FC<ProductListProps> = ({
     };
 
     fetchProducts();
-  }, [currentPage, minPrice, maxPrice, brands, colors, categoryId, keyword]);
+  }, [page, minPrice, maxPrice, brands, colors, categoryId, keyword]);
 
   if (isLoading) return <SpinningLoading />;
   if (httpError) return <ErrorMessage message={httpError} />;
@@ -97,14 +98,14 @@ export const ProductList: React.FC<ProductListProps> = ({
 
           {/* hiển thị thông tin số lượng */}
           <div className="mt-3 text-end text-muted small">
-            Trang {currentPage}/{totalPages} · Tổng {totalItems} sản phẩm
+            Trang {page}/{totalPages} · Tổng {totalItems} sản phẩm
           </div>
         </div>
       </section>
 
       {totalPages > 1 && (
         <Pagination
-          currentPage={currentPage}
+          currentPage={page}
           totalPage={totalPages}
           paginate={paginate}
         />

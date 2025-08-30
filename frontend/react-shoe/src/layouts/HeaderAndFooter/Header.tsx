@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { Category } from "../../models/Category";
 import { API_BASE_URL } from "../../config/config";
+import { Brand } from "../../models/Brand";
+import { SpinningLoading } from "../utils/SpinningLoading";
 
 export const Header = () => {
   const [categories, setCategories] = useState<Category[]>([]);
@@ -26,6 +28,8 @@ export const Header = () => {
     };
     fetchCategories();
   }, []);
+
+  if (isLoading) return <SpinningLoading />;
 
   return (
     <header id="header" className="header sticky-top">
@@ -207,39 +211,15 @@ export const Header = () => {
                   )}
                 </li>
               ))}
-              <li className="dropdown">
-                <a href="pages/product/category.html">
-                  <span>Thương hiệu</span>{" "}
-                  <i className="bi bi-chevron-down toggle-dropdown"></i>
-                </a>
-                <ul>
-                  <li>
-                    <a href="pages/product/category.html">Adidas</a>
-                  </li>
-                  <li>
-                    <a href="pages/product/category.html">Asics</a>
-                  </li>
-                  <li>
-                    <a href="pages/product/category.html">Jodan</a>
-                  </li>
-                  <li>
-                    <a href="pages/product/category.html">Kamito</a>
-                  </li>
-                  <li>
-                    <a href="pages/product/category.html">Mizuno</a>
-                  </li>
-                  <li>
-                    <a href="pages/product/category.html">Nike</a>
-                  </li>
-                  <li>
-                    <a href="pages/product/category.html">Puma</a>
-                  </li>
-                  <li>
-                    <a href="pages/product/category.html">Under Amour</a>
-                  </li>
-                </ul>
+              <li>
+                <a href="pages/info/about.html">Khuyến mãi</a>
               </li>
-
+              <li>
+                <a href="pages/info/about.html">Sản phẩm mới</a>
+              </li>
+              <li>
+                <a href="pages/info/about.html">Bán chạy</a>
+              </li>
               <li>
                 <a href="pages/info/about.html">Về chúng tôi</a>
               </li>
