@@ -31,7 +31,7 @@ export const ProductList: React.FC<ProductListProps> = ({
 
   useEffect(() => {
     setCurrentPage(1);
-  }, [minPrice, maxPrice, brands, colors]);
+  }, [minPrice, maxPrice, brands, colors, categoryId]);
 
   useEffect(() => {
     const fetchProducts = async () => {

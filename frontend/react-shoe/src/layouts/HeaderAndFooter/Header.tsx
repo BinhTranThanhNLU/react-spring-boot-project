@@ -1,4 +1,32 @@
+import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
+import { Category } from "../../models/Category";
+import { API_BASE_URL } from "../../config/config";
+
 export const Header = () => {
+  const [categories, setCategories] = useState<Category[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [httpError, setHttpError] = useState<string | null>(null);
+
+  useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        const url = `${API_BASE_URL}/categories`;
+
+        const response = await fetch(url);
+        if (!response.ok) throw new Error("Something went wrong !!!");
+
+        const data: Category[] = await response.json();
+        setCategories(data);
+      } catch (error: any) {
+        setHttpError(error.message);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    fetchCategories();
+  }, []);
+
   return (
     <header id="header" className="header sticky-top">
       {/* Top Bar */}
@@ -29,9 +57,9 @@ export const Header = () => {
         <div className="container-fluid container-xl">
           <div className="d-flex py-3 align-items-center justify-content-between">
             {/* Logo */}
-            <a href="index.html" className="logo d-flex align-items-center">
+            <Link to="/home" className="logo d-flex align-items-center">
               <h1 className="sitename">SportShoe</h1>
-            </a>
+            </Link>
 
             {/* Search */}
             <form className="search-form desktop-search-form">
@@ -151,45 +179,34 @@ export const Header = () => {
           <nav id="navmenu" className="navmenu">
             <ul>
               <li>
-                <a href="index.html" className="active">
+                <Link to="/home" className="active">
                   Trang chủ
-                </a>
+                </Link>
               </li>
+              {/* Render categories động */}
+              {categories.map((category) => (
+                <li
+                  key={category.id}
+                  className={category.subCategories?.length ? "dropdown" : ""}
+                >
+                  <Link to={`/category/${category.id}`}>
+                    <span>{category.name}</span>
+                    {category.subCategories?.length > 0 && (
+                      <i className="bi bi-chevron-down toggle-dropdown"></i>
+                    )}
+                  </Link>
 
-              <li className="dropdown">
-                <a href="pages/product/category.html">
-                  <span>Giày thể thao</span>{" "}
-                  <i className="bi bi-chevron-down toggle-dropdown"></i>
-                </a>
-                <ul>
-                  <li>
-                    <a href="pages/product/category.html">Bóng đá</a>
-                  </li>
-                  <li>
-                    <a href="pages/product/category.html">Bóng rổ</a>
-                  </li>
-                  <li>
-                    <a href="pages/product/category.html">Bóng chuyền</a>
-                  </li>
-                  <li>
-                    <a href="pages/product/category.html">Chạy bộ</a>
-                  </li>
-                </ul>
-              </li>
-              <li className="dropdown">
-                <a href="pages/product/category.html">
-                  <span>Giày thời trang</span>{" "}
-                  <i className="bi bi-chevron-down toggle-dropdown"></i>
-                </a>
-                <ul>
-                  <li>
-                    <a href="pages/product/category.html">Giày nam</a>
-                  </li>
-                  <li>
-                    <a href="pages/product/category.html">Giày nữ</a>
-                  </li>
-                </ul>
-              </li>
+                  {category.subCategories?.length > 0 && (
+                    <ul>
+                      {category.subCategories.map((sub) => (
+                        <li key={sub.id}>
+                          <Link to={`/category/${sub.id}`}>{sub.name}</Link>
+                        </li>
+                      ))}
+                    </ul>
+                  )}
+                </li>
+              ))}
               <li className="dropdown">
                 <a href="pages/product/category.html">
                   <span>Thương hiệu</span>{" "}

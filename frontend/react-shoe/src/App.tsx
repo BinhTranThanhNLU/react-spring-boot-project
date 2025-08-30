@@ -8,6 +8,7 @@ import { CategoryPage } from "./layouts/CategoryPage/CategoryPage";
 import AOS from "aos";
 import "aos/dist/aos.css";
 import { useEffect } from "react";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
 
 function App() {
@@ -22,11 +23,15 @@ function App() {
   }, []);
 
   return (
-    <>
+    <Router>
       <Header />
-      <CategoryPage />
+      <Routes>
+        <Route path="/home" element={<HomePage />} />
+        <Route path="/category/:id" element={<CategoryPage />}/>
+      </Routes>
       <Footer />
-    </>
+    </Router>
+
   );
 }
 
