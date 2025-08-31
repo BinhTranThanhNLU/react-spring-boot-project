@@ -1,11 +1,12 @@
-import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import { Category } from "../../models/Category";
 import { API_BASE_URL } from "../../config/config";
-import { Brand } from "../../models/Brand";
 import { SpinningLoading } from "../utils/SpinningLoading";
 
 export const Header = () => {
+  
+  //state category
   const [categories, setCategories] = useState<Category[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [httpError, setHttpError] = useState<string | null>(null);

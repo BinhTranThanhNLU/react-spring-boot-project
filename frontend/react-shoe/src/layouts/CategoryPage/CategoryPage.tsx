@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { BrandFilterWidget } from "./components/BrandFilterWidget";
 import { ColorFilterWidget } from "./components/ColorFilterWidget";
 import { FilterBar } from "./components/FilterBar";
-import { PageTitle } from "./components/PageTitle";
+import { PageTitle } from "../utils/PageTitle";
 import { PricingRangeWidget } from "./components/PricingRangeWidget";
 import { ProductCategoriesWidget } from "./components/ProductCategoriesWidget";
 import { ProductList } from "./components/ProductList";
