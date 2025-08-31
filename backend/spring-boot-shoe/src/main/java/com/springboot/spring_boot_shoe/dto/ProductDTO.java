@@ -12,9 +12,10 @@ public class ProductDTO {
     private String brand;
     private String category;
     private List<ProductImageDTO> images;
+    private List<ProductVariantDTO> variants;
 
     public ProductDTO(int id, String name, BigDecimal price, String description,
-                      String brand, String category, List<ProductImageDTO> images) {
+                      String brand, String category, List<ProductImageDTO> images, List<ProductVariantDTO> variants) {
         this.id = id;
         this.name = name;
         this.price = price;
@@ -22,6 +23,7 @@ public class ProductDTO {
         this.brand = brand;
         this.category = category;
         this.images = images;
+        this.variants = variants;
     }
 
     public int getId() {
@@ -78,6 +80,14 @@ public class ProductDTO {
 
     public void setImages(List<ProductImageDTO> images) {
         this.images = images;
+    }
+
+    public List<ProductVariantDTO> getVariants() {
+        return variants;
+    }
+
+    public void setVariants(List<ProductVariantDTO> variants) {
+        this.variants = variants;
     }
 
     @Override

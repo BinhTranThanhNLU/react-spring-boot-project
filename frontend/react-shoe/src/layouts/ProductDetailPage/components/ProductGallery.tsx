@@ -1,96 +1,99 @@
-export const ProductGallery = () => {
+import React, { useEffect, useMemo, useState, KeyboardEvent } from "react";
+import { ProductGalleryProps } from "../../../models/ProductGalleryProps";
+
+export const ProductGallery: React.FC<ProductGalleryProps> = ({
+  images,
+  name,
+}) => {
+  const srcList = useMemo(
+    () => (images && images.length ? images.map((i) => i.imageUrl) : []),
+    [images]
+  );
+
+  const [activeIndex, setActiveIndex] = useState(0);
+
+  // reset khi sản phẩm/ảnh thay đổi
+  useEffect(() => setActiveIndex(0), [srcList.length]);
+
+  const hasImages = srcList.length > 0;
+  const mainSrc = hasImages ? srcList[activeIndex] : "/assets/img/no-image.png";
+
+  const goPrev = () =>
+    hasImages &&
+    setActiveIndex((i) => (i - 1 + srcList.length) % srcList.length);
+
+  const goNext = () =>
+    hasImages && setActiveIndex((i) => (i + 1) % srcList.length);
+
+  const onKey = (e: KeyboardEvent<HTMLDivElement>) => {
+    if (e.key === "ArrowLeft") goPrev();
+    if (e.key === "ArrowRight") goNext();
+  };
+
   return (
     <div className="col-lg-7" data-aos="zoom-in" data-aos-delay="150">
-      <div className="product-gallery">
+      <div
+        className="product-gallery"
+        role="region"
+        aria-label="Thư viện ảnh sản phẩm"
+        tabIndex={0}
+        onKeyDown={onKey}
+      >
+        {/* Ảnh chính */}
         <div className="main-showcase">
           <div className="image-zoom-container">
             <img
-              src="../../assets/img/product/product-details-6.webp"
-              alt="Product Main"
-              className="img-fluid main-product-image drift-zoom"
+              src={mainSrc}
+              alt={name}
+              className="img-fluid main-product-image"
               id="main-product-image"
-              data-zoom="../../assets/img/product/product-details-6.webp"
             />
 
-            <div className="image-navigation">
-              <button
-                className="nav-arrow prev-image image-nav-btn prev-image"
-                type="button"
-              >
-                <i className="bi bi-chevron-left"></i>
-              </button>
-              <button
-                className="nav-arrow next-image image-nav-btn next-image"
-                type="button"
-              >
-                <i className="bi bi-chevron-right"></i>
-              </button>
-            </div>
+            {hasImages && srcList.length > 1 && (
+              <div className="image-navigation">
+                <button
+                  className="nav-arrow image-nav-btn prev-image"
+                  type="button"
+                  aria-label="Ảnh trước"
+                  onClick={goPrev}
+                >
+                  <i className="bi bi-chevron-left"></i>
+                </button>
+                <button
+                  className="nav-arrow image-nav-btn next-image"
+                  type="button"
+                  aria-label="Ảnh sau"
+                  onClick={goNext}
+                >
+                  <i className="bi bi-chevron-right"></i>
+                </button>
+              </div>
+            )}
           </div>
         </div>
 
-        <div className="thumbnail-grid">
-          <div
-            className="thumbnail-wrapper thumbnail-item active"
-            data-image="../../assets/img/product/product-details-6.webp"
-          >
-            <img
-              src="../../assets/img/product/product-details-6.webp"
-              alt="View 1"
-              className="img-fluid"
-            />
+        {/* Thumbnail */}
+        {hasImages && srcList.length > 1 && (
+          <div className="thumbnail-grid">
+            {srcList.map((src, idx) => (
+              <button
+                key={src + idx}
+                type="button"
+                className={`thumbnail-wrapper thumbnail-item ${
+                  idx === activeIndex ? "active" : ""
+                }`}
+                onClick={() => setActiveIndex(idx)}
+                aria-label={`Xem ảnh ${idx + 1}`}
+              >
+                <img
+                  src={src}
+                  alt={`${name} - ảnh ${idx + 1}`}
+                  className="img-fluid"
+                />
+              </button>
+            ))}
           </div>
-          <div
-            className="thumbnail-wrapper thumbnail-item"
-            data-image="../../assets/img/product/product-details-7.webp"
-          >
-            <img
-              src="../../assets/img/product/product-details-7.webp"
-              alt="View 2"
-              className="img-fluid"
-            />
-          </div>
-          <div
-            className="thumbnail-wrapper thumbnail-item"
-            data-image="../../assets/img/product/product-details-8.webp"
-          >
-            <img
-              src="../../assets/img/product/product-details-8.webp"
-              alt="View 3"
-              className="img-fluid"
-            />
-          </div>
-          <div
-            className="thumbnail-wrapper thumbnail-item"
-            data-image="../../assets/img/product/product-details-4.webp"
-          >
-            <img
-              src="../../assets/img/product/product-details-4.webp"
-              alt="View 4"
-              className="img-fluid"
-            />
-          </div>
-          <div
-            className="thumbnail-wrapper thumbnail-item"
-            data-image="../../assets/img/product/product-details-5.webp"
-          >
-            <img
-              src="../../assets/img/product/product-details-5.webp"
-              alt="View 5"
-              className="img-fluid"
-            />
-          </div>
-          <div
-            className="thumbnail-wrapper thumbnail-item"
-            data-image="../../assets/img/product/product-details-3.webp"
-          >
-            <img
-              src="../../assets/img/product/product-details-3.webp"
-              alt="View 6"
-              className="img-fluid"
-            />
-          </div>
-        </div>
+        )}
       </div>
     </div>
   );

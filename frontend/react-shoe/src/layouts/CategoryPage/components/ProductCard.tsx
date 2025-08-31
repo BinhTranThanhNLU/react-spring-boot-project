@@ -1,11 +1,10 @@
 import React from "react";
 import { Product } from "../../../models/Product";
 import { StarsReview } from "../../utils/StarsReview";
+import { Link } from "react-router-dom";
 
-export const ProductCard:React.FC<{product: Product}> = ({product}) => {
-
-  const mainImage =
-    product.images?.[0]?.imageUrl || "/assets/img/no-image.png";
+export const ProductCard: React.FC<{ product: Product }> = ({ product }) => {
+  const mainImage = product.images?.[0]?.imageUrl || "/assets/img/no-image.png";
   const hoverImage =
     product.images?.[0]?.imageUrl || "/assets/img/no-image.png";
 
@@ -25,14 +24,13 @@ export const ProductCard:React.FC<{product: Product}> = ({product}) => {
           />
           <div className="product-overlay">
             <div className="product-actions">
-              <button
-                type="button"
+              <Link
+                to={`/product-detail/${product.id}`}
                 className="action-btn"
-                data-bs-toggle="tooltip"
-                title="Quick View"
+                title="Detail View"
               >
                 <i className="bi bi-eye"></i>
-              </button>
+              </Link>
               <button
                 type="button"
                 className="action-btn"
@@ -47,14 +45,17 @@ export const ProductCard:React.FC<{product: Product}> = ({product}) => {
         <div className="product-details">
           <div className="product-category">{product.category}</div>
           <h4 className="product-title">
-            <a href={`/products/${product.id}`}>{product.name}</a>
+            <Link to={`/product-detail/${product.id}`}>{product.name}</Link>
           </h4>
           <div className="product-meta">
             <div className="product-price">
-              {product.price.toLocaleString("vi-VN", { style: "currency", currency: "VND" })}
+              {product.price.toLocaleString("vi-VN", {
+                style: "currency",
+                currency: "VND",
+              })}
             </div>
             <div className="product-rating">
-              <StarsReview rating={5} reviews={128} size={14}/>
+              <StarsReview rating={5} reviews={128} size={14} />
             </div>
           </div>
         </div>

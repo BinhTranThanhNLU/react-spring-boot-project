@@ -1,4 +1,5 @@
 import { ProductImage } from "./ProductImage";
+import { ProductVariant } from "./ProductVariant";
 
 export interface Product {
     id: number,
@@ -8,4 +9,5 @@ export interface Product {
     brand: string | null,
     category: string | null,
     images: ProductImage[];
+    variants: ProductVariant[];
 }
