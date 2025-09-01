@@ -49,7 +49,7 @@ export const ProductDetailPage = () => {
             <ProductGallery images={product.images} name={product.name}/>
             <ProductInfor product={product}/>
           </div>
-          <ProductTabs />
+          <ProductTabs description={product.description}/>
         </div>
       </section>
     </main>

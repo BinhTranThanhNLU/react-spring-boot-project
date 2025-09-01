@@ -69,7 +69,7 @@ export const ProductInfor: React.FC<ProductInforProps> = ({ product }) => {
             <i className="bi bi-check-circle-fill"></i>
             <span className="stock-text">Còn</span>
           </div>
-          <div className="quantity-left">Chỉ còn lại 18 sản phẩm</div>
+          <div className="quantity-left">Chỉ còn lại {product.totalQuantity} sản phẩm</div>
         </div>
         {/* Product Variants Color And Size */}
         <ProductVariants variants={product.variants} />

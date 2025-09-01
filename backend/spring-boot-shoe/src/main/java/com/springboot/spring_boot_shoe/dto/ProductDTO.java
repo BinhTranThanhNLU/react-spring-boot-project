@@ -11,6 +11,7 @@ public class ProductDTO {
     private Integer discountPercent;
     private BigDecimal discountedPrice;
     private String description;
+    private int totalQuantity;
     private String brand;
     private String category;
     private List<ProductImageDTO> images;
@@ -18,13 +19,14 @@ public class ProductDTO {
 
     public ProductDTO() {}
 
-    public ProductDTO(int id, String name, BigDecimal price, Integer discountPercent, BigDecimal discountedPrice, String description, String brand, String category, List<ProductImageDTO> images, List<ProductVariantDTO> variants) {
+    public ProductDTO(int id, String name, BigDecimal price, Integer discountPercent, BigDecimal discountedPrice, String description, int totalQuantity, String brand, String category, List<ProductImageDTO> images, List<ProductVariantDTO> variants) {
         this.id = id;
         this.name = name;
         this.price = price;
         this.discountPercent = discountPercent;
         this.discountedPrice = discountedPrice;
         this.description = description;
+        this.totalQuantity = totalQuantity;
         this.brand = brand;
         this.category = category;
         this.images = images;
@@ -109,6 +111,14 @@ public class ProductDTO {
 
     public void setDiscountedPrice(BigDecimal discountedPrice) {
         this.discountedPrice = discountedPrice;
+    }
+
+    public int getTotalQuantity() {
+        return totalQuantity;
+    }
+
+    public void setTotalQuantity(int totalQuantity) {
+        this.totalQuantity = totalQuantity;
     }
 
     @Override

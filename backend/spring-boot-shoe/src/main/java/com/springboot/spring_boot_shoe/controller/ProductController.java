@@ -53,5 +53,11 @@ public class ProductController {
 
         return productService.searchProducts(keyword, page, size, minPrice, maxPrice, brands, colors);
     }
+
+    @GetMapping("/{id}/related")
+    public List<ProductDTO> getRelatedProducts(@PathVariable int id,
+                                               @RequestParam(defaultValue = "8") int limit) {
+        return productService.getRelatedProducts(id, limit);
+    }
 }
 

@@ -49,4 +49,17 @@ public interface ProductRepository extends JpaRepository<Product, Integer> {
             @Param("colors") List<String> colors,
             Pageable pageable);
 
+    @Query("SELECT p FROM Product p " +
+            "WHERE p.category.id = :categoryId " +
+            "AND p.id <> :productId " +
+            "ORDER BY FUNCTION('RAND')")
+    List<Product> findRelatedByCategory(@Param("categoryId") int categoryId, @Param("productId") int productId, Pageable pageable);
+
+    @Query("SELECT p FROM Product p " +
+            "WHERE p.brand.id = :brandId " +
+            "AND p.id <> :productId " +
+            "ORDER BY FUNCTION('RAND')")
+    List<Product> findRelatedByBrand(@Param("brandId") int brandId, @Param("productId") int productId, Pageable pageable);
+
+
 }

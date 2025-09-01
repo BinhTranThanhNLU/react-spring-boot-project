@@ -1,7 +1,9 @@
+import React from "react";
 import { ProductOverview } from "./ProductOverview";
 import { ProductReviews } from "./ProductReviews";
+import { ProductTabProps } from "../../../models/ProductTabProps";
 
-export const ProductTabs = () => {
+export const ProductTabs:React.FC<ProductTabProps> = ({description}) => {
   return (
     <div className="row mt-5" data-aos="fade-up" data-aos-delay="300">
       <div className="col-12">
@@ -26,7 +28,7 @@ export const ProductTabs = () => {
           </nav>
 
           <div className="tab-content">
-            <ProductOverview />
+            <ProductOverview description={description} />
             <ProductReviews />
           </div>
         </div>

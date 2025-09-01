@@ -59,6 +59,14 @@ public class Product {
         return price.subtract(discount);
     }
 
+    public int getTotalQuantity() {
+        int totalAmount = 0;
+        for (ProductVariant variant : variants) {
+            totalAmount+=variant.getStockQuantity();
+        }
+        return totalAmount;
+    }
+
     // --- Getter & Setter ---
     public int getId() { return id; }
     public void setId(int id) { this.id = id; }

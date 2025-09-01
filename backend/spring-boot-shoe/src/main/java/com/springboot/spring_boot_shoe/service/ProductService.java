@@ -87,5 +87,19 @@ public class ProductService {
         );
     }
 
+    public List<ProductDTO> getRelatedProducts(int productId, int limit) {
+        Product product = productRepository.findById(productId).orElseThrow(() -> new RuntimeException("Product not found"));
+
+        Pageable pageable = PageRequest.of(0, limit, Sort.by("id").ascending());
+
+        List<Product> related = productRepository.findRelatedByCategory(product.getCategory().getId(), productId, pageable);
+
+        if(related.isEmpty()) {
+            related = productRepository.findRelatedByBrand(product.getBrand().getId(), productId, pageable);
+        }
+
+        return productMapper.toDtoList(related);
+    }
+
 
 }

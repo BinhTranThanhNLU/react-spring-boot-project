@@ -1,6 +1,8 @@
+import React from "react";
 import { RelatedProductsCarousel } from "./RelatedProductsCarousel";
+import { ProductOverViewProps } from "../../../models/ProductOverviewProps";
 
-export const ProductOverview = () => {
+export const ProductOverview:React.FC<ProductOverViewProps> = ({description}) => {
     return (
                 <div className="tab-pane fade show active" id="ecommerce-product-details-5-overview">
                   <div className="overview-content">
@@ -8,12 +10,7 @@ export const ProductOverview = () => {
                       <div className="col-lg-8">
                         <div className="content-section">
                           <h3>Mô tả sản phẩm</h3>
-                          <p>Bởi vì không ai khinh miệt,
-                            ghét bỏ hay trốn tránh lạc thú chỉ vì nó là lạc thú,
-                            nhưng vì những nỗi đau khổ lớn lao sẽ theo đuổi những ai không biết cách theo đuổi lạc thú
-                            một cách lý trí.
-                            Cũng không ai yêu thích, theo đuổi hay mong muốn đạt được nỗi đau chỉ vì nó là nỗi đau.</p>
-
+                          <p>{description}</p>
                           <h4>Các sản phẩm liên quan</h4>
                         <RelatedProductsCarousel />
                         </div>

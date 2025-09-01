@@ -8,6 +8,7 @@ export interface Product {
     discountPercent: number;
     discountedPrice: number;
     description: string,
+    totalQuantity: number;
     brand: string | null,
     category: string | null,
     images: ProductImage[];
