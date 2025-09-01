@@ -37,6 +37,9 @@ public class Product {
     @JoinColumn(name = "id_category")
     private Category category;
 
+    @Column(name = "discount_percent")
+    private Integer discountPercent;
+
     // --- Constructors ---
     public Product() {}
 
@@ -44,6 +47,16 @@ public class Product {
         this.name = name;
         this.price = price;
         this.description = description;
+    }
+
+    public BigDecimal getDiscountedPrice() {
+        if (discountPercent == null || discountPercent <= 0) {
+            return price;
+        }
+        BigDecimal discount = price
+                .multiply(BigDecimal.valueOf(discountPercent))
+                .divide(BigDecimal.valueOf(100));
+        return price.subtract(discount);
     }
 
     // --- Getter & Setter ---
@@ -71,6 +84,11 @@ public class Product {
     public List<ProductImage> getImages() { return images; }
     public void setImages(List<ProductImage> images) { this.images = images; }
 
+    public Integer getDiscountPercent() {
+        return discountPercent;
+    }
 
-
+    public void setDiscountPercent(Integer discountPercent) {
+        this.discountPercent = discountPercent;
+    }
 }

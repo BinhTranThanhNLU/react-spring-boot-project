@@ -5,6 +5,8 @@ export interface Product {
     id: number,
     name: string,
     price: number,
+    discountPercent: number;
+    discountedPrice: number;
     description: string,
     brand: string | null,
     category: string | null,

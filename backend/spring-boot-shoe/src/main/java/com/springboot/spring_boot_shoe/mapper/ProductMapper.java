@@ -16,6 +16,7 @@ public interface ProductMapper {
 
     @Mapping(source = "brand.name", target = "brand")
     @Mapping(source = "category.name", target = "category")
+    @Mapping(target = "discountedPrice", expression = "java(product.getDiscountedPrice())")
     ProductDTO toDto(Product product);
 
     ProductImageDTO toDto(ProductImage image);

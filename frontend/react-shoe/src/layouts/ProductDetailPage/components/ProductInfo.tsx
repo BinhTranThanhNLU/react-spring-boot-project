@@ -1,41 +1,69 @@
+import React from "react";
 import { StarsReview } from "../../utils/StarsReview";
 import { BenefitsList } from "./BenefitsList";
 import { ProductActions } from "./ProductActions";
 import { ProductVariants } from "./ProductVariants";
+import { ProductInforProps } from "../../../models/ProductInforProps";
 
-export const ProductInfor = () => {
+export const ProductInfor: React.FC<ProductInforProps> = ({ product }) => {
   return (
     <div className="col-lg-5" data-aos="fade-left" data-aos-delay="200">
       <div className="product-details">
         <div className="product-badge-container">
-          <span className="badge-category">Giày bóng đá</span>
+          <span className="badge-category">{product.category}</span>
           <StarsReview rating={5} reviews={128} size={14} />
         </div>
-
-        <h1 className="product-name">
-          Mauris tempus cursus magna vel scelerisque nisl consectetur
-        </h1>
+        <h1 className="product-name">{product.name}</h1>
 
         <div className="pricing-section">
           <div className="price-display">
-            <span className="sale-price">$189.99</span>
-            <span className="regular-price">$239.99</span>
+            {product.discountPercent > 0 ? (
+              <>
+                <span className="sale-price text-red-600 font-bold">
+                  {product.discountedPrice.toLocaleString("vi-VN", {
+                    style: "currency",
+                    currency: "VND",
+                  })}
+                </span>
+                <span className="regular-price line-through text-gray-500 ml-2">
+                  {product.price.toLocaleString("vi-VN", {
+                    style: "currency",
+                    currency: "VND",
+                  })}
+                </span>
+              </>
+            ) : (
+              <span className="regular-price text-black font-bold">
+                {product.price.toLocaleString("vi-VN", {
+                  style: "currency",
+                  currency: "VND",
+                })}
+              </span>
+            )}
           </div>
-          <div className="savings-info">
-            <span className="save-amount">Tiết kiệm $50.00</span>
-            <span className="discount-percent">(21% off)</span>
-          </div>
+
+          {product.discountPercent > 0 && (
+            <div className="savings-info text-sm text-green-600">
+              <span className="save-amount mr-2">
+                Tiết kiệm{" "}
+                {(product.price - product.discountedPrice).toLocaleString(
+                  "vi-VN",
+                  {
+                    style: "currency",
+                    currency: "VND",
+                  }
+                )}
+              </span>
+              <span className="discount-percent">
+                (Giảm {product.discountPercent}%)
+              </span>
+            </div>
+          )}
         </div>
 
         <div className="product-description">
-          <p>
-            Sed ut perspiciatis unde omnis iste natus error sit voluptatem
-            accusantium doloremque laudantium, totam rem aperiam, eaque ipsa
-            quae ab illo inventore veritatis et quasi architecto beatae vitae
-            dicta sunt explicabo.
-          </p>
+          <p>{product.description}</p>
         </div>
-
         <div className="availability-status">
           <div className="stock-indicator">
             <i className="bi bi-check-circle-fill"></i>
@@ -43,13 +71,10 @@ export const ProductInfor = () => {
           </div>
           <div className="quantity-left">Chỉ còn lại 18 sản phẩm</div>
         </div>
-
         {/* Product Variants Color And Size */}
-        <ProductVariants />
-
+        <ProductVariants variants={product.variants} />
         {/* Action */}
         <ProductActions />
-
         {/* Benefits List */}
         <BenefitsList />
       </div>

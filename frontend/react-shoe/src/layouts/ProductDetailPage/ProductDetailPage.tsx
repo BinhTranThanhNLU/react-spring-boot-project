@@ -47,7 +47,7 @@ export const ProductDetailPage = () => {
         <div className="container" data-aos="fade-up" data-aos-delay="100">
           <div className="row g-4">
             <ProductGallery images={product.images} name={product.name}/>
-            <ProductInfor />
+            <ProductInfor product={product}/>
           </div>
           <ProductTabs />
         </div>

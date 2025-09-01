@@ -1,26 +1,28 @@
-export const ProductVariants = () => {
+import React from "react";
+import { ProductVariantsProps } from "../../../models/ProductVariantsProps";
+
+export const ProductVariants:React.FC<ProductVariantsProps> = ({variants}) => {
+
+  const uniqueColors = Array.from(new Set(variants.map((variant) => variant.color)));
+  const uniqueSize = Array.from(new Set(variants.map((variant) => variant.size)));
+
   return (
     <>
       <div className="variant-color-section mb-3">
         <h6>Màu sắc</h6>
         <div className="d-flex flex-wrap gap-2">
-          <div className="size-option">Trắng</div>
-          <div className="size-option">Đỏ </div>
-          <div className="size-option">Đen</div>
-          <div className="size-option">Xanh Dương</div>
+          {uniqueColors.map((color, index) => (
+            <div className="size-option color-option" key={index}>{color}</div>
+          ))}
         </div>
       </div>
 
       <div className="variant-size-section mb-3">
         <h6>Kích Thước</h6>
         <div className="d-flex flex-wrap gap-2">
-          <div className="size-option">UK 3.5</div>
-          <div className="size-option">UK 4</div>
-          <div className="size-option">UK 4.5</div>
-          <div className="size-option">UK 5</div>
-          <div className="size-option">UK 5.5</div>
-          <div className="size-option">UK 6</div>
-          <div className="size-option">UK 6.5</div>
+          {uniqueSize.map((size, index) => (
+            <div className="size-option" key={index}>{size}</div>
+          ))}
         </div>
       </div>
     </>
