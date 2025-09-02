@@ -34,7 +34,7 @@ export const ProductDetailPage = () => {
       }
     };
     if (id) fetchProduct();
-  },[id]);
+  }, [id]);
 
   if (isLoading) return <SpinningLoading />;
   if (httpError) return <ErrorMessage message={httpError} />;
@@ -42,14 +42,20 @@ export const ProductDetailPage = () => {
 
   return (
     <main className="main">
-      <PageTitle />
+      <PageTitle
+        title="Chi tiết sản phẩm"
+        breadcrumbs={[
+          { label: "Trang chủ", path: "/home" },
+          { label: "Chi tiết sản phẩm" },
+        ]}
+      />
       <section id="product-details" className="product-details section">
         <div className="container" data-aos="fade-up" data-aos-delay="100">
           <div className="row g-4">
-            <ProductGallery images={product.images} name={product.name}/>
-            <ProductInfor product={product}/>
+            <ProductGallery images={product.images} name={product.name} />
+            <ProductInfor product={product} />
           </div>
-          <ProductTabs description={product.description}/>
+          <ProductTabs description={product.description} />
         </div>
       </section>
     </main>

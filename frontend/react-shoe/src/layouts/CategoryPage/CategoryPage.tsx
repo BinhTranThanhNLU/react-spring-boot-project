@@ -68,7 +68,13 @@ export const CategoryPage = () => {
 
   return (
     <main className="main">
-      <PageTitle />
+      <PageTitle
+        title="Danh mục sản phẩm"
+        breadcrumbs={[
+          { label: "Trang chủ", path: "/home" },
+          { label: "Danh mục" },
+        ]}
+      />
 
       <div className="container">
         <div className="row">
@@ -99,8 +105,8 @@ export const CategoryPage = () => {
               maxPrice={maxPrice}
               brands={brands}
               colors={colors}
-              page={page}        
-              setPage={setPage}     
+              page={page}
+              setPage={setPage}
             />
           </div>
         </div>

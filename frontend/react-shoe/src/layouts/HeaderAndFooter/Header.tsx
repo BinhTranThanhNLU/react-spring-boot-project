@@ -155,12 +155,12 @@ export const Header = () => {
                     </a>
                   </div>
                   <div className="dropdown-footer">
-                    <a
-                      href="pages/auth/register.html"
+                    <Link
+                      to="/login"
                       className="btn btn-primary w-100 mb-2"
                     >
                       Đăng nhập
-                    </a>
+                    </Link>
                     <a
                       href="pages/auth/register.html"
                       className="btn btn-outline-primary w-100"
