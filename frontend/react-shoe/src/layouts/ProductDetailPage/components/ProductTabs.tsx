@@ -1,7 +1,7 @@
 import React from "react";
 import { ProductOverview } from "./ProductOverview";
 import { ProductReviews } from "./ProductReviews";
-import { ProductTabProps } from "../../../models/ProductTabProps";
+import { ProductTabProps } from "../../../types/ProductTabProps";
 
 export const ProductTabs:React.FC<ProductTabProps> = ({description}) => {
   return (

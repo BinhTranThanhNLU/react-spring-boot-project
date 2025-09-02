@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { PricingRangeWidgetProps } from "../../../models/PricingRangeWidgetProps";
+import { PricingRangeWidgetProps } from "../../../types/PricingRangeWidgetProps";
 
 export const PricingRangeWidget: React.FC<PricingRangeWidgetProps> = ({
   minPrice,

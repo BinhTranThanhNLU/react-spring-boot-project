@@ -1,5 +1,5 @@
 import React from "react";
-import { ProductVariantsProps } from "../../../models/ProductVariantsProps";
+import { ProductVariantsProps } from "../../../types/ProductVariantsProps";
 
 export const ProductVariants:React.FC<ProductVariantsProps> = ({variants}) => {
 

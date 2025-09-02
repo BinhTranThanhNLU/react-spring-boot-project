@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useState, KeyboardEvent } from "react";
-import { ProductGalleryProps } from "../../../models/ProductGalleryProps";
+import { ProductGalleryProps } from "../../../types/ProductGalleryProps";
 
 export const ProductGallery: React.FC<ProductGalleryProps> = ({
   images,

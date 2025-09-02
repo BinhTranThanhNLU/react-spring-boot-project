@@ -1,4 +1,4 @@
-import { Brand } from "./Brand";
+import { Brand } from "../models/Brand";
 
 export interface BrandFilterWigetProps {
   brands: number[];

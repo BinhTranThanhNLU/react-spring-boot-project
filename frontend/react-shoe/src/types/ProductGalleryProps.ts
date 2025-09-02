@@ -1,4 +1,4 @@
-import { ProductImage } from "./ProductImage";
+import { ProductImage } from "../models/ProductImage";
 
 export interface ProductGalleryProps {
     images: ProductImage[];

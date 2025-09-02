@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { ColorFilterWidgetProps } from "../../../models/ColorFilterWidgetProps";
+import { ColorFilterWidgetProps } from "../../../types/ColorFilterWidgetProps";
 
 export const ColorFilterWidget: React.FC<ColorFilterWidgetProps> = ({
   colors,

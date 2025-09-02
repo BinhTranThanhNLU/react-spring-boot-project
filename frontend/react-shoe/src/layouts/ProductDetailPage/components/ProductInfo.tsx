@@ -3,7 +3,7 @@ import { StarsReview } from "../../utils/StarsReview";
 import { BenefitsList } from "./BenefitsList";
 import { ProductActions } from "./ProductActions";
 import { ProductVariants } from "./ProductVariants";
-import { ProductInforProps } from "../../../models/ProductInforProps";
+import { ProductInforProps } from "../../../types/ProductInforProps";
 
 export const ProductInfor: React.FC<ProductInforProps> = ({ product }) => {
   return (

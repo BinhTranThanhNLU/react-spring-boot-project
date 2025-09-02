@@ -6,7 +6,7 @@ import { ErrorMessage } from "../../utils/ErrorMessage";
 import { SpinningLoading } from "../../utils/SpinningLoading";
 import { Pagination } from "./Pagination";
 import { ProductPageResponse } from "../../../models/ProductPageResponse";
-import { ProductListProps } from "../../../models/ProductListProps";
+import { ProductListProps } from "../../../types/ProductListProps";
 
 export const ProductList: React.FC<ProductListProps> = ({
   keyword,

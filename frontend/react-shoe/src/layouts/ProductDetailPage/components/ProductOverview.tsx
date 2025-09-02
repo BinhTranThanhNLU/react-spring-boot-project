@@ -1,6 +1,6 @@
 import React from "react";
 import { RelatedProductsCarousel } from "./RelatedProductsCarousel";
-import { ProductOverViewProps } from "../../../models/ProductOverviewProps";
+import { ProductOverViewProps } from "../../../types/ProductOverviewProps";
 
 export const ProductOverview:React.FC<ProductOverViewProps> = ({description}) => {
     return (

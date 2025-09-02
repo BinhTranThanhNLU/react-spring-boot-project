@@ -1,5 +1,5 @@
 import React, { useMemo, useState } from "react";
-import { BrandFilterWigetProps } from "../../../models/BrandFilterWidgetProps";
+import { BrandFilterWigetProps } from "../../../types/BrandFilterWidgetProps";
 import { normalizeText } from "../../utils/StringUtil";
 
 export const BrandFilterWidget: React.FC<BrandFilterWigetProps> = ({
