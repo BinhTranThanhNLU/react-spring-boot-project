@@ -8,6 +8,7 @@ import AOS from "aos";
 import "aos/dist/aos.css";
 import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
 import { ProductDetailPage } from "./layouts/ProductDetailPage/ProductDetailPage";
+import { SearchPage } from "./layouts/SearchPage/SearchPage";
 
 
 function App() {
@@ -29,6 +30,7 @@ function App() {
         <Route path="/home" element={<HomePage />} />
         <Route path="/category/:id" element={<CategoryPage />}/>
         <Route path="/product-detail/:id" element={<ProductDetailPage />}/>
+        <Route path="/search" element={<SearchPage />} />
       </Routes>
       <Footer />
     </Router>

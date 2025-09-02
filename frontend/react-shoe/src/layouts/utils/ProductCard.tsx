@@ -1,6 +1,6 @@
 import React from "react";
-import { Product } from "../../../models/Product";
-import { StarsReview } from "../../utils/StarsReview";
+import { Product } from "../../models/Product";
+import { StarsReview } from "./StarsReview";
 import { Link } from "react-router-dom";
 
 export const ProductCard: React.FC<{ product: Product }> = ({ product }) => {

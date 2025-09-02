@@ -5,11 +5,21 @@ import { API_BASE_URL } from "../../config/config";
 import { SpinningLoading } from "../utils/SpinningLoading";
 
 export const Header = () => {
-  
   //state category
   const [categories, setCategories] = useState<Category[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [httpError, setHttpError] = useState<string | null>(null);
+
+  const [searchTerm, setSearchTerm] = useState("");
+  const navigate = useNavigate();
+
+  const handleSearch = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (searchTerm.trim()) {
+      navigate(`/search?keyword=${encodeURIComponent(searchTerm.trim())}`);
+      setSearchTerm(""); // clear sau khi search
+    }
+  };
 
   useEffect(() => {
     const fetchCategories = async () => {
@@ -67,12 +77,17 @@ export const Header = () => {
             </Link>
 
             {/* Search */}
-            <form className="search-form desktop-search-form">
+            <form
+              className="search-form desktop-search-form"
+              onSubmit={handleSearch}
+            >
               <div className="input-group">
                 <input
                   type="text"
                   className="form-control"
                   placeholder="Tìm kiếm sản phẩm..."
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
                 />
                 <button className="btn" type="submit">
                   <i className="bi bi-search"></i>
