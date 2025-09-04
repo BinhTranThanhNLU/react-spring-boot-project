@@ -1,11 +1,68 @@
+import { useState } from "react";
+import { RegisterRequest } from "../../../models/RegisterRequest";
 import { FormHeader } from "./FormHeader";
+import { User } from "../../../models/User";
+import { API_BASE_URL } from "../../../config/config";
+import { SpinningLoading } from "../../utils/SpinningLoading";
+import { ErrorMessage } from "../../utils/ErrorMessage";
+import { Link } from "react-router-dom";
 
 export const RegisterForm = () => {
+  const [formData, setFormData] = useState<RegisterRequest>({
+    fullName: "",
+    email: "",
+    password: "",
+  });
+
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+  const [httpError, setHttpError] = useState<string | null>(null);
+
+  const [success, setSuccess] = useState<User | null>(null);
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setHttpError(null);
+    setSuccess(null);
+
+    if (formData.password !== confirmPassword) {
+      setHttpError("Mật khẩu xác nhận không khớp!");
+      return;
+    }
+
+    try {
+      setIsLoading(true);
+      const response = await fetch(`${API_BASE_URL}/auth/register`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      });
+
+      if (!response.ok) {
+        const text = await response.text();
+        throw new Error(text || "Đăng ký thất bại");
+      }
+
+      const data: User = await response.json();
+      setSuccess(data);
+    } catch (err: any) {
+      setHttpError(err.message);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   return (
     <div className="row">
       <div className="col-lg-8 mx-auto">
         <FormHeader />
-        <form action="register.php" method="post">
+        <form onSubmit={handleSubmit}>
           <div className="form-floating mb-3">
             <input
               type="text"
@@ -15,6 +72,8 @@ export const RegisterForm = () => {
               placeholder="Họ và Tên"
               required
               autoComplete="name"
+              value={formData.fullName}
+              onChange={handleChange}
             />
             <label htmlFor="fullName">Họ và Tên</label>
           </div>
@@ -28,6 +87,8 @@ export const RegisterForm = () => {
               placeholder="Email"
               required
               autoComplete="email"
+              value={formData.email}
+              onChange={handleChange}
             />
             <label htmlFor="email">Email</label>
           </div>
@@ -44,6 +105,8 @@ export const RegisterForm = () => {
                   required
                   minLength={8}
                   autoComplete="new-password"
+                  value={formData.password}
+                  onChange={handleChange}
                 />
                 <label htmlFor="password">Password</label>
               </div>
@@ -59,6 +122,8 @@ export const RegisterForm = () => {
                   required
                   minLength={8}
                   autoComplete="new-password"
+                  value={confirmPassword}
+                  onChange={(e) => setConfirmPassword(e.target.value)}
                 />
                 <label htmlFor="confirmPassword">Xác nhận Password</label>
               </div>
@@ -93,14 +158,24 @@ export const RegisterForm = () => {
           </div>
 
           <div className="d-grid mb-4">
-            <button type="submit" className="btn btn-register">
-              Tạo tài khoản
+            <button
+              type="submit"
+              className="btn btn-register"
+              disabled={isLoading}
+            >
+              {isLoading ? "Đang xử lý..." : "Tạo tài khoản"}
+              {success && (
+                <p className="text-success text-center">
+                  Đăng ký thành công! Xin chào {success.fullName}.
+                </p>
+              )}
             </button>
           </div>
+          {httpError && <p className="text-danger text-center">{httpError}</p>}
 
           <div className="login-link text-center">
             <p>
-              Bạn đã có tài khoản? <a href="#">Đăng nhập</a>
+              Bạn đã có tài khoản? <Link to="/login">Đăng nhập</Link>
             </p>
           </div>
         </form>

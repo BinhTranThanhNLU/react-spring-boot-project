@@ -45,8 +45,8 @@ public class AuthService {
         User user = new User();
         user.setFullName(req.getFullName());
         user.setEmail(req.getEmail());
-        user.setPhone(req.getPhone());
         user.setPassword(passwordEncoder.encode(req.getPassword()));
+        user.setStatus(true);
 
         // Gán role mặc định là USER
         Role defaultRole = roleRepository.findByName("USER")
