@@ -10,6 +10,9 @@ export const PricingRangeWidget: React.FC<PricingRangeWidgetProps> = ({
   const [tempMin, setTempMin] = useState(minPrice ?? 0);
   const [tempMax, setTempMax] = useState(maxPrice ?? 5000000);
 
+  const minPercent = (tempMin / 5000000) * 100;
+  const maxPercent = (tempMax / 5000000) * 100;
+
   const applyFilter = () => {
     setMinPrice(tempMin);
     setMaxPrice(tempMax);
@@ -26,22 +29,31 @@ export const PricingRangeWidget: React.FC<PricingRangeWidgetProps> = ({
           </span>
         </div>
         <div className="range-slider">
+          <div
+            className="progress"
+            style={{
+              position: "absolute",
+              height: "6px",
+              borderRadius: "5px",
+              background: "#000",
+              left: `${minPercent}%`,
+              right: `${100 - maxPercent}%`,
+            }}
+          />
           <input
             type="range"
-            className="min-range"
             min="0"
             max="5000000"
-            value={tempMin}
             step="100000"
+            value={tempMin}
             onChange={(e) => setTempMin(Number(e.target.value))}
           />
           <input
             type="range"
-            className="max-range"
             min="0"
             max="5000000"
-            value={tempMax}
             step="100000"
+            value={tempMax}
             onChange={(e) => setTempMax(Number(e.target.value))}
           />
         </div>

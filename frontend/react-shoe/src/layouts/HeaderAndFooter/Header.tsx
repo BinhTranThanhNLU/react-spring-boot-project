@@ -3,6 +3,8 @@ import { Link, useNavigate } from "react-router-dom";
 import { Category } from "../../models/Category";
 import { API_BASE_URL } from "../../config/config";
 import { SpinningLoading } from "../utils/SpinningLoading";
+import { ErrorMessage } from "../utils/ErrorMessage";
+import { User } from "../../models/User";
 
 export const Header = () => {
   //state category
@@ -10,7 +12,12 @@ export const Header = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [httpError, setHttpError] = useState<string | null>(null);
 
+  //state search
   const [searchTerm, setSearchTerm] = useState("");
+
+  //state user
+  const [user, setUser] = useState<User | null>(null);
+
   const navigate = useNavigate();
 
   const handleSearch = (e: React.FormEvent) => {
@@ -20,6 +27,27 @@ export const Header = () => {
       setSearchTerm(""); // clear sau khi search
     }
   };
+
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    localStorage.removeItem("user");
+    setUser(null);
+    navigate("/home");
+  };
+
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (!token) {
+      navigate("/login");
+    }
+  }, []);
+
+  useEffect(() => {
+    const storedUser = localStorage.getItem("user");
+    if (storedUser) {
+      setUser(JSON.parse(storedUser));
+    }
+  }, []);
 
   useEffect(() => {
     const fetchCategories = async () => {
@@ -41,6 +69,7 @@ export const Header = () => {
   }, []);
 
   if (isLoading) return <SpinningLoading />;
+  if (httpError) return <ErrorMessage message={httpError} />;
 
   return (
     <header id="header" className="header sticky-top">
@@ -117,7 +146,7 @@ export const Header = () => {
                 <div className="dropdown-menu">
                   <div className="dropdown-header">
                     <h6>
-                      Chào mừng{" "}
+                      Chào mừng {user?.fullName}{" "}
                       <span className="sitename">
                         đến với Cửa hàng SportShoe
                       </span>
@@ -155,18 +184,34 @@ export const Header = () => {
                     </a>
                   </div>
                   <div className="dropdown-footer">
-                    <Link
-                      to="/login"
-                      className="btn btn-primary w-100 mb-2"
-                    >
-                      Đăng nhập
-                    </Link>
-                    <a
-                      href="pages/auth/register.html"
-                      className="btn btn-outline-primary w-100"
-                    >
-                      Đăng ký
-                    </a>
+                    {user ? (
+                      <>
+                        <p className="text-center mb-2">
+                          Xin chào, <b>{user.fullName}</b>
+                        </p>
+                        <button
+                          className="btn btn-outline-danger w-100"
+                          onClick={handleLogout}
+                        >
+                          Đăng xuất
+                        </button>
+                      </>
+                    ) : (
+                      <>
+                        <Link
+                          to="/login"
+                          className="btn btn-primary w-100 mb-2"
+                        >
+                          Đăng nhập
+                        </Link>
+                        <Link
+                          to="/register"
+                          className="btn btn-outline-primary w-100"
+                        >
+                          Đăng ký
+                        </Link>
+                      </>
+                    )}
                   </div>
                 </div>
               </div>

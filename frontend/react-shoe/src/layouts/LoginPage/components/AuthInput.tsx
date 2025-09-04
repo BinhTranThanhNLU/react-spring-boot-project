@@ -6,6 +6,8 @@ export const AuthInput: React.FC<AuthInputProps> = ({
   placeholder,
   icon,
   required,
+  value,
+  onChange,
 }) => {
   return (
     <div className="input-group mb-3">
@@ -17,6 +19,8 @@ export const AuthInput: React.FC<AuthInputProps> = ({
         className="form-control"
         placeholder={placeholder}
         required={required}
+        value={value}
+        onChange={onChange}
       />
       {type === "password" && (
         <span className="password-toggle">

@@ -12688,19 +12688,30 @@ section,
 /* Pricing range */
 .range-slider {
   position: relative;
-  width: 100%;
   height: 6px;
   background: #ddd;
-  border-radius: 3px;
+  border-radius: 5px;
 }
 
-.range-slider .range {
+.range-slider input[type="range"] {
   position: absolute;
+  width: 100%;
   height: 6px;
-  background: black;
-  /* phần tô màu đen */
-  border-radius: 3px;
+  -webkit-appearance: none;
+  background: none;
+  pointer-events: none;
 }
+
+.range-slider input[type="range"]::-webkit-slider-thumb {
+  pointer-events: all;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: #000;
+  cursor: pointer;
+  -webkit-appearance: none;
+}
+
 
 /* Product detail */
 .size-option {

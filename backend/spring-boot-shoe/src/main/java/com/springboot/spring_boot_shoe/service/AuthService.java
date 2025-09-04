@@ -3,7 +3,6 @@ package com.springboot.spring_boot_shoe.service;
 import com.springboot.spring_boot_shoe.dao.RoleRepository;
 import com.springboot.spring_boot_shoe.dao.UserRepository;
 import com.springboot.spring_boot_shoe.dto.UserDTO;
-import com.springboot.spring_boot_shoe.entity.Role;
 import com.springboot.spring_boot_shoe.entity.User;
 import com.springboot.spring_boot_shoe.mapper.RoleMapper;
 import com.springboot.spring_boot_shoe.security.JwtService;
