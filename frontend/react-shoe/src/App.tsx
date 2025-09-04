@@ -10,6 +10,7 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-d
 import { ProductDetailPage } from "./layouts/ProductDetailPage/ProductDetailPage";
 import { SearchPage } from "./layouts/SearchPage/SearchPage";
 import { LoginPage } from "./layouts/LoginPage/LoginPage";
+import { RegisterPage } from "./layouts/RegisterPage/RegisterPage";
 
 
 function App() {
@@ -33,6 +34,7 @@ function App() {
         <Route path="/product-detail/:id" element={<ProductDetailPage />}/>
         <Route path="/search" element={<SearchPage />} />
         <Route path="/login" element={<LoginPage />} />
+        <Route path="/register" element={<RegisterPage />} />
       </Routes>
       <Footer />
     </Router>

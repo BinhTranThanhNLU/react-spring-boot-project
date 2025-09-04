@@ -2,6 +2,7 @@ package com.springboot.spring_boot_shoe.controller;
 
 import com.springboot.spring_boot_shoe.dto.UserDTO;
 import com.springboot.spring_boot_shoe.requestmodel.LoginRequest;
+import com.springboot.spring_boot_shoe.requestmodel.RegisterRequest;
 import com.springboot.spring_boot_shoe.responsemodel.LoginResponse;
 import com.springboot.spring_boot_shoe.service.AuthService;
 import org.springframework.http.ResponseEntity;
@@ -18,11 +19,11 @@ public class AuthController {
         this.authService = authService;
     }
 
-//    @PostMapping("/register")
-//    public ResponseEntity<UserDTO> register(@RequestBody UserDTO dto) {
-//        UserDTO registeredUser = authService.register(dto);
-//        return ResponseEntity.ok(registeredUser);
-//    }
+    @PostMapping("/register")
+    public ResponseEntity<UserDTO> register(@RequestBody RegisterRequest req) {
+        UserDTO registeredUser = authService.register(req);
+        return ResponseEntity.ok(registeredUser);
+    }
 
     @PostMapping("/login")
     public ResponseEntity<LoginResponse> login(@RequestBody LoginRequest req) {

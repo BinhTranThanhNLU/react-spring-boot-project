@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { AuthInput } from "./AuthInput";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { API_BASE_URL } from "../../../config/config";
 import { LoginRequest } from "../../../models/LoginRequest";
 import { LoginResponse } from "../../../models/LoginResponse";
@@ -96,9 +96,9 @@ export const LoginForm = () => {
 
         <div className="switch-form">
           <span>Bạn chưa có tài khoản?</span>
-          <button type="button" className="switch-btn" data-target="register">
-            Tạo tài khoản
-          </button>
+          <Link to="/register" className="switch-btn" data-target="register">
+            Tạo tài khoản 
+          </Link>
         </div>
       </form>
     </div>
