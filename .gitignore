@@ -1,0 +1,6 @@
+# Ignore Spring Boot config
+application.properties
+application.yml
+
+# Ignore environment files
+*.env
