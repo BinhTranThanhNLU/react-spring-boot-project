@@ -5,8 +5,13 @@ import com.springboot.spring_boot_shoe.requestmodel.LoginRequest;
 import com.springboot.spring_boot_shoe.requestmodel.RegisterRequest;
 import com.springboot.spring_boot_shoe.responsemodel.LoginResponse;
 import com.springboot.spring_boot_shoe.service.AuthService;
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.HashMap;
+import java.util.Map;
 
 @CrossOrigin(origins = "http://localhost:3000")
 @RestController
@@ -20,9 +25,9 @@ public class AuthController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<UserDTO> register(@RequestBody RegisterRequest req) {
-        UserDTO registeredUser = authService.register(req);
-        return ResponseEntity.ok(registeredUser);
+    public ResponseEntity<UserDTO> register(@Valid @RequestBody RegisterRequest req) {
+        UserDTO user = authService.register(req);
+        return ResponseEntity.ok(user);
     }
 
     @PostMapping("/login")

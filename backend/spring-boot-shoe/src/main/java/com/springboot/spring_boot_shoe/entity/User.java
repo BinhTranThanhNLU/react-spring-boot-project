@@ -1,6 +1,10 @@
 package com.springboot.spring_boot_shoe.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.Pattern;
 
 import java.time.LocalDateTime;
 
@@ -16,7 +20,7 @@ public class User {
     @Column(name = "full_name")
     private String fullName;
 
-    @Column(name = "email")
+    @Column(name = "email", unique = true)
     private String email;
 
     @Column(name = "phone")
@@ -34,7 +38,7 @@ public class User {
     @Column(name = "updatedAt")
     private LocalDateTime updatedAt;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name = "id_role")
     private Role role;
 
