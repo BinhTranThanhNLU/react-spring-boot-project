@@ -1,27 +1,27 @@
-import { PageTitle } from "../utils/PageTitle";
 import { DecorativeElements } from "../utils/DecorativeElements";
-import { RegisterForm } from "./components/RegisterForm";
-import { SocialLogin } from "./components/SocialLogin";
+import { PageTitle } from "../utils/PageTitle";
+import { ForgotPasswordForm } from "./components/ForgotPasswordForm";
+import { FormHeader } from "../utils/FormHeader";
 
-export const RegisterPage = () => {
-    return (
+
+export const ForgotPasswordPage = () => {
+  return (
     <main className="main">
       <PageTitle
-        title="Đăng ký"
+        title="Quên mật khẩu"
         breadcrumbs={[
-          { label: "Trang chủ", path: "/home" },
-          { label: "Đăng ký" },
+          { label: "Trang chủ", path: "/" },
+          { label: "Quên mật khẩu" },
         ]}
       />
 
-      {/* Register Section */}
       <section id="register" className="register section">
         <div className="container" data-aos="fade-up" data-aos-delay="100">
           <div className="row justify-content-center">
             <div className="col-lg-10">
               <div className="registration-form-wrapper">
-                <RegisterForm />
-                <SocialLogin />
+                <FormHeader headerMessage="Quên mật khẩu" message="Hãy nhập email của bạn"/>
+                <ForgotPasswordForm />
                 <DecorativeElements />
               </div>
             </div>
@@ -30,4 +30,4 @@ export const RegisterPage = () => {
       </section>
     </main>
   );
-}
+};

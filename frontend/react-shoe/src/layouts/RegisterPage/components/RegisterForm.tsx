@@ -1,10 +1,10 @@
 import { useState } from "react";
 import { RegisterRequest } from "../../../models/RegisterRequest";
-import { FormHeader } from "./FormHeader";
 import { User } from "../../../models/User";
 import { API_BASE_URL } from "../../../config/config";
 import { Link } from "react-router-dom";
 import { Eye, EyeOff } from "lucide-react";
+import { FormHeader } from "../../utils/FormHeader";
 
 export const RegisterForm = () => {
   const [formData, setFormData] = useState<RegisterRequest>({
@@ -96,7 +96,7 @@ export const RegisterForm = () => {
   return (
     <div className="row">
       <div className="col-lg-8 mx-auto">
-        <FormHeader />
+        <FormHeader headerMessage="Tạo tài khoản của bạn" message="Tạo tài khoản của bạn và bắt đầu mua sắm với chúng tôi"/>
         <form onSubmit={handleSubmit} noValidate>
           <div className="form-floating mb-3">
             <input

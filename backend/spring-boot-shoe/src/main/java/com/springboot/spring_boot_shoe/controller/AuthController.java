@@ -1,8 +1,10 @@
 package com.springboot.spring_boot_shoe.controller;
 
 import com.springboot.spring_boot_shoe.dto.UserDTO;
+import com.springboot.spring_boot_shoe.requestmodel.ForgotPasswordRequest;
 import com.springboot.spring_boot_shoe.requestmodel.LoginRequest;
 import com.springboot.spring_boot_shoe.requestmodel.RegisterRequest;
+import com.springboot.spring_boot_shoe.requestmodel.ResetPasswordRequest;
 import com.springboot.spring_boot_shoe.responsemodel.LoginResponse;
 import com.springboot.spring_boot_shoe.service.AuthService;
 import jakarta.validation.Valid;
@@ -45,5 +47,21 @@ public class AuthController {
         String token = authHeader.substring(7);
         UserDTO user = authService.getUserFromToken(token);
         return ResponseEntity.ok(user);
+    }
+
+    @PostMapping("/forgot-password")
+    public ResponseEntity<Map<String, String>> forgotPassword(@RequestBody ForgotPasswordRequest req) {
+        authService.forgotPassword(req.getEmail());
+        Map<String, String> res = new HashMap<>();
+        res.put("message", "Reset password link has been sent to your email");
+        return ResponseEntity.ok(res);
+    }
+
+    @PostMapping("/reset-password")
+    public ResponseEntity<Map<String, String>> resetPassword(@RequestBody ResetPasswordRequest req) {
+        authService.resetPassword(req.getToken(), req.getNewPassword());
+        Map<String, String> res = new HashMap<>();
+        res.put("message", "Password reset successfully");
+        return ResponseEntity.ok(res);
     }
 }

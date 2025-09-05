@@ -1,8 +1,10 @@
 package com.springboot.spring_boot_shoe.service;
 
+import com.springboot.spring_boot_shoe.dao.PasswordResetTokenRepository;
 import com.springboot.spring_boot_shoe.dao.RoleRepository;
 import com.springboot.spring_boot_shoe.dao.UserRepository;
 import com.springboot.spring_boot_shoe.dto.UserDTO;
+import com.springboot.spring_boot_shoe.entity.PasswordResetToken;
 import com.springboot.spring_boot_shoe.entity.Role;
 import com.springboot.spring_boot_shoe.entity.User;
 import com.springboot.spring_boot_shoe.mapper.RoleMapper;
@@ -12,28 +14,34 @@ import com.springboot.spring_boot_shoe.mapper.UserMapper;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.Optional;
+import java.util.UUID;
 
 @Service
 public class AuthService {
 
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
+    private final PasswordResetTokenRepository tokenRepository;
     private final PasswordEncoder passwordEncoder;
     private final JwtService jwtService;
     private final UserMapper userMapper;
     private final RoleMapper roleMapper;
+    private final EmailService emailService;
 
-    public AuthService(UserRepository userRepository, RoleRepository roleRepository,
+    public AuthService(UserRepository userRepository, RoleRepository roleRepository, PasswordResetTokenRepository tokenRepository,
                        PasswordEncoder passwordEncoder,
                        JwtService jwtService,
-                       UserMapper userMapper, RoleMapper roleMapper) {
+                       UserMapper userMapper, RoleMapper roleMapper, EmailService emailService) {
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;
+        this.tokenRepository = tokenRepository;
         this.passwordEncoder = passwordEncoder;
         this.jwtService = jwtService;
         this.userMapper = userMapper;
         this.roleMapper = roleMapper;
+        this.emailService = emailService;
     }
 
     // Đăng ký
@@ -76,6 +84,46 @@ public class AuthService {
         User user = userRepository.findByEmail(email)
                 .orElseThrow(() -> new RuntimeException("User not found"));
         return userMapper.toDto(user);
+    }
+
+    // forgot-password
+    public void forgotPassword(String email) {
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new RuntimeException("Email not found"));
+
+        // Xóa token cũ  để tránh spam
+        tokenRepository.deleteByUser(user);
+
+        // Tạo token mới
+        String resetToken = UUID.randomUUID().toString();
+        LocalDateTime expiry = LocalDateTime.now().plusMinutes(15);
+
+        PasswordResetToken token = new PasswordResetToken();
+        token.setUser(user);
+        token.setToken(resetToken);
+        token.setExpiry(expiry);
+
+        tokenRepository.save(token);
+
+        //gui email
+        String resetLink = "http://localhost:3000/reset-password?token=" + resetToken;
+        emailService.sendPasswordResetEmail(user.getEmail(), resetLink);
+    }
+
+    // reset-password
+    public void resetPassword(String tokenStr, String newPassword) {
+        PasswordResetToken token = tokenRepository.findByToken(tokenStr)
+                .orElseThrow(() -> new RuntimeException("Invalid token"));
+
+        if (token.getExpiry().isBefore(LocalDateTime.now())) {
+            throw new RuntimeException("Token expired");
+        }
+
+        User user = token.getUser();
+        user.setPassword(passwordEncoder.encode(newPassword));
+        userRepository.save(user);
+
+        tokenRepository.delete(token);
     }
 }
 
