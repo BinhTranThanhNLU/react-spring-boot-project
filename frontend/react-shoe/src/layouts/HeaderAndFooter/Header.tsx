@@ -35,12 +35,12 @@ export const Header = () => {
     navigate("/home");
   };
 
-  useEffect(() => {
-    const token = localStorage.getItem("token");
-    if (!token) {
-      navigate("/login");
-    }
-  }, []);
+  // useEffect(() => {
+  //   const token = localStorage.getItem("token");
+  //   if (!token) {
+  //     navigate("/login");
+  //   }
+  // }, []);
 
   useEffect(() => {
     const storedUser = localStorage.getItem("user");

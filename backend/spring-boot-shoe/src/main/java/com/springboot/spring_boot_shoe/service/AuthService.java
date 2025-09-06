@@ -13,6 +13,7 @@ import com.springboot.spring_boot_shoe.security.JwtService;
 import com.springboot.spring_boot_shoe.mapper.UserMapper;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.Optional;
@@ -87,6 +88,7 @@ public class AuthService {
     }
 
     // forgot-password
+    @Transactional
     public void forgotPassword(String email) {
         User user = userRepository.findByEmail(email)
                 .orElseThrow(() -> new RuntimeException("Email not found"));
@@ -111,6 +113,7 @@ public class AuthService {
     }
 
     // reset-password
+    @Transactional
     public void resetPassword(String tokenStr, String newPassword) {
         PasswordResetToken token = tokenRepository.findByToken(tokenStr)
                 .orElseThrow(() -> new RuntimeException("Invalid token"));
