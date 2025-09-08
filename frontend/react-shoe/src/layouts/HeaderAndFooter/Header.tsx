@@ -226,10 +226,10 @@ export const Header = () => {
               </a>
 
               {/* Cart */}
-              <a href="pages/cart/cart.html" className="header-action-btn">
+              <Link to="/cart" className="header-action-btn">
                 <i className="bi bi-cart3"></i>
                 <span className="badge">3</span>
-              </a>
+              </Link>
 
               {/* Mobile Navigation Toggle */}
               <i className="mobile-nav-toggle d-xl-none bi bi-list me-0"></i>
