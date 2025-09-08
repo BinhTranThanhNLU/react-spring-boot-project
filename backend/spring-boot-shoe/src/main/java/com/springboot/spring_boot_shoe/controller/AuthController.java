@@ -7,6 +7,7 @@ import com.springboot.spring_boot_shoe.requestmodel.RegisterRequest;
 import com.springboot.spring_boot_shoe.requestmodel.ResetPasswordRequest;
 import com.springboot.spring_boot_shoe.responsemodel.LoginResponse;
 import com.springboot.spring_boot_shoe.service.AuthService;
+import com.springboot.spring_boot_shoe.service.GoogleAuthService;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
@@ -21,9 +22,11 @@ import java.util.Map;
 public class AuthController {
 
     private final AuthService authService;
+    private final GoogleAuthService googleAuthService;
 
-    public AuthController(AuthService authService) {
+    public AuthController(AuthService authService, GoogleAuthService googleAuthService) {
         this.authService = authService;
+        this.googleAuthService = googleAuthService;
     }
 
     @PostMapping("/register")
@@ -63,5 +66,20 @@ public class AuthController {
         Map<String, String> res = new HashMap<>();
         res.put("message", "Password reset successfully");
         return ResponseEntity.ok(res);
+    }
+
+    @GetMapping("/google")
+    public ResponseEntity<Map<String, String>> googleLogin() {
+        String url = googleAuthService.getGoogleAuthUrl();
+        Map<String, String> res = new HashMap<>();
+        res.put("url", url);
+        return ResponseEntity.ok(res);
+    }
+
+    @GetMapping("/google/callback")
+    public ResponseEntity<LoginResponse> googleCallback(@RequestParam("code") String code) throws Exception {
+        String token = googleAuthService.handleGoogleCallback(code);
+        UserDTO user = authService.getUserFromToken(token);
+        return ResponseEntity.ok(new LoginResponse(token, user));
     }
 }

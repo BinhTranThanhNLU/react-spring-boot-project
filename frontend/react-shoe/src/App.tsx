@@ -13,6 +13,7 @@ import { LoginPage } from "./layouts/LoginPage/LoginPage";
 import { RegisterPage } from "./layouts/RegisterPage/RegisterPage";
 import { ForgotPasswordPage } from "./layouts/ForgotPasswordPage/ForgotPasswordPage";
 import { ResetPasswordPage } from "./layouts/ResetPasswordPage/ResetPasswordPage";
+import { GoogleCallback } from "./layouts/LoginPage/components/GoogleCallback";
 
 
 function App() {
@@ -36,6 +37,7 @@ function App() {
         <Route path="/product-detail/:id" element={<ProductDetailPage />}/>
         <Route path="/search" element={<SearchPage />} />
         <Route path="/login" element={<LoginPage />} />
+        <Route path="/google/callback" element={<GoogleCallback />} />
         <Route path="/register" element={<RegisterPage />} />
         <Route path="/forgot-password" element={<ForgotPasswordPage />} />
         <Route path="/reset-password" element={<ResetPasswordPage />} />

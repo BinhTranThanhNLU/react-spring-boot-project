@@ -11,11 +11,11 @@ export const LoginForm = () => {
   const [error, setError] = useState<string | null>(null);
   const navigate = useNavigate();
 
-  const handleSubmit = async (e:React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError(null);
 
-    const request: LoginRequest = {email, password};
+    const request: LoginRequest = { email, password };
 
     try {
       const response = await fetch(`${API_BASE_URL}/auth/login`, {
@@ -37,10 +37,20 @@ export const LoginForm = () => {
       localStorage.setItem("user", JSON.stringify(data.user));
 
       navigate("/home");
-    } catch (error:any) {
+    } catch (error: any) {
       setError(error.message);
     }
-  }
+  };
+
+  const handleGoogleLogin = async () => {
+    try {
+      const response = await fetch(`${API_BASE_URL}/auth/google`);
+      const data = await response.json();
+      window.location.href = data.url; // redirect sang Google login
+    } catch (error) {
+      console.error("Google login failed", error);
+    }
+  };
 
   return (
     <div className="auth-form login-form active">
@@ -89,7 +99,7 @@ export const LoginForm = () => {
           <span>hoặc</span>
         </div>
 
-        <button type="button" className="auth-btn social-btn">
+        <button type="button" className="auth-btn social-btn" onClick={handleGoogleLogin}>
           <i className="bi bi-google"></i>
           Tiếp tục với Google
         </button>
@@ -97,7 +107,7 @@ export const LoginForm = () => {
         <div className="switch-form">
           <span>Bạn chưa có tài khoản?</span>
           <Link to="/register" className="switch-btn" data-target="register">
-            Tạo tài khoản 
+            Tạo tài khoản
           </Link>
         </div>
       </form>
