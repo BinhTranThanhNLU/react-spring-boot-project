@@ -3,7 +3,7 @@ package com.springboot.spring_boot_shoe.dto;
 import java.math.BigDecimal;
 
 public class CartItemDTO {
-
+    private int idProduct;
     private String title;
     private String size;
     private String color;
@@ -15,7 +15,8 @@ public class CartItemDTO {
     public CartItemDTO() {
     }
 
-    public CartItemDTO(String title, String size, String color, BigDecimal price, int quantity, BigDecimal total, String image) {
+    public CartItemDTO(int idProduct, String title, String size, String color, BigDecimal price, int quantity, BigDecimal total, String image) {
+        this.idProduct = idProduct;
         this.title = title;
         this.size = size;
         this.color = color;
@@ -23,6 +24,14 @@ public class CartItemDTO {
         this.quantity = quantity;
         this.total = total;
         this.image = image;
+    }
+
+    public int getIdProduct() {
+        return idProduct;
+    }
+
+    public void setIdProduct(int idProduct) {
+        this.idProduct = idProduct;
     }
 
     public String getTitle() {

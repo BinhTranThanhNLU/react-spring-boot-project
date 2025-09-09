@@ -2,12 +2,14 @@ package com.springboot.spring_boot_shoe.controller;
 
 import com.springboot.spring_boot_shoe.dto.CartDTO;
 import com.springboot.spring_boot_shoe.entity.User;
+import com.springboot.spring_boot_shoe.requestmodel.AddCartItemRequest;
 import com.springboot.spring_boot_shoe.security.AppUserDetails;
 import com.springboot.spring_boot_shoe.service.CartService;
 import com.springboot.spring_boot_shoe.service.ProductService;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
+@CrossOrigin(origins = "http://localhost:3000")
 @RestController
 @RequestMapping("/api/cart")
 public class CartController {
@@ -28,10 +30,13 @@ public class CartController {
 
     @PostMapping("/add")
     public CartDTO addItem(@AuthenticationPrincipal AppUserDetails appUserDetails,
-                           @RequestParam int productId,
-                           @RequestParam int quantity) {
+                           @RequestBody AddCartItemRequest request) {
         User user = appUserDetails.getUser();
-        return cartService.addItem(user, productService.getProductEntityById(productId), quantity);
+        return cartService.addItem(
+                user,
+                productService.getProductEntityById(request.getProductId()),
+                request.getQuantity()
+        );
     }
 
     @DeleteMapping("/remove/{productId}")

@@ -5,15 +5,16 @@ import java.util.List;
 
 public class CartDTO {
 
-    private List<CartItemDTO> cartItems = new ArrayList<>();
     private int idUser;
+    private List<CartItemDTO> cartItems = new ArrayList<>();
+
 
     public CartDTO() {
     }
 
-    public CartDTO(List<CartItemDTO> cartItems, int idUser) {
-        this.cartItems = cartItems;
+    public CartDTO(int idUser, List<CartItemDTO> cartItems) {
         this.idUser = idUser;
+        this.cartItems = cartItems;
     }
 
     public List<CartItemDTO> getCartItems() {

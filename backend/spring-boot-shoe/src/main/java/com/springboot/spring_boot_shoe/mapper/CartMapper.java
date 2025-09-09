@@ -14,6 +14,7 @@ public interface CartMapper {
     @Mapping(source = "items", target = "cartItems")
     CartDTO toDto(Cart cart);
 
+    @Mapping(source = "product.id", target = "idProduct")
     @Mapping(source = "product.name", target = "title")
     @Mapping(source = "firstVariantSize", target = "size")
     @Mapping(source = "firstVariantColor", target = "color")

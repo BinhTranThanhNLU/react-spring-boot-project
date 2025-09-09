@@ -18,6 +18,9 @@ export const Header = () => {
   //state user
   const [user, setUser] = useState<User | null>(null);
 
+  // state cart count
+  const [cartCount, setCartCount] = useState(0);
+
   const navigate = useNavigate();
 
   const handleSearch = (e: React.FormEvent) => {
@@ -34,13 +37,6 @@ export const Header = () => {
     setUser(null);
     navigate("/home");
   };
-
-  // useEffect(() => {
-  //   const token = localStorage.getItem("token");
-  //   if (!token) {
-  //     navigate("/login");
-  //   }
-  // }, []);
 
   useEffect(() => {
     const storedUser = localStorage.getItem("user");
@@ -66,6 +62,44 @@ export const Header = () => {
       }
     };
     fetchCategories();
+  }, []);
+
+  useEffect(() => {
+    const fetchCart = async () => {
+      try {
+        const token = localStorage.getItem("token");
+        if (!token) {
+          setCartCount(0);
+          return;
+        }
+
+        const response = await fetch(`${API_BASE_URL}/cart`, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+
+        if (!response.ok) throw new Error("Không thể tải giỏ hàng");
+
+        const data = await response.json();
+        const totalItems = data.cartItems.reduce(
+          (sum: number, item: any) => sum + item.quantity,
+          0
+        );
+        setCartCount(totalItems);
+      } catch (error) {
+        console.error(error);
+        setCartCount(0);
+      }
+    };
+
+    fetchCart();
+
+    // Nghe sự kiện khi giỏ hàng thay đổi
+    const handleCartUpdate = () => fetchCart();
+    window.addEventListener("cartUpdated", handleCartUpdate);
+
+    return () => {
+      window.removeEventListener("cartUpdated", handleCartUpdate);
+    };
   }, []);
 
   if (isLoading) return <SpinningLoading />;
@@ -228,7 +262,7 @@ export const Header = () => {
               {/* Cart */}
               <Link to="/cart" className="header-action-btn">
                 <i className="bi bi-cart3"></i>
-                <span className="badge">3</span>
+                {cartCount > 0 && <span className="badge">{cartCount}</span>}
               </Link>
 
               {/* Mobile Navigation Toggle */}

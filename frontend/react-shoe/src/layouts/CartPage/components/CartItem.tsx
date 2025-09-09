@@ -1,7 +1,9 @@
 import React from "react";
 import { CartItemProps } from "../../../models/CartItemProps";
+import { API_BASE_URL } from "../../../config/config";
 
 export const CartItem: React.FC<CartItemProps> = ({
+  idProduct,
   title,
   color,
   size,
@@ -10,6 +12,28 @@ export const CartItem: React.FC<CartItemProps> = ({
   total,
   image,
 }) => {
+
+  const token = localStorage.getItem("token");
+
+  const handleRemove = async () => {
+    try {
+      const response = await fetch(
+        `${API_BASE_URL}/cart/remove/${idProduct}`, 
+        {
+          method: "DELETE",
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      if (!response.ok) throw new Error("Xóa sản phẩm thất bại");
+      window.location.reload(); // reload lại giỏ
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   return (
     <div className="cart-item">
       <div className="row align-items-center">
@@ -29,7 +53,7 @@ export const CartItem: React.FC<CartItemProps> = ({
                 <span className="product-color">Màu: {color}</span>
                 <span className="product-size">Kích thước: {size}</span>
               </div>
-              <button className="remove-item" type="button">
+              <button className="remove-item" type="button" onClick={handleRemove}>
                 <i className="bi bi-trash"></i> Xóa
               </button>
             </div>

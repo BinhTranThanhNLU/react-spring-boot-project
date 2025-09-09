@@ -1,12 +1,49 @@
 import React from "react";
 import { Product } from "../../models/Product";
 import { StarsReview } from "./StarsReview";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { API_BASE_URL } from "../../config/config";
 
 export const ProductCard: React.FC<{ product: Product }> = ({ product }) => {
   const mainImage = product.images?.[0]?.imageUrl || "/assets/img/no-image.png";
   const hoverImage =
     product.images?.[0]?.imageUrl || "/assets/img/no-image.png";
+
+  const navigate = useNavigate();
+
+  const handleAddToCart = async () => {
+    const token = localStorage.getItem("token");
+    if (!token) {
+      navigate("/login");
+      return;
+    }
+
+    try {
+      const response = await fetch(`${API_BASE_URL}/cart/add`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+          productId: product.id,
+          quantity: 1,
+        }),
+      });
+
+      if (!response.ok) throw new Error("Không thể thêm vào giỏ hàng");
+
+      const updatedCart = await response.json();
+
+      // Cập nhật cartCount trong localStorage hoặc state (để Header nhận)
+      localStorage.setItem("cart", JSON.stringify(updatedCart));
+
+      //alert("Thêm vào giỏ hàng thành công!");
+      window.dispatchEvent(new Event("cartUpdated")); // báo cho Header biết
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   return (
     <div className="col-6 col-xl-4">
@@ -36,6 +73,7 @@ export const ProductCard: React.FC<{ product: Product }> = ({ product }) => {
                 className="action-btn"
                 data-bs-toggle="tooltip"
                 title="Add to Cart"
+                onClick={handleAddToCart}
               >
                 <i className="bi bi-cart-plus"></i>
               </button>

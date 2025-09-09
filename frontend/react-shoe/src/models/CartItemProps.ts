@@ -1,4 +1,5 @@
 export interface CartItemProps {
+  idProduct: number
   title: string;
   color: string;
   size: string;
