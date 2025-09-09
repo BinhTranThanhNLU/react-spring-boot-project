@@ -101,5 +101,10 @@ public class ProductService {
         return productMapper.toDtoList(related);
     }
 
+    public Product getProductEntityById(int id) {
+        return productRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Product not found"));
+    }
+
 
 }
