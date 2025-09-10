@@ -34,6 +34,27 @@ export const CartItem: React.FC<CartItemProps> = ({
     }
   };
 
+  const handleUpdateQuantity = async (newQuantity: number) => {
+    try {
+      const response = await fetch(`${API_BASE_URL}/cart/update`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+          productId: idProduct,
+          quantity: newQuantity,
+        }),
+      });
+
+      if(!response.ok) throw new Error("Failed to update cart");
+      window.location.reload(); //tam thoi reload sau nay dung state 
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
   return (
     <div className="cart-item">
       <div className="row align-items-center">
@@ -73,7 +94,7 @@ export const CartItem: React.FC<CartItemProps> = ({
 
         <div className="col-lg-2 col-12 mt-3 mt-lg-0 text-center">
           <div className="quantity-selector">
-            <button className="quantity-btn decrease">
+            <button className="quantity-btn decrease" onClick={() => handleUpdateQuantity(quantity - 1)}>
               <i className="bi bi-dash"></i>
             </button>
             <input
@@ -84,7 +105,7 @@ export const CartItem: React.FC<CartItemProps> = ({
               max="10"
               readOnly
             />
-            <button className="quantity-btn increase">
+            <button className="quantity-btn increase" onClick={() => handleUpdateQuantity(quantity + 1)}>
               <i className="bi bi-plus"></i>
             </button>
           </div>

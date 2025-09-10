@@ -1,11 +1,18 @@
-export const CartSummary = () => {
+import React from "react";
+import { CartSummaryProps } from "../../../types/CartSummaryProps";
+import { Link } from "react-router-dom";
+
+export const CartSummary:React.FC<CartSummaryProps> = ({cart}) => {
+
+  if (!cart) return null;
+
   return (
     <div className="cart-summary">
       <h4 className="summary-title">Tóm tắt đơn hàng</h4>
 
       <div className="summary-item">
         <span className="summary-label">Tổng phụ</span>
-        <span className="summary-value">1.000.000đ</span>
+        <span className="summary-value">{cart.subPrice.toLocaleString("vi-VN")}đ</span>
       </div>
 
       <div className="summary-item shipping-item">
@@ -20,7 +27,7 @@ export const CartSummary = () => {
               defaultChecked
             />
             <label className="form-check-label" htmlFor="standard">
-              Giao hàng tiêu chuẩn - 100.000đ
+              Giao hàng tiêu chuẩn - {cart.shippingFee.toLocaleString("vi-VN")}đ
             </label>
           </div>
           <div className="form-check text-end">
@@ -31,7 +38,7 @@ export const CartSummary = () => {
               id="express"
             />
             <label className="form-check-label" htmlFor="express">
-              Giao hàng nhanh - 200.000đ
+              Giao hàng nhanh - {cart.shippingFee.toLocaleString("vi-VN")}đ
             </label>
           </div>
           <div className="form-check text-end">
@@ -48,19 +55,14 @@ export const CartSummary = () => {
         </div>
       </div>
 
-      <div className="summary-item">
-        <span className="summary-label">Thuế</span>
-        <span className="summary-value">$27.00</span>
-      </div>
-
       <div className="summary-item discount">
         <span className="summary-label">Giảm giá</span>
-        <span className="summary-value">-$0.00</span>
+        <span className="summary-value">-{cart.discount.toLocaleString("vi-VN")}đ</span>
       </div>
 
       <div className="summary-total">
         <span className="summary-label">Tổng</span>
-        <span className="summary-value">$301.95</span>
+        <span className="summary-value">{cart.total.toLocaleString("vi-VN")}đ</span>
       </div>
 
       <div className="checkout-button">
@@ -70,9 +72,9 @@ export const CartSummary = () => {
       </div>
 
       <div className="continue-shopping">
-        <a href="#" className="btn btn-link w-100">
+        <Link to="/home" className="btn btn-link w-100">
           <i className="bi bi-arrow-left"></i> Tiếp tục mua sắm
-        </a>
+        </Link>
       </div>
 
       <div className="payment-methods">

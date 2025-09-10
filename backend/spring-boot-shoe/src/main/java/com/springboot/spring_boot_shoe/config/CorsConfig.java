@@ -1,4 +1,4 @@
-package com.springboot.spring_boot_shoe.security;
+package com.springboot.spring_boot_shoe.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

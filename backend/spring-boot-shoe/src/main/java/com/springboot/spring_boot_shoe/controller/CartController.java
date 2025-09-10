@@ -3,6 +3,7 @@ package com.springboot.spring_boot_shoe.controller;
 import com.springboot.spring_boot_shoe.dto.CartDTO;
 import com.springboot.spring_boot_shoe.entity.User;
 import com.springboot.spring_boot_shoe.requestmodel.AddCartItemRequest;
+import com.springboot.spring_boot_shoe.requestmodel.UpdateCartItemRequest;
 import com.springboot.spring_boot_shoe.security.AppUserDetails;
 import com.springboot.spring_boot_shoe.service.CartService;
 import com.springboot.spring_boot_shoe.service.ProductService;
@@ -50,5 +51,11 @@ public class CartController {
     public void clearCart(@AuthenticationPrincipal AppUserDetails appUserDetails) {
         User user = appUserDetails.getUser();
         cartService.clearCart(user);
+    }
+
+    @PutMapping
+    public CartDTO updateQuantity(@AuthenticationPrincipal AppUserDetails appUserDetails,@RequestBody UpdateCartItemRequest request) {
+        User user = appUserDetails.getUser();
+        return cartService.updateQuantity(user, request.getProductId(), request.getQuantity());
     }
 }

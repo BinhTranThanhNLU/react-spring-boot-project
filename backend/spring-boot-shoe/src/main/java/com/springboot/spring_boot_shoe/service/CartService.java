@@ -9,6 +9,7 @@ import com.springboot.spring_boot_shoe.entity.User;
 import com.springboot.spring_boot_shoe.mapper.CartMapper;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.Optional;
 
 @Service
@@ -29,7 +30,26 @@ public class CartService {
                     newCart.setUser(user);
                     return cartRepository.save(newCart);
                 });
-        return cartMapper.toDto(cart);
+        CartDTO cartDTO = cartMapper.toDto(cart);
+
+        BigDecimal subPrice = cart.getSubPrice();
+        BigDecimal discount = BigDecimal.ZERO;
+
+        //shipping
+        BigDecimal shippingFee;
+        if(subPrice.compareTo(new BigDecimal(3000000)) >= 0) {
+            shippingFee = BigDecimal.ZERO;
+        } else {
+            shippingFee = new BigDecimal("100000");
+        }
+
+        BigDecimal total = subPrice.add(shippingFee).subtract(discount);
+
+        cartDTO.setShippingFee(shippingFee);
+        cartDTO.setDiscount(discount);
+        cartDTO.setTotal(total);
+
+        return cartDTO;
     }
 
     public CartDTO addItem(User user, Product product, int quantity) {
@@ -71,6 +91,24 @@ public class CartService {
                 .orElseThrow(() -> new RuntimeException("Cart not found"));
         cart.getItems().clear();
         cartRepository.save(cart);
+    }
+
+    public CartDTO updateQuantity(User user, int productId, int quantity) {
+        Cart cart = cartRepository.findByUser(user)
+                .orElseThrow(() -> new RuntimeException("Cart not found"));
+
+        cart.getItems().forEach(item -> {
+            if(item.getProduct().getId() == productId) {
+                if(item.getQuantity() <= 0) {
+                    cart.getItems().remove(item);
+                } else {
+                    item.setQuantity(quantity);
+                }
+            }
+        });
+
+        cartRepository.save(cart);
+        return cartMapper.toDto(cart);
     }
 
 }

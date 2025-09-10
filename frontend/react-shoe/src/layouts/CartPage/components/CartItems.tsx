@@ -1,42 +1,10 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { CartActions } from "./CartActions";
 import { CartItem } from "./CartItem";
-import { Cart } from "../../../models/Cart";
-import { SpinningLoading } from "../../utils/SpinningLoading";
 import { CartItemProps } from "../../../models/CartItemProps";
-import { API_BASE_URL } from "../../../config/config";
+import { CartItemsProps } from "../../../types/CartItemsProps";
 
-export const CartItems = () => {
-  const [cart, setCart] = useState<Cart | null>(null);
-  const [loading, setLoading] = useState(true);
-
-  // Lấy token để gọi API (lưu khi login)
-  const token = localStorage.getItem("token");
-
-  useEffect(() => {
-    const fetchCart = async () => {
-      try {
-        const response = await fetch(`${API_BASE_URL}/cart`, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
-
-        if (!response.ok) throw new Error("Không thể tải giỏ hàng");
-
-        const data: Cart = await response.json();
-        setCart(data);
-      } catch (error) {
-        console.error(error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchCart();
-  }, [token]);
-
-  if (loading) return <SpinningLoading />;
+export const CartItems:React.FC<CartItemsProps> = ({cart}) => {
   if (!cart || cart.cartItems.length === 0) {
     return (
       <div className="alert alert-info text-center my-4" role="alert">

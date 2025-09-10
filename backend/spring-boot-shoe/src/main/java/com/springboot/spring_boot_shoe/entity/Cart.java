@@ -2,6 +2,7 @@ package com.springboot.spring_boot_shoe.entity;
 
 import jakarta.persistence.*;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -37,6 +38,14 @@ public class Cart {
         this.user = user;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
+    }
+
+    public BigDecimal getSubPrice() {
+        BigDecimal subPrice = BigDecimal.ZERO;
+        for (CartItem item : items) {
+            subPrice = subPrice.add(item.getPrice());
+        }
+        return subPrice;
     }
 
     public int getId() {

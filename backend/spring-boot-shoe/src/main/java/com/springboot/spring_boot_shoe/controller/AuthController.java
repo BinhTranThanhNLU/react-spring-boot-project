@@ -10,7 +10,6 @@ import com.springboot.spring_boot_shoe.service.AuthService;
 import com.springboot.spring_boot_shoe.service.GoogleAuthService;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
