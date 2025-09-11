@@ -1,7 +1,8 @@
+import React from "react";
 import { API_BASE_URL } from "../../../config/config";
+import { CartActionsProps } from "../../../types/CartActionsProps";
 
-export const CartActions = () => {
-
+export const CartActions: React.FC<CartActionsProps> = ({ onCartChange }) => {
   const token = localStorage.getItem("token");
 
   const handleClearCart = async () => {
@@ -13,12 +14,12 @@ export const CartActions = () => {
         },
       });
 
-      if(!response.ok) throw new Error("Failed to clear cart!!!");
-      window.location.reload();
+      if (!response.ok) throw new Error("Failed to clear cart!!!");
+      onCartChange();
     } catch (error) {
       console.error(error);
     }
-  }
+  };
 
   return (
     <div className="cart-actions">

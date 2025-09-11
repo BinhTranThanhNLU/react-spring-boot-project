@@ -1,3 +1,5 @@
+import { Cart } from "./Cart";
+
 export interface CartItemProps {
   idProduct: number
   title: string;
@@ -7,4 +9,5 @@ export interface CartItemProps {
   quantity: number;
   total: number; 
   image: string;
+  onCartChange: () => void;
 }

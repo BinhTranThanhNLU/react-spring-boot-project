@@ -41,11 +41,9 @@ public class Cart {
     }
 
     public BigDecimal getSubPrice() {
-        BigDecimal subPrice = BigDecimal.ZERO;
-        for (CartItem item : items) {
-            subPrice = subPrice.add(item.getPrice());
-        }
-        return subPrice;
+        return items.stream()
+                .map(CartItem::getTotalPrice)
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
     }
 
     public int getId() {

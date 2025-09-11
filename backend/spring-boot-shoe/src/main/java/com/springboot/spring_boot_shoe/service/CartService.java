@@ -97,18 +97,19 @@ public class CartService {
         Cart cart = cartRepository.findByUser(user)
                 .orElseThrow(() -> new RuntimeException("Cart not found"));
 
+        cart.getItems().removeIf(item ->
+                item.getProduct().getId() == productId && quantity <= 0
+        );
+
         cart.getItems().forEach(item -> {
-            if(item.getProduct().getId() == productId) {
-                if(item.getQuantity() <= 0) {
-                    cart.getItems().remove(item);
-                } else {
-                    item.setQuantity(quantity);
-                }
+            if(item.getProduct().getId() == productId && quantity > 0) {
+                item.setQuantity(quantity);
             }
         });
 
         cartRepository.save(cart);
         return cartMapper.toDto(cart);
     }
+
 
 }

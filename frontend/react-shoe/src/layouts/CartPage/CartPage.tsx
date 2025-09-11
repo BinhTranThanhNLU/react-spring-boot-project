@@ -14,8 +14,7 @@ export const CartPage = () => {
   // Lấy token để gọi API (lưu khi login)
   const token = localStorage.getItem("token");
 
-  useEffect(() => {
-    const fetchCart = async () => {
+  const fetchCart = async () => {
       try {
         const response = await fetch(`${API_BASE_URL}/cart`, {
           headers: {
@@ -34,8 +33,15 @@ export const CartPage = () => {
       }
     };
 
+
+  useEffect(() => {
     fetchCart();
   }, [token]);
+
+  //callback cap nhat cart
+  const handleCartChange = async () => {
+    await fetchCart();
+  };
 
   if (loading) return <SpinningLoading />;
 
@@ -52,7 +58,7 @@ export const CartPage = () => {
         <div className="container" data-aos="fade-up" data-aos-delay="100">
           <div className="row">
             <div className="col-lg-8" data-aos="fade-up" data-aos-delay="200">
-              <CartItems cart={cart}/>
+              <CartItems cart={cart} onCartChange={handleCartChange}/>
             </div>
 
             <div

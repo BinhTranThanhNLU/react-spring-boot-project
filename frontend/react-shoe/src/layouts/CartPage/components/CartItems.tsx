@@ -4,7 +4,7 @@ import { CartItem } from "./CartItem";
 import { CartItemProps } from "../../../models/CartItemProps";
 import { CartItemsProps } from "../../../types/CartItemsProps";
 
-export const CartItems:React.FC<CartItemsProps> = ({cart}) => {
+export const CartItems:React.FC<CartItemsProps> = ({cart, onCartChange}) => {
   if (!cart || cart.cartItems.length === 0) {
     return (
       <div className="alert alert-info text-center my-4" role="alert">
@@ -34,10 +34,10 @@ export const CartItems:React.FC<CartItemsProps> = ({cart}) => {
       </div>
 
       {cart.cartItems.map((item: CartItemProps, index) => (
-        <CartItem key={index} {...item} />
+        <CartItem key={index} {...item} onCartChange={onCartChange}/>
       ))}
 
-      <CartActions />
+      <CartActions onCartChange={onCartChange}/>
     </div>
   );
 };
