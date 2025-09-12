@@ -1,11 +1,9 @@
 package com.springboot.spring_boot_shoe.service;
 
 import com.springboot.spring_boot_shoe.dao.CartRepository;
+import com.springboot.spring_boot_shoe.dao.ProductVariantRepository;
 import com.springboot.spring_boot_shoe.dto.CartDTO;
-import com.springboot.spring_boot_shoe.entity.Cart;
-import com.springboot.spring_boot_shoe.entity.CartItem;
-import com.springboot.spring_boot_shoe.entity.Product;
-import com.springboot.spring_boot_shoe.entity.User;
+import com.springboot.spring_boot_shoe.entity.*;
 import com.springboot.spring_boot_shoe.mapper.CartMapper;
 import org.springframework.stereotype.Service;
 
@@ -17,10 +15,12 @@ public class CartService {
 
     private final CartRepository cartRepository;
     private final CartMapper cartMapper;
+    private final ProductVariantRepository productVariantRepository;
 
-    public CartService(CartRepository cartRepository, CartMapper cartMapper) {
+    public CartService(CartRepository cartRepository, CartMapper cartMapper, ProductVariantRepository productVariantRepository) {
         this.cartRepository = cartRepository;
         this.cartMapper = cartMapper;
+        this.productVariantRepository = productVariantRepository;
     }
 
     public CartDTO getCart(User user) {
@@ -52,21 +52,21 @@ public class CartService {
         return cartDTO;
     }
 
-    public CartDTO addItem(User user, Product product, int quantity) {
+    public CartDTO addItem(User user, ProductVariant variant, int quantity) {
         Cart cart = cartRepository.findByUser(user)
                 .orElseThrow(() -> new RuntimeException("Cart not found"));
 
-        // Kiểm tra item đã tồn tại trong giỏ chưa
+        // Kiểm tra item đã tồn tại trong giỏ chưa (variant)
         Optional<CartItem> existingItem = cart.getItems().stream()
-                .filter(i -> i.getProduct().getId() == product.getId())
+                .filter(item -> item.getVariant().getId() == variant.getId())
                 .findFirst();
 
         if (existingItem.isPresent()) {
             existingItem.get().setQuantity(existingItem.get().getQuantity() + quantity);
         } else {
             CartItem newItem = new CartItem();
-            newItem.setProduct(product);
-            newItem.setPrice(product.getPrice());
+            newItem.setVariant(variant);
+            newItem.setPrice(variant.getProduct().getDiscountedPrice());
             newItem.setQuantity(quantity);
             newItem.setCart(cart);
             cart.getItems().add(newItem);
@@ -76,11 +76,11 @@ public class CartService {
         return cartMapper.toDto(cart);
     }
 
-    public CartDTO removeItem(User user, int productId) {
+    public CartDTO removeItem(User user, int variantId) {
         Cart cart = cartRepository.findByUser(user)
                 .orElseThrow(() -> new RuntimeException("Cart not found"));
 
-        cart.getItems().removeIf(item -> item.getProduct().getId() == productId);
+        cart.getItems().removeIf(item -> item.getVariant().getId() == variantId);
         cartRepository.save(cart);
 
         return cartMapper.toDto(cart);
@@ -93,16 +93,16 @@ public class CartService {
         cartRepository.save(cart);
     }
 
-    public CartDTO updateQuantity(User user, int productId, int quantity) {
+    public CartDTO updateQuantity(User user, int variantId, int quantity) {
         Cart cart = cartRepository.findByUser(user)
                 .orElseThrow(() -> new RuntimeException("Cart not found"));
 
         cart.getItems().removeIf(item ->
-                item.getProduct().getId() == productId && quantity <= 0
+                item.getVariant().getId() == variantId && quantity <= 0
         );
 
         cart.getItems().forEach(item -> {
-            if(item.getProduct().getId() == productId && quantity > 0) {
+            if(item.getVariant().getId() == variantId && quantity > 0) {
                 item.setQuantity(quantity);
             }
         });

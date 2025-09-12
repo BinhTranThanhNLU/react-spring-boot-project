@@ -1,6 +1,6 @@
-import { Role } from "./Role";
+import { RoleModel } from "./RoleModel";
 
-export interface User {
+export interface UserModel {
   id: number;
   fullName: string;
   email: string;
@@ -8,5 +8,5 @@ export interface User {
   status: boolean;
   createdAt: string;
   updatedAt: string;
-  role: Role;
+  role: RoleModel;
 }

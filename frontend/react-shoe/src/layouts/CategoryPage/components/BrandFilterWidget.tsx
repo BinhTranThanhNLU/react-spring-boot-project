@@ -1,6 +1,6 @@
 import React, { useMemo, useState } from "react";
-import { BrandFilterWigetProps } from "../../../types/BrandFilterWidgetProps";
 import { normalizeText } from "../../utils/StringUtil";
+import { BrandFilterWigetProps } from "../../../types/CategoryPageFilterProps";
 
 export const BrandFilterWidget: React.FC<BrandFilterWigetProps> = ({
   brands,

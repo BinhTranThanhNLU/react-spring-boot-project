@@ -1,6 +1,6 @@
 import React from "react";
 import { API_BASE_URL } from "../../../config/config";
-import { CartActionsProps } from "../../../types/CartActionsProps";
+import { CartActionsProps } from "../../../types/CartProps";
 
 export const CartActions: React.FC<CartActionsProps> = ({ onCartChange }) => {
   const token = localStorage.getItem("token");

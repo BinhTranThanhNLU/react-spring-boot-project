@@ -20,8 +20,8 @@ public class CartItem {
     private BigDecimal price;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id_product")
-    private Product product;
+    @JoinColumn(name = "id_variant")
+    private ProductVariant variant;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_cart")
@@ -30,27 +30,30 @@ public class CartItem {
     public CartItem() {
     }
 
-    public CartItem(int id, int quantity, BigDecimal price, Product product, Cart cart) {
+    public CartItem(int id, int quantity, BigDecimal price, ProductVariant variant, Cart cart) {
         this.id = id;
         this.quantity = quantity;
         this.price = price;
-        this.product = product;
+        this.variant = variant;
         this.cart = cart;
     }
 
     public String getFirstVariantSize() {
+        Product product = variant.getProduct();
         return (product != null && product.getVariants() != null && !product.getVariants().isEmpty())
                 ? product.getVariants().get(0).getSize()
                 : null;
     }
 
     public String getFirstVariantColor() {
+        Product product = variant.getProduct();
         return (product != null && product.getVariants() != null && !product.getVariants().isEmpty())
                 ? product.getVariants().get(0).getColor()
                 : null;
     }
 
     public String getFirstImageUrl() {
+        Product product = variant.getProduct();
         return (product != null && product.getImages() != null && !product.getImages().isEmpty())
                 ? product.getImages().get(0).getImageUrl()
                 : null;
@@ -61,7 +64,6 @@ public class CartItem {
                 ? price.multiply(BigDecimal.valueOf(quantity))
                 : BigDecimal.ZERO;
     }
-
 
 
     public int getId() {
@@ -88,14 +90,6 @@ public class CartItem {
         this.price = price;
     }
 
-    public Product getProduct() {
-        return product;
-    }
-
-    public void setProduct(Product product) {
-        this.product = product;
-    }
-
     public Cart getCart() {
         return cart;
     }
@@ -104,13 +98,21 @@ public class CartItem {
         this.cart = cart;
     }
 
+    public ProductVariant getVariant() {
+        return variant;
+    }
+
+    public void setVariant(ProductVariant variant) {
+        this.variant = variant;
+    }
+
     @Override
     public String toString() {
         return "CartItem{" +
                 "id=" + id +
                 ", quantity=" + quantity +
                 ", price=" + price +
-                ", product=" + product +
+                ", variant=" + variant +
                 ", cart=" + cart +
                 '}';
     }

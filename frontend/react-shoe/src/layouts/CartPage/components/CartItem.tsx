@@ -1,9 +1,9 @@
 import React from "react";
-import { CartItemProps } from "../../../models/CartItemProps";
 import { API_BASE_URL } from "../../../config/config";
+import { CartItemModel } from "../../../models/CartItemModel";
 
-export const CartItem: React.FC<CartItemProps> = ({
-  idProduct,
+export const CartItem: React.FC<CartItemModel> = ({
+  idVariant,
   title,
   color,
   size,
@@ -17,7 +17,7 @@ export const CartItem: React.FC<CartItemProps> = ({
 
   const handleRemove = async () => {
     try {
-      const response = await fetch(`${API_BASE_URL}/cart/remove/${idProduct}`, {
+      const response = await fetch(`${API_BASE_URL}/cart/remove/${idVariant}`, {
         method: "DELETE",
         headers: {
           Authorization: `Bearer ${token}`,
@@ -33,6 +33,7 @@ export const CartItem: React.FC<CartItemProps> = ({
 
   const handleUpdateQuantity = async (newQuantity: number) => {
     try {
+      // nếu mới <= 0 thì backend sẽ xóa item
       const response = await fetch(`${API_BASE_URL}/cart`, {
         method: "PUT",
         headers: {
@@ -40,13 +41,14 @@ export const CartItem: React.FC<CartItemProps> = ({
           Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify({
-          productId: idProduct,
+          variantId: idVariant,
           quantity: newQuantity,
         }),
       });
 
       if (!response.ok) throw new Error("Failed to update cart");
       onCartChange();
+      window.dispatchEvent(new Event("cartUpdated"));
     } catch (error) {
       console.error(error);
     }

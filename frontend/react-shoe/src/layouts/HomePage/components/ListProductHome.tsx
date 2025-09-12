@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
-import { Product } from "../../../models/Product";
+import { ProductModel } from "../../../models/ProductModel";
 
-export const ListProductHome: React.FC<{ products: Product[] }> = ({products}) => {
+export const ListProductHome: React.FC<{ products: ProductModel[] }> = ({products}) => {
   return (
     <section id="best-sellers" className="best-sellers section py-5">
       <div className="container text-center mb-4">

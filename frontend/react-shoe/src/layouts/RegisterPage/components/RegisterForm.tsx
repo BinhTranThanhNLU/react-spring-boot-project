@@ -1,10 +1,10 @@
 import { useState } from "react";
-import { RegisterRequest } from "../../../models/RegisterRequest";
-import { User } from "../../../models/User";
+import { RegisterRequest } from "../../../modelRequest/RegisterRequest";
 import { API_BASE_URL } from "../../../config/config";
 import { Link } from "react-router-dom";
 import { Eye, EyeOff } from "lucide-react";
 import { FormHeader } from "../../utils/FormHeader";
+import { UserModel } from "../../../models/UserModel";
 
 export const RegisterForm = () => {
   const [formData, setFormData] = useState<RegisterRequest>({
@@ -19,7 +19,7 @@ export const RegisterForm = () => {
 
   const [isLoading, setIsLoading] = useState(false);
   const [httpError, setHttpError] = useState<string | null>(null);
-  const [success, setSuccess] = useState<User | null>(null);
+  const [success, setSuccess] = useState<UserModel | null>(null);
 
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
@@ -83,7 +83,7 @@ export const RegisterForm = () => {
         return;
       }
 
-      const data: User = await response.json();
+      const data: UserModel = await response.json();
       setSuccess(data);
       setFieldErrors({});
     } catch (err: any) {

@@ -4,6 +4,8 @@ public class AddCartItemRequest {
 
     private int productId;
     private int quantity;
+    private String color;
+    private String size;
 
     public AddCartItemRequest() {
     }
@@ -11,6 +13,13 @@ public class AddCartItemRequest {
     public AddCartItemRequest(int productId, int quantity) {
         this.productId = productId;
         this.quantity = quantity;
+    }
+
+    public AddCartItemRequest(int productId, int quantity, String color, String size) {
+        this.productId = productId;
+        this.quantity = quantity;
+        this.color = color;
+        this.size = size;
     }
 
     public int getProductId() {
@@ -28,4 +37,21 @@ public class AddCartItemRequest {
     public void setQuantity(int quantity) {
         this.quantity = quantity;
     }
+
+    public String getColor() {
+        return color;
+    }
+
+    public void setColor(String color) {
+        this.color = color;
+    }
+
+    public String getSize() {
+        return size;
+    }
+
+    public void setSize(String size) {
+        this.size = size;
+    }
+
 }

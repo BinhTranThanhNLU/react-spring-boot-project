@@ -1,7 +1,7 @@
-import { ProductImage } from "./ProductImage";
-import { ProductVariant } from "./ProductVariant";
+import { ProductImageModel } from "./ProductImageModel";
+import { ProductVariantModel } from "./ProductVariantModel";
 
-export interface Product {
+export interface ProductModel {
     id: number,
     name: string,
     price: number,
@@ -11,6 +11,6 @@ export interface Product {
     totalQuantity: number;
     brand: string | null,
     category: string | null,
-    images: ProductImage[];
-    variants: ProductVariant[];
+    images: ProductImageModel[];
+    variants: ProductVariantModel[];
 }

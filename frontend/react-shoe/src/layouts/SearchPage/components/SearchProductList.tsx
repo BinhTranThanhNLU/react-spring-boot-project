@@ -1,16 +1,16 @@
 import React, { useEffect, useState } from "react";
 import { ProductCard } from "../../utils/ProductCard";
-import { Product } from "../../../models/Product";
+import { ProductModel } from "../../../models/ProductModel";
 import { API_BASE_URL } from "../../../config/config";
 import { ErrorMessage } from "../../utils/ErrorMessage";
 import { SpinningLoading } from "../../utils/SpinningLoading";
 import { Pagination } from "../../utils/Pagination";
-import { ProductPageResponse } from "../../../models/ProductPageResponse";
 import { SearchProductListProps } from "../../../types/SearchProductListProps";
+import { ProductPageResponse } from "../../../modelResponse/ProductPageResponse";
 
 export const SearchProductList: React.FC<SearchProductListProps> = ({ keyword, page, setPage, onTotalResultsChange }) => {
 
-  const [products, setProducts] = useState<Product[]>([]);
+  const [products, setProducts] = useState<ProductModel[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [httpError, setHttpError] = useState<string | null>(null);
 

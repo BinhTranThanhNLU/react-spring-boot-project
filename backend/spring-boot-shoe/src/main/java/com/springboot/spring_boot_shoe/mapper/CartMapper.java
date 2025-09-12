@@ -15,10 +15,11 @@ public interface CartMapper {
     @Mapping(source = "subPrice", target = "subPrice")
     CartDTO toDto(Cart cart);
 
-    @Mapping(source = "product.id", target = "idProduct")
-    @Mapping(source = "product.name", target = "title")
-    @Mapping(source = "firstVariantSize", target = "size")
-    @Mapping(source = "firstVariantColor", target = "color")
+    @Mapping(source = "variant.id", target = "idVariant")
+    @Mapping(source = "variant.product.id", target = "idProduct")
+    @Mapping(source = "variant.product.name", target = "title")
+    @Mapping(source = "variant.size", target = "size")
+    @Mapping(source = "variant.color", target = "color")
     @Mapping(source = "firstImageUrl", target = "image")
     @Mapping(source = "totalPrice", target = "total")
     CartItemDTO toDto(CartItem cartItem);

@@ -2,13 +2,13 @@ import { useEffect, useState } from "react";
 import { PageTitle } from "../utils/PageTitle";
 import { CartItems } from "./components/CartItems";
 import { CartSummary } from "./components/CartSummary";
-import { Cart } from "../../models/Cart";
 import { API_BASE_URL } from "../../config/config";
 import { SpinningLoading } from "../utils/SpinningLoading";
+import { CartModel } from "../../models/CartModel";
 
 export const CartPage = () => {
   
-  const [cart, setCart] = useState<Cart | null>(null);
+  const [cart, setCart] = useState<CartModel | null>(null);
   const [loading, setLoading] = useState(true);
 
   // Lấy token để gọi API (lưu khi login)
@@ -24,7 +24,7 @@ export const CartPage = () => {
 
         if (!response.ok) throw new Error("Không thể tải giỏ hàng");
 
-        const data: Cart = await response.json();
+        const data: CartModel = await response.json();
         setCart(data);
       } catch (error) {
         console.error(error);

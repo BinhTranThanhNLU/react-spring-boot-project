@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from "react";
-import { Category } from "../../../models/Category";
+import { CategoryModel } from "../../../models/CategoryModel";
 import { API_BASE_URL } from "../../../config/config";
 import { SpinningLoading } from "../../utils/SpinningLoading";
 import { Link } from "react-router-dom";
 
 export const ProductCategoriesWidget: React.FC = () => {
-  const [categories, setCategories] = useState<Category[]>([]);
+  const [categories, setCategories] = useState<CategoryModel[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
@@ -15,7 +15,7 @@ export const ProductCategoriesWidget: React.FC = () => {
         const response = await fetch(url);
         if (!response.ok) throw new Error("Something went wrong !!!");
 
-        const data: Category[] = await response.json();
+        const data: CategoryModel[] = await response.json();
         setCategories(data);
       } catch (error) {
         console.error(error);

@@ -1,6 +1,6 @@
 import React from "react";
-import { CartSummaryProps } from "../../../types/CartSummaryProps";
 import { Link } from "react-router-dom";
+import { CartSummaryProps } from "../../../types/CartProps";
 
 export const CartSummary:React.FC<CartSummaryProps> = ({cart}) => {
 

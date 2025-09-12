@@ -1,6 +1,8 @@
 package com.springboot.spring_boot_shoe.controller;
 
 import com.springboot.spring_boot_shoe.dto.CartDTO;
+import com.springboot.spring_boot_shoe.entity.Product;
+import com.springboot.spring_boot_shoe.entity.ProductVariant;
 import com.springboot.spring_boot_shoe.entity.User;
 import com.springboot.spring_boot_shoe.requestmodel.AddCartItemRequest;
 import com.springboot.spring_boot_shoe.requestmodel.UpdateCartItemRequest;
@@ -9,6 +11,8 @@ import com.springboot.spring_boot_shoe.service.CartService;
 import com.springboot.spring_boot_shoe.service.ProductService;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @CrossOrigin(origins = "http://localhost:3000")
 @RestController
@@ -33,18 +37,25 @@ public class CartController {
     public CartDTO addItem(@AuthenticationPrincipal AppUserDetails appUserDetails,
                            @RequestBody AddCartItemRequest request) {
         User user = appUserDetails.getUser();
+
+        List<ProductVariant> variants = productService.getProductEntityById(request.getProductId()).getVariants();
+        ProductVariant variant = variants.stream()
+                .filter(v -> v.getColor().equalsIgnoreCase(request.getColor()) && v.getSize().equalsIgnoreCase(request.getSize()))
+                .findFirst()
+                .orElseThrow(() -> new RuntimeException("Product variant not found"));
+
         return cartService.addItem(
                 user,
-                productService.getProductEntityById(request.getProductId()),
+                variant,
                 request.getQuantity()
         );
     }
 
-    @DeleteMapping("/remove/{productId}")
+    @DeleteMapping("/remove/{variantId}")
     public CartDTO removeItem(@AuthenticationPrincipal AppUserDetails appUserDetails,
-                              @PathVariable int productId) {
+                              @PathVariable int variantId) {
         User user = appUserDetails.getUser();
-        return cartService.removeItem(user, productId);
+        return cartService.removeItem(user, variantId);
     }
 
     @DeleteMapping("/clear")
@@ -56,6 +67,6 @@ public class CartController {
     @PutMapping
     public CartDTO updateQuantity(@AuthenticationPrincipal AppUserDetails appUserDetails,@RequestBody UpdateCartItemRequest request) {
         User user = appUserDetails.getUser();
-        return cartService.updateQuantity(user, request.getProductId(), request.getQuantity());
+        return cartService.updateQuantity(user, request.getVariantId(), request.getQuantity());
     }
 }

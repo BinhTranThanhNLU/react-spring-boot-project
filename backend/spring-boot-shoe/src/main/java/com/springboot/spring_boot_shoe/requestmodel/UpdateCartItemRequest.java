@@ -2,23 +2,23 @@ package com.springboot.spring_boot_shoe.requestmodel;
 
 public class UpdateCartItemRequest {
 
-    private int productId;
+    private int variantId;
     private int quantity;
 
     public UpdateCartItemRequest() {
     }
 
-    public UpdateCartItemRequest(int productId, int quantity) {
-        this.productId = productId;
+    public UpdateCartItemRequest(int variantId, int quantity) {
+        this.variantId = variantId;
         this.quantity = quantity;
     }
 
-    public int getProductId() {
-        return productId;
+    public int getVariantId() {
+        return variantId;
     }
 
-    public void setProductId(int productId) {
-        this.productId = productId;
+    public void setVariantId(int variantId) {
+        this.variantId = variantId;
     }
 
     public int getQuantity() {

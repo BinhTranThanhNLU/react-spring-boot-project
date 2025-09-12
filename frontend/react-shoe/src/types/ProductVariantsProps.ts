@@ -1,5 +1,5 @@
-import { ProductVariant } from "../models/ProductVariant";
+import { ProductVariantModel } from "../models/ProductVariantModel";
 
 export interface ProductVariantsProps {
-    variants: ProductVariant[];
+    variants: ProductVariantModel[];
 }

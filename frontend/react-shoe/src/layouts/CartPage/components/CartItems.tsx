@@ -1,8 +1,7 @@
-import React, { useEffect, useState } from "react";
 import { CartActions } from "./CartActions";
 import { CartItem } from "./CartItem";
-import { CartItemProps } from "../../../models/CartItemProps";
-import { CartItemsProps } from "../../../types/CartItemsProps";
+import { CartItemsProps } from "../../../types/CartProps";
+import { CartItemModel } from "../../../models/CartItemModel";
 
 export const CartItems:React.FC<CartItemsProps> = ({cart, onCartChange}) => {
   if (!cart || cart.cartItems.length === 0) {
@@ -33,7 +32,7 @@ export const CartItems:React.FC<CartItemsProps> = ({cart, onCartChange}) => {
         </div>
       </div>
 
-      {cart.cartItems.map((item: CartItemProps, index) => (
+      {cart.cartItems.map((item: CartItemModel, index) => (
         <CartItem key={index} {...item} onCartChange={onCartChange}/>
       ))}
 

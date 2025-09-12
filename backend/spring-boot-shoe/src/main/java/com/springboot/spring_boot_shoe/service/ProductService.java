@@ -1,8 +1,10 @@
 package com.springboot.spring_boot_shoe.service;
 
 import com.springboot.spring_boot_shoe.dao.ProductRepository;
+import com.springboot.spring_boot_shoe.dao.ProductVariantRepository;
 import com.springboot.spring_boot_shoe.dto.ProductDTO;
 import com.springboot.spring_boot_shoe.entity.Product;
+import com.springboot.spring_boot_shoe.entity.ProductVariant;
 import com.springboot.spring_boot_shoe.mapper.ProductMapper;
 import com.springboot.spring_boot_shoe.responsemodel.ProductPageResponse;
 import org.springframework.data.domain.*;
@@ -17,11 +19,13 @@ import java.util.List;
 @Service
 public class ProductService {
 
-    private ProductRepository productRepository;
-    private ProductMapper productMapper;
+    private final ProductRepository productRepository;
+    private final ProductVariantRepository productVariantRepository;
+    private final ProductMapper productMapper;
 
-    public ProductService(ProductRepository productRepository, ProductMapper productMapper) {
+    public ProductService(ProductRepository productRepository, ProductVariantRepository productVariantRepository, ProductMapper productMapper) {
         this.productRepository = productRepository;
+        this.productVariantRepository = productVariantRepository;
         this.productMapper = productMapper;
     }
 
@@ -107,4 +111,8 @@ public class ProductService {
     }
 
 
+    public ProductVariant getProductVariantEntityById(int variantId) {
+        return productVariantRepository.findById(variantId)
+                .orElseThrow(() -> new RuntimeException("Product variant not found"));
+    }
 }

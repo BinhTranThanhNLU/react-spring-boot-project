@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { FilterBarProps } from "../../../types/FilterBarProps";
+import { FilterBarProps } from "../../../types/CategoryPageFilterProps";
 
 export const FilterBar:React.FC<FilterBarProps> = ({keyword, setKeyword}) => {
 

@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Product } from "../../models/Product";
+import { ProductModel } from "../../models/ProductModel";
 import { Categories } from "./components/Categories";
 import { Hero } from "./components/Hero";
 import { ListProductHome } from "./components/ListProductHome";
@@ -7,7 +7,7 @@ import { SpinningLoading } from "../utils/SpinningLoading";
 import { ErrorMessage } from "../utils/ErrorMessage";
 
 export const HomePage = () => {
-  const [products, setProducts] = useState<Product[]>([]);
+  const [products, setProducts] = useState<ProductModel[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [httpError, setHttpError] = useState(null);
 
@@ -21,7 +21,7 @@ export const HomePage = () => {
         throw new Error("Something went wrong !!");
       }
 
-      const data: Product[] = await response.json();
+      const data: ProductModel[] = await response.json();
       setProducts(data);
       setIsLoading(false);
     };

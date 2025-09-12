@@ -2,7 +2,6 @@ import React from "react";
 import { StarsReview } from "../../utils/StarsReview";
 import { BenefitsList } from "./BenefitsList";
 import { ProductActions } from "./ProductActions";
-import { ProductVariants } from "./ProductVariants";
 import { ProductInforProps } from "../../../types/ProductInforProps";
 
 export const ProductInfor: React.FC<ProductInforProps> = ({ product }) => {
@@ -71,10 +70,9 @@ export const ProductInfor: React.FC<ProductInforProps> = ({ product }) => {
           </div>
           <div className="quantity-left">Chỉ còn lại {product.totalQuantity} sản phẩm</div>
         </div>
-        {/* Product Variants Color And Size */}
-        <ProductVariants variants={product.variants} />
+        
         {/* Action */}
-        <ProductActions />
+        <ProductActions product={product}/>
         {/* Benefits List */}
         <BenefitsList />
       </div>

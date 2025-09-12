@@ -6,7 +6,7 @@ import { PageTitle } from "../utils/PageTitle";
 import { PricingRangeWidget } from "./components/PricingRangeWidget";
 import { ProductCategoriesWidget } from "./components/ProductCategoriesWidget";
 import { ProductList } from "./components/ProductList";
-import { Brand } from "../../models/Brand";
+import { BrandModel } from "../../models/BrandModel";
 import { API_BASE_URL } from "../../config/config";
 import { useParams, useSearchParams } from "react-router-dom";
 
@@ -16,7 +16,7 @@ export const CategoryPage = () => {
   const categoryId = id ? parseInt(id) : 1;
 
   //state brand
-  const [brandsList, setBrandsList] = useState<Brand[]>([]);
+  const [brandsList, setBrandsList] = useState<BrandModel[]>([]);
 
   //search params
   const [searchParams, setSearchParams] = useSearchParams();
@@ -45,7 +45,7 @@ export const CategoryPage = () => {
       try {
         const response = await fetch(`${API_BASE_URL}/brands`);
         if (!response.ok) throw new Error("Something went wrong");
-        const data: Brand[] = await response.json();
+        const data: BrandModel[] = await response.json();
         setBrandsList(data);
       } catch (error) {
         console.error(error);

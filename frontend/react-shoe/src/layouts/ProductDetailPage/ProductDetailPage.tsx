@@ -4,14 +4,14 @@ import { ProductGallery } from "./components/ProductGallery";
 import { ProductInfor } from "./components/ProductInfo";
 import { ProductTabs } from "./components/ProductTabs";
 import { useEffect, useState } from "react";
-import { Product } from "../../models/Product";
+import { ProductModel } from "../../models/ProductModel";
 import { API_BASE_URL } from "../../config/config";
 import { SpinningLoading } from "../utils/SpinningLoading";
 import { ErrorMessage } from "../utils/ErrorMessage";
 
 export const ProductDetailPage = () => {
   const { id } = useParams<{ id: string }>();
-  const [product, setProduct] = useState<Product | null>(null);
+  const [product, setProduct] = useState<ProductModel | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [httpError, setHttpError] = useState<string | null>(null);
 
@@ -25,7 +25,7 @@ export const ProductDetailPage = () => {
         const response = await fetch(url);
         if (!response.ok) throw new Error("Something went wrong !!!");
 
-        const data: Product = await response.json();
+        const data: ProductModel = await response.json();
         setProduct(data);
       } catch (error: any) {
         setHttpError(error.message);

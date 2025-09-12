@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { Product } from "../../../models/Product";
+import { ProductModel } from "../../../models/ProductModel";
 import { API_BASE_URL } from "../../../config/config";
 import { SpinningLoading } from "../../utils/SpinningLoading";
 import { ErrorMessage } from "../../utils/ErrorMessage";
@@ -8,7 +8,7 @@ import { StarsReview } from "../../utils/StarsReview";
 
 export const RelatedProductsCarousel = () => {
   const { id } = useParams<{ id: string }>();
-  const [relatedProducts, setRelatedProducts] = useState<Product[]>([]);
+  const [relatedProducts, setRelatedProducts] = useState<ProductModel[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [httpError, setHttpError] = useState<string | null>(null);
 
@@ -35,7 +35,7 @@ export const RelatedProductsCarousel = () => {
         const response = await fetch(url);
         if (!response.ok) throw new Error("Không thể tải sản phẩm liên quan");
 
-        const data: Product[] = await response.json();
+        const data: ProductModel[] = await response.json();
         setRelatedProducts(data);
       } catch (error: any) {
         setHttpError(error.message);
@@ -57,7 +57,7 @@ export const RelatedProductsCarousel = () => {
       data-bs-ride="carousel"
     >
       <div className="carousel-inner">
-        {slides.map((group: Product[], index: number) => (
+        {slides.map((group: ProductModel[], index: number) => (
           <div
             className={`carousel-item ${index === 0 ? "active" : ""}`}
             key={index}

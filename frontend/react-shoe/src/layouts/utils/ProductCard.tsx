@@ -1,10 +1,10 @@
 import React from "react";
-import { Product } from "../../models/Product";
 import { StarsReview } from "./StarsReview";
 import { Link, useNavigate } from "react-router-dom";
 import { API_BASE_URL } from "../../config/config";
+import { ProductModel } from "../../models/ProductModel";
 
-export const ProductCard: React.FC<{ product: Product }> = ({ product }) => {
+export const ProductCard: React.FC<{ product: ProductModel }> = ({ product }) => {
   const mainImage = product.images?.[0]?.imageUrl || "/assets/img/no-image.png";
   const hoverImage =
     product.images?.[0]?.imageUrl || "/assets/img/no-image.png";

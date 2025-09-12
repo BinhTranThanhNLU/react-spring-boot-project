@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { Category } from "../../models/Category";
+import { CategoryModel } from "../../models/CategoryModel";
 import { API_BASE_URL } from "../../config/config";
 import { SpinningLoading } from "../utils/SpinningLoading";
 import { ErrorMessage } from "../utils/ErrorMessage";
-import { User } from "../../models/User";
+import { UserModel } from "../../models/UserModel";
 
 export const Header = () => {
   //state category
-  const [categories, setCategories] = useState<Category[]>([]);
+  const [categories, setCategories] = useState<CategoryModel[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [httpError, setHttpError] = useState<string | null>(null);
 
@@ -16,7 +16,7 @@ export const Header = () => {
   const [searchTerm, setSearchTerm] = useState("");
 
   //state user
-  const [user, setUser] = useState<User | null>(null);
+  const [user, setUser] = useState<UserModel | null>(null);
 
   // state cart count
   const [cartCount, setCartCount] = useState(0);
@@ -53,7 +53,7 @@ export const Header = () => {
         const response = await fetch(url);
         if (!response.ok) throw new Error("Something went wrong !!!");
 
-        const data: Category[] = await response.json();
+        const data: CategoryModel[] = await response.json();
         setCategories(data);
       } catch (error: any) {
         setHttpError(error.message);

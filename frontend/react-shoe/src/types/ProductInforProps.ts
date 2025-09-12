@@ -1,5 +1,5 @@
-import { Product } from "../models/Product";
+import { ProductModel } from "../models/ProductModel";
 
 export interface ProductInforProps {
-    product: Product;
+    product: ProductModel;
 }

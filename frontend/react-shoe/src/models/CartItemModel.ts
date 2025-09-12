@@ -1,6 +1,5 @@
-import { Cart } from "./Cart";
-
-export interface CartItemProps {
+export interface CartItemModel {
+  idVariant: number;
   idProduct: number
   title: string;
   color: string;

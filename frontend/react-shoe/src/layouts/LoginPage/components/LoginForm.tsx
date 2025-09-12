@@ -2,8 +2,8 @@ import { useState } from "react";
 import { AuthInput } from "./AuthInput";
 import { Link, useNavigate } from "react-router-dom";
 import { API_BASE_URL } from "../../../config/config";
-import { LoginRequest } from "../../../models/LoginRequest";
-import { LoginResponse } from "../../../models/LoginResponse";
+import { LoginRequest } from "../../../modelRequest/LoginRequest";
+import { LoginResponse } from "../../../modelResponse/LoginResponse";
 
 export const LoginForm = () => {
   const [email, setEmail] = useState("");
