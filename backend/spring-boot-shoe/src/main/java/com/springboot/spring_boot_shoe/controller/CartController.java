@@ -39,16 +39,19 @@ public class CartController {
         User user = appUserDetails.getUser();
 
         List<ProductVariant> variants = productService.getProductEntityById(request.getProductId()).getVariants();
+
+        if (request.getColor() == null && request.getSize() == null) {
+            ProductVariant firstVariant = variants.get(0);
+            return cartService.addItem(user, firstVariant, request.getQuantity());
+        }
+
         ProductVariant variant = variants.stream()
-                .filter(v -> v.getColor().equalsIgnoreCase(request.getColor()) && v.getSize().equalsIgnoreCase(request.getSize()))
+                .filter(v -> v.getColor().equalsIgnoreCase(request.getColor())
+                        && v.getSize().equalsIgnoreCase(request.getSize()))
                 .findFirst()
                 .orElseThrow(() -> new RuntimeException("Product variant not found"));
 
-        return cartService.addItem(
-                user,
-                variant,
-                request.getQuantity()
-        );
+        return cartService.addItem(user, variant, request.getQuantity());
     }
 
     @DeleteMapping("/remove/{variantId}")
@@ -68,5 +71,12 @@ public class CartController {
     public CartDTO updateQuantity(@AuthenticationPrincipal AppUserDetails appUserDetails,@RequestBody UpdateCartItemRequest request) {
         User user = appUserDetails.getUser();
         return cartService.updateQuantity(user, request.getVariantId(), request.getQuantity());
+    }
+
+    @PutMapping("/shipping/{shippingMethodId}")
+    public CartDTO updateShippingMethod(@AuthenticationPrincipal AppUserDetails appUserDetails,
+                                        @PathVariable int shippingMethodId) {
+        User user = appUserDetails.getUser();
+        return cartService.updateShippingMethod(user, shippingMethodId);
     }
 }

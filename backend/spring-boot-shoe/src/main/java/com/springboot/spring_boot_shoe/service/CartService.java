@@ -2,6 +2,7 @@ package com.springboot.spring_boot_shoe.service;
 
 import com.springboot.spring_boot_shoe.dao.CartRepository;
 import com.springboot.spring_boot_shoe.dao.ProductVariantRepository;
+import com.springboot.spring_boot_shoe.dao.ShippingMethodRepository;
 import com.springboot.spring_boot_shoe.dto.CartDTO;
 import com.springboot.spring_boot_shoe.entity.*;
 import com.springboot.spring_boot_shoe.mapper.CartMapper;
@@ -16,11 +17,13 @@ public class CartService {
     private final CartRepository cartRepository;
     private final CartMapper cartMapper;
     private final ProductVariantRepository productVariantRepository;
+    private final ShippingMethodRepository shippingMethodRepository;
 
-    public CartService(CartRepository cartRepository, CartMapper cartMapper, ProductVariantRepository productVariantRepository) {
+    public CartService(CartRepository cartRepository, CartMapper cartMapper, ProductVariantRepository productVariantRepository, ShippingMethodRepository shippingMethodRepository) {
         this.cartRepository = cartRepository;
         this.cartMapper = cartMapper;
         this.productVariantRepository = productVariantRepository;
+        this.shippingMethodRepository = shippingMethodRepository;
     }
 
     public CartDTO getCart(User user) {
@@ -35,19 +38,20 @@ public class CartService {
         BigDecimal subPrice = cart.getSubPrice();
         BigDecimal discount = BigDecimal.ZERO;
 
-        //shipping
-        BigDecimal shippingFee;
-        if(subPrice.compareTo(new BigDecimal(3000000)) >= 0) {
-            shippingFee = BigDecimal.ZERO;
-        } else {
-            shippingFee = new BigDecimal("100000");
+        BigDecimal shippingFee = BigDecimal.ZERO;
+        if (cart.getShippingMethod() != null) {
+            shippingFee = calculateShippingFee(cart.getShippingMethod(), subPrice);
         }
+
 
         BigDecimal total = subPrice.add(shippingFee).subtract(discount);
 
         cartDTO.setShippingFee(shippingFee);
         cartDTO.setDiscount(discount);
         cartDTO.setTotal(total);
+        cartDTO.setShippingMethodId(
+                cart.getShippingMethod() != null ? cart.getShippingMethod().getId() : null
+        );
 
         return cartDTO;
     }
@@ -109,6 +113,27 @@ public class CartService {
 
         cartRepository.save(cart);
         return cartMapper.toDto(cart);
+    }
+
+    public CartDTO updateShippingMethod(User user, int shippingMethodId) {
+        Cart cart = cartRepository.findByUser(user)
+                .orElseThrow(() -> new RuntimeException("Cart not found"));
+
+        ShippingMethod method = shippingMethodRepository.findById(shippingMethodId)
+                .orElseThrow(() -> new RuntimeException("Shipping method not found"));
+
+        cart.setShippingMethod(method);
+        cartRepository.save(cart);
+
+        return getCart(user); // gọi lại để tính tổng mới
+    }
+
+    public BigDecimal calculateShippingFee(ShippingMethod method, BigDecimal subPrice) {
+        if (method.getMinOrderAmount() != null &&
+                subPrice.compareTo(method.getMinOrderAmount()) >= 0) {
+            return BigDecimal.ZERO; // free nếu >= min_order_amount
+        }
+        return method.getCost();
     }
 
 

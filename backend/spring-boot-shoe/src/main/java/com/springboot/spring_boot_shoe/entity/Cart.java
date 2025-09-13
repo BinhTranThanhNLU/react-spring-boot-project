@@ -23,6 +23,10 @@ public class Cart {
     @JoinColumn(name = "id_user")
     private User user;
 
+    @ManyToOne
+    @JoinColumn(name = "id_shipping_method")
+    private ShippingMethod shippingMethod;
+
     @Column(name = "created_at")
     private LocalDateTime createdAt;
 
@@ -84,6 +88,14 @@ public class Cart {
 
     public void setUpdatedAt(LocalDateTime updatedAt) {
         this.updatedAt = updatedAt;
+    }
+
+    public ShippingMethod getShippingMethod() {
+        return shippingMethod;
+    }
+
+    public void setShippingMethod(ShippingMethod shippingMethod) {
+        this.shippingMethod = shippingMethod;
     }
 
     @Override

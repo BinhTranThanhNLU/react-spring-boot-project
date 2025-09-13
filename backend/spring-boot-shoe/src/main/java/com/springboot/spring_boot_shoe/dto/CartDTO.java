@@ -9,6 +9,7 @@ public class CartDTO {
     private int idUser;
     private List<CartItemDTO> cartItems = new ArrayList<>();
     private BigDecimal subPrice;
+    private Integer shippingMethodId;
     private BigDecimal shippingFee;
     private BigDecimal discount;
     private BigDecimal total;
@@ -16,13 +17,22 @@ public class CartDTO {
     public CartDTO() {
     }
 
-    public CartDTO(int idUser, List<CartItemDTO> cartItems, BigDecimal subPrice, BigDecimal shippingFee, BigDecimal discount, BigDecimal total) {
+    public CartDTO(int idUser, List<CartItemDTO> cartItems, BigDecimal subPrice, Integer shippingMethodId, BigDecimal shippingFee, BigDecimal discount, BigDecimal total) {
         this.idUser = idUser;
         this.cartItems = cartItems;
         this.subPrice = subPrice;
+        this.shippingMethodId = shippingMethodId;
         this.shippingFee = shippingFee;
         this.discount = discount;
         this.total = total;
+    }
+
+    public Integer getShippingMethodId() {
+        return shippingMethodId;
+    }
+
+    public void setShippingMethodId(Integer shippingMethodId) {
+        this.shippingMethodId = shippingMethodId;
     }
 
     public List<CartItemDTO> getCartItems() {
@@ -72,4 +82,5 @@ public class CartDTO {
     public void setTotal(BigDecimal total) {
         this.total = total;
     }
+
 }

@@ -38,20 +38,6 @@ public class CartItem {
         this.cart = cart;
     }
 
-    public String getFirstVariantSize() {
-        Product product = variant.getProduct();
-        return (product != null && product.getVariants() != null && !product.getVariants().isEmpty())
-                ? product.getVariants().get(0).getSize()
-                : null;
-    }
-
-    public String getFirstVariantColor() {
-        Product product = variant.getProduct();
-        return (product != null && product.getVariants() != null && !product.getVariants().isEmpty())
-                ? product.getVariants().get(0).getColor()
-                : null;
-    }
-
     public String getFirstImageUrl() {
         Product product = variant.getProduct();
         return (product != null && product.getImages() != null && !product.getImages().isEmpty())

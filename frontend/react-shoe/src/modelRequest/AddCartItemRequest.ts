@@ -1,6 +1,6 @@
 export interface AddCartItemRequest {
     productId: number;
     quantity: number;
-    color: string;
-    size: string;
+    color?: string;
+    size?: string;
 }

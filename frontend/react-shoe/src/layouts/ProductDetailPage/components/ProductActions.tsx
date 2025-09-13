@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { ProductModel } from "../../../models/ProductModel";
 import { API_BASE_URL } from "../../../config/config";
+import { useNavigate } from "react-router-dom";
 
 export const ProductActions: React.FC<{ 
   product: ProductModel; 
@@ -18,9 +19,14 @@ export const ProductActions: React.FC<{
   );
   const [quantity, setQuantity] = useState<number>(1);
 
+  const navigate = useNavigate();
   const token = localStorage.getItem("token");
 
   const handleAddToCart = async () => {
+    if (!token) {
+      navigate("/login");
+      return;
+    }
     try {
       const body = {
         productId: product.id,

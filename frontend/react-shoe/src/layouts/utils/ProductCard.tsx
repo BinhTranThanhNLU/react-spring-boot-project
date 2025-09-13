@@ -31,14 +31,13 @@ export const ProductCard: React.FC<{ product: ProductModel }> = ({ product }) =>
         }),
       });
 
-      if (!response.ok) throw new Error("Không thể thêm vào giỏ hàng");
+      if (!response.ok) throw new Error("Failed to add to cart!!");
 
       const updatedCart = await response.json();
 
       // Cập nhật cartCount trong localStorage hoặc state (để Header nhận)
       localStorage.setItem("cart", JSON.stringify(updatedCart));
 
-      //alert("Thêm vào giỏ hàng thành công!");
       window.dispatchEvent(new Event("cartUpdated")); // báo cho Header biết
     } catch (error) {
       console.error(error);

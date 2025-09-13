@@ -5,37 +5,52 @@ import { CartSummary } from "./components/CartSummary";
 import { API_BASE_URL } from "../../config/config";
 import { SpinningLoading } from "../utils/SpinningLoading";
 import { CartModel } from "../../models/CartModel";
+import { ShippingMethodModel } from "../../models/ShippingMethodModel";
 
 export const CartPage = () => {
-  
   const [cart, setCart] = useState<CartModel | null>(null);
   const [loading, setLoading] = useState(true);
+
+  const [shippingMethods, setShippingMethods] = useState<ShippingMethodModel[]>(
+    []
+  );
 
   // Lấy token để gọi API (lưu khi login)
   const token = localStorage.getItem("token");
 
+  const fetchShippingMethods = async () => {
+    try {
+      const response = await fetch(`${API_BASE_URL}/shipping-methods`);
+      if (!response.ok) throw new Error("Không thể tải phương thức vận chuyển");
+      const data: ShippingMethodModel[] = await response.json();
+      setShippingMethods(data);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   const fetchCart = async () => {
-      try {
-        const response = await fetch(`${API_BASE_URL}/cart`, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
+    try {
+      const response = await fetch(`${API_BASE_URL}/cart`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
 
-        if (!response.ok) throw new Error("Không thể tải giỏ hàng");
+      if (!response.ok) throw new Error("Không thể tải giỏ hàng");
 
-        const data: CartModel = await response.json();
-        setCart(data);
-      } catch (error) {
-        console.error(error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
+      const data: CartModel = await response.json();
+      setCart(data);
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   useEffect(() => {
     fetchCart();
+    fetchShippingMethods();
   }, [token]);
 
   //callback cap nhat cart
@@ -58,7 +73,7 @@ export const CartPage = () => {
         <div className="container" data-aos="fade-up" data-aos-delay="100">
           <div className="row">
             <div className="col-lg-8" data-aos="fade-up" data-aos-delay="200">
-              <CartItems cart={cart} onCartChange={handleCartChange}/>
+              <CartItems cart={cart} onCartChange={handleCartChange} />
             </div>
 
             <div
@@ -66,7 +81,7 @@ export const CartPage = () => {
               data-aos="fade-up"
               data-aos-delay="300"
             >
-              <CartSummary cart={cart} />
+              <CartSummary cart={cart} shippingMethods={shippingMethods} onCartChange={handleCartChange}/>
             </div>
           </div>
         </div>

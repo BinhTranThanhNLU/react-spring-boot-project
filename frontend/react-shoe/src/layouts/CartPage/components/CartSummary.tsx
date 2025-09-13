@@ -1,8 +1,38 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { CartSummaryProps } from "../../../types/CartProps";
+import { API_BASE_URL } from "../../../config/config";
 
-export const CartSummary:React.FC<CartSummaryProps> = ({cart}) => {
+export const CartSummary: React.FC<CartSummaryProps> = ({
+  cart,
+  shippingMethods,
+  onCartChange
+}) => {
+  
+  const [selectedShipping, setSelectedShipping] = useState<number | null>(
+    cart?.shippingMethodId || null
+  );
+
+  const token = localStorage.getItem("token");
+
+  const handleShippingChange = async (shippingId: number) => {
+    setSelectedShipping(shippingId);
+
+    try {
+      await fetch(`${API_BASE_URL}/cart/shipping/${shippingId}`, {
+        method: "PUT",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      // Sau khi update shipping method, gọi lại API cart
+      onCartChange()
+    } catch (error) {
+      console.error("Lỗi khi cập nhật shipping method", error);
+    }
+  };
+
+
 
   if (!cart) return null;
 
@@ -12,57 +42,52 @@ export const CartSummary:React.FC<CartSummaryProps> = ({cart}) => {
 
       <div className="summary-item">
         <span className="summary-label">Tổng phụ</span>
-        <span className="summary-value">{cart.subPrice.toLocaleString("vi-VN")}đ</span>
+        <span className="summary-value">
+          {cart.subPrice.toLocaleString("vi-VN")}đ
+        </span>
       </div>
 
       <div className="summary-item shipping-item">
         <span className="summary-label">Vận chuyển</span>
         <div className="shipping-options">
-          <div className="form-check text-end">
-            <input
-              className="form-check-input"
-              type="radio"
-              name="shipping"
-              id="standard"
-              defaultChecked
-            />
-            <label className="form-check-label" htmlFor="standard">
-              Giao hàng tiêu chuẩn - {cart.shippingFee.toLocaleString("vi-VN")}đ
-            </label>
-          </div>
-          <div className="form-check text-end">
-            <input
-              className="form-check-input"
-              type="radio"
-              name="shipping"
-              id="express"
-            />
-            <label className="form-check-label" htmlFor="express">
-              Giao hàng nhanh - {cart.shippingFee.toLocaleString("vi-VN")}đ
-            </label>
-          </div>
-          <div className="form-check text-end">
-            <input
-              className="form-check-input"
-              type="radio"
-              name="shipping"
-              id="free"
-            />
-            <label className="form-check-label" htmlFor="free">
-              Miễn phí vận chuyển (Đơn hàng trên 1.000.000đ)
-            </label>
-          </div>
+          {shippingMethods.map((shipping) => (
+            <div className="form-check text-end" key={shipping.id}>
+              <input
+                className="form-check-input"
+                type="radio"
+                name="shipping"
+                id={`shipping-${shipping.id}`}
+                checked={selectedShipping === shipping.id}
+                onChange={() => handleShippingChange(shipping.id)}
+              />
+              <label
+                className="form-check-label"
+                htmlFor={`shipping-${shipping.id}`}
+              >
+                {shipping.name} -{" "}
+                {shipping.minOrderAmount &&
+                cart &&
+                cart.subPrice >= shipping.minOrderAmount
+                  ? "Miễn phí"
+                  : `${shipping.cost.toLocaleString("vi-VN")}đ`}
+              </label>
+            </div>
+          ))}
         </div>
       </div>
 
       <div className="summary-item discount">
         <span className="summary-label">Giảm giá</span>
-        <span className="summary-value">-{cart.discount.toLocaleString("vi-VN")}đ</span>
+        <span className="summary-value">
+          -{cart.discount.toLocaleString("vi-VN")}đ
+        </span>
       </div>
 
       <div className="summary-total">
         <span className="summary-label">Tổng</span>
-        <span className="summary-value">{cart.total.toLocaleString("vi-VN")}đ</span>
+        <span className="summary-value">
+          {cart.total.toLocaleString("vi-VN")}đ
+        </span>
       </div>
 
       <div className="checkout-button">
