@@ -42,6 +42,9 @@ public class User {
     @JoinColumn(name = "id_role")
     private Role role;
 
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Address address;
+
     public User() {
     }
 
