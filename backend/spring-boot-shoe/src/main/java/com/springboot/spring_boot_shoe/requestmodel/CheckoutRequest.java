@@ -26,13 +26,16 @@ public class CheckoutRequest {
     private String paymentMethod; // "COD","BANK_TRANSFER","MOMO","ZALOPAY","VNPAY"
 
     // order
+    private BigDecimal subtotal;
+    private BigDecimal shippingFee;
+    private BigDecimal discount;
     private BigDecimal totalAmount;
     private List<CheckoutItemDTO> items;
 
     public CheckoutRequest() {
     }
 
-    public CheckoutRequest(String nameCustomer, String emailCustomer, String phoneCustomer, Integer idAddress, String fullName, String phone, String street, String ward, String district, String city, String paymentMethod, BigDecimal totalAmount, List<CheckoutItemDTO> items) {
+    public CheckoutRequest(String nameCustomer, String emailCustomer, String phoneCustomer, Integer idAddress, String fullName, String phone, String street, String ward, String district, String city, String paymentMethod, BigDecimal subtotal, BigDecimal shippingFee, BigDecimal discount, BigDecimal totalAmount, List<CheckoutItemDTO> items) {
         this.nameCustomer = nameCustomer;
         this.emailCustomer = emailCustomer;
         this.phoneCustomer = phoneCustomer;
@@ -44,6 +47,9 @@ public class CheckoutRequest {
         this.district = district;
         this.city = city;
         this.paymentMethod = paymentMethod;
+        this.subtotal = subtotal;
+        this.shippingFee = shippingFee;
+        this.discount = discount;
         this.totalAmount = totalAmount;
         this.items = items;
     }
@@ -150,5 +156,29 @@ public class CheckoutRequest {
 
     public void setItems(List<CheckoutItemDTO> items) {
         this.items = items;
+    }
+
+    public BigDecimal getSubtotal() {
+        return subtotal;
+    }
+
+    public void setSubtotal(BigDecimal subtotal) {
+        this.subtotal = subtotal;
+    }
+
+    public BigDecimal getShippingFee() {
+        return shippingFee;
+    }
+
+    public void setShippingFee(BigDecimal shippingFee) {
+        this.shippingFee = shippingFee;
+    }
+
+    public BigDecimal getDiscount() {
+        return discount;
+    }
+
+    public void setDiscount(BigDecimal discount) {
+        this.discount = discount;
     }
 }

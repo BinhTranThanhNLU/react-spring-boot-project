@@ -6,6 +6,7 @@ import com.springboot.spring_boot_shoe.entity.Address;
 import com.springboot.spring_boot_shoe.mapper.AddressMapper;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -33,6 +34,12 @@ public class AddressService {
         Address address = addressMapper.toEntity(addressDTO);
         Address saved = addressRepository.save(address);
         return addressMapper.toDto(saved);
+    }
+
+    public Address createEntity(Address address) {
+        address.setCreatedAt(LocalDateTime.now());
+        address.setUpdatedAt(LocalDateTime.now());
+        return addressRepository.save(address);
     }
 
     public List<AddressDTO> getAddressByUserId(int userId) {

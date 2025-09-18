@@ -35,7 +35,7 @@ public class SecurityConfig {
                         .requestMatchers("/api/brands/**").permitAll()
                         .requestMatchers("/api/categories/**").permitAll()
                         .requestMatchers("/api/shipping-methods/**").permitAll()
-                        .requestMatchers("api/orders/**").permitAll()
+                        .requestMatchers("/api/orders/**").permitAll()
                         .requestMatchers(org.springframework.http.HttpMethod.OPTIONS, "/**").permitAll() // cho preflight
                         .anyRequest().authenticated()
                 )

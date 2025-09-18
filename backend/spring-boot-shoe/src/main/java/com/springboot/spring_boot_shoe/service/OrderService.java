@@ -8,6 +8,7 @@ import com.springboot.spring_boot_shoe.dto.PaymentDTO;
 import com.springboot.spring_boot_shoe.entity.*;
 import com.springboot.spring_boot_shoe.mapper.AddressMapper;
 import com.springboot.spring_boot_shoe.mapper.OrderMapper;
+import com.springboot.spring_boot_shoe.mapper.PaymentMapper;
 import com.springboot.spring_boot_shoe.requestmodel.CheckoutRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -27,8 +28,9 @@ public class OrderService {
     private final AuthService authService;
     private final OrderMapper orderMapper;
     private final AddressMapper addressMapper;
+    private final PaymentMapper paymentMapper;
 
-    public OrderService(OrderRepository orderRepository, PaymentService paymentService, AddressService addressService, ProductService productService, AuthService authService, OrderMapper orderMapper, AddressMapper addressMapper) {
+    public OrderService(OrderRepository orderRepository, PaymentService paymentService, AddressService addressService, ProductService productService, AuthService authService, OrderMapper orderMapper, AddressMapper addressMapper, PaymentMapper paymentMapper) {
         this.orderRepository = orderRepository;
         this.paymentService = paymentService;
         this.addressService = addressService;
@@ -36,6 +38,7 @@ public class OrderService {
         this.authService = authService;
         this.orderMapper = orderMapper;
         this.addressMapper = addressMapper;
+        this.paymentMapper = paymentMapper;
     }
 
     @Transactional
@@ -61,7 +64,7 @@ public class OrderService {
                 throw new RuntimeException("Out of stock for variant " + item.getIdVariant());
             }
 
-            BigDecimal price = variant.getProduct().getPrice();
+            BigDecimal price = variant.getProduct().getDiscountedPrice();
             BigDecimal line = price.multiply(new BigDecimal(item.getQuantity()));
             computedSubtotal = computedSubtotal.add(line);
 
@@ -73,12 +76,21 @@ public class OrderService {
         }
 
         // 3. so sánh giá tiền server và client
-//        if (computedTotal.compareTo(req.getTotalAmount()) != 0) {
-//            throw new RuntimeException("Total amount mismatch");
-//        }
+        BigDecimal computedTotal = computedSubtotal
+                .add(req.getShippingFee() != null ? req.getShippingFee() : BigDecimal.ZERO)
+                .subtract(req.getDiscount() != null ? req.getDiscount() : BigDecimal.ZERO);
 
-        if (computedSubtotal.compareTo(req.getTotalAmount()) != 0) {
+        System.out.println("Computed subtotal: " + computedSubtotal);
+        System.out.println("Client subtotal: " + req.getSubtotal());
+        System.out.println("Computed total: " + computedTotal);
+        System.out.println("Client total: " + req.getTotalAmount());
+
+        if (computedSubtotal.compareTo(req.getSubtotal()) != 0) {
             throw new RuntimeException("Subtotal mismatch");
+        }
+
+        if (req.getTotalAmount() != null && computedTotal.compareTo(req.getTotalAmount()) != 0) {
+            throw new RuntimeException("Total amount mismatch");
         }
 
         // 4. Tạo record payment (PENDING)
@@ -88,9 +100,10 @@ public class OrderService {
         } catch (IllegalArgumentException | NullPointerException e) {
             method = PaymentMethod.COD;
         }
-        PaymentDTO paymentDTO = paymentService.createPayment(new PaymentDTO(null, method.name(), PaymentStatus.PENDING.name(), null, computedSubtotal, LocalDateTime.now()));
-        Payment payment = new Payment();
-        payment.setId(paymentDTO.getId());
+        PaymentDTO paymentDTO = paymentService.createPayment(
+                new PaymentDTO(null, method.name(), PaymentStatus.PENDING.name(), null, computedTotal, LocalDateTime.now())
+        );
+        Payment payment = paymentMapper.toEntity(paymentDTO);
 
         // 5. Xử lý address, tạo mới nếu chưa có
         Address address;
@@ -105,8 +118,8 @@ public class OrderService {
             addr.setDistrict(req.getDistrict());
             addr.setProvince(req.getCity());
             addr.setUser(user);
-            AddressDTO saved = addressService.createAddress(addressMapper.toDto(addr));
-            address = addressMapper.toEntity(saved);
+
+            address = addressService.createEntity(addr);
         }
 
         // 6. Tạo entity Order
@@ -115,7 +128,7 @@ public class OrderService {
         order.setAddress(address);
         order.setPayment(payment);
         order.setStatus(OrderStatus.PENDING.name());
-        order.setTotalAmount(computedSubtotal);
+        order.setTotalAmount(computedTotal);
         order.setCreatedAt(LocalDateTime.now());
         order.setUpdatedAt(LocalDateTime.now());
 
