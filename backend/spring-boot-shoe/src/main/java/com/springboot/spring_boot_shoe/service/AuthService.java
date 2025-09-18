@@ -128,5 +128,9 @@ public class AuthService {
 
         tokenRepository.delete(token);
     }
+
+    public Optional<User> findById(Integer authenticatedUserId) {
+        return userRepository.findById(authenticatedUserId);
+    }
 }
 

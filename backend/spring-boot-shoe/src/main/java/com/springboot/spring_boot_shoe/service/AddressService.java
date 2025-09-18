@@ -29,7 +29,7 @@ public class AddressService {
         return addressMapper.toDto(address);
     }
 
-    public AddressDTO saveAddress(AddressDTO addressDTO) {
+    public AddressDTO createAddress(AddressDTO addressDTO) {
         Address address = addressMapper.toEntity(addressDTO);
         Address saved = addressRepository.save(address);
         return addressMapper.toDto(saved);
@@ -40,4 +40,8 @@ public class AddressService {
         return addressMapper.toDto(addresses);
     }
 
+    public Address getEntityByIdAndUserId(Integer idAddress, Integer authenticatedUserId) {
+        return addressRepository.findByUserIdAndId(authenticatedUserId, idAddress)
+                .orElseThrow(() -> new RuntimeException("Address not found"));
+    }
 }

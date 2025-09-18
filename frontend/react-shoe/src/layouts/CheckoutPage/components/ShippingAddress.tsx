@@ -74,20 +74,7 @@ export const ShippingAddress = () => {
             />
           </div>
         </div>
-        <div className="form-group">
-          <label htmlFor="country">Quốc gia</label>
-          <select className="form-select" id="country" name="country" required>
-            <option value="VN" selected>
-              Việt Nam
-            </option>
-            <option value="US">Hoa Kỳ</option>
-            <option value="CA">Canada</option>
-            <option value="UK">Vương Quốc Anh</option>
-            <option value="AU">Úc</option>
-            <option value="DE">Đức</option>
-            <option value="FR">Pháp</option>
-          </select>
-        </div>
+      
         <div className="form-check">
           <input
             className="form-check-input"

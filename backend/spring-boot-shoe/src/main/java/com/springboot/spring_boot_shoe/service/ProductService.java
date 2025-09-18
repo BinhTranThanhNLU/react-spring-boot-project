@@ -115,4 +115,9 @@ public class ProductService {
         return productVariantRepository.findById(variantId)
                 .orElseThrow(() -> new RuntimeException("Product variant not found"));
     }
+
+    public void decreaseStock(int idVariant, int quantity) {
+        ProductVariant productVariant = getProductVariantEntityById(idVariant);
+        productVariant.decrementStockQuantity(quantity);
+    }
 }

@@ -14,11 +14,13 @@ public class Payment {
     @Column(name = "id_payment")
     private int id;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "method")
-    private String method; //'COD', 'BANK_TRANSFER', 'MOMO', 'ZALOPAY', 'VNPAY'
+    private PaymentMethod method;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "status")
-    private String status; //'PENDING', 'SUCCESS', 'FAILED'
+    private PaymentStatus status;
 
     @Column(name = "transaction_id")
     private String transactionId;
@@ -32,7 +34,7 @@ public class Payment {
     public Payment() {
     }
 
-    public Payment(int id, String method, String status, String transactionId, BigDecimal amount, LocalDateTime date) {
+    public Payment(int id, PaymentMethod method, PaymentStatus status, String transactionId, BigDecimal amount, LocalDateTime date) {
         this.id = id;
         this.method = method;
         this.status = status;
@@ -49,21 +51,7 @@ public class Payment {
         this.id = id;
     }
 
-    public String getMethod() {
-        return method;
-    }
 
-    public void setMethod(String method) {
-        this.method = method;
-    }
-
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
-    }
 
     public String getTransactionId() {
         return transactionId;
@@ -87,6 +75,22 @@ public class Payment {
 
     public void setDate(LocalDateTime date) {
         this.date = date;
+    }
+
+    public PaymentMethod getMethod() {
+        return method;
+    }
+
+    public void setMethod(PaymentMethod method) {
+        this.method = method;
+    }
+
+    public PaymentStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(PaymentStatus status) {
+        this.status = status;
     }
 
     @Override

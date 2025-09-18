@@ -1,7 +1,6 @@
 package com.springboot.spring_boot_shoe.controller;
 
 import com.springboot.spring_boot_shoe.dto.CartDTO;
-import com.springboot.spring_boot_shoe.entity.Product;
 import com.springboot.spring_boot_shoe.entity.ProductVariant;
 import com.springboot.spring_boot_shoe.entity.User;
 import com.springboot.spring_boot_shoe.requestmodel.AddCartItemRequest;

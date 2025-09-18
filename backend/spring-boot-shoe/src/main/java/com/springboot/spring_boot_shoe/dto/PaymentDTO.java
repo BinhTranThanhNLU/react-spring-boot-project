@@ -4,7 +4,7 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 public class PaymentDTO {
-    private int id;
+    private Integer id;
     private String method;
     private String status;
     private String transactionId;
@@ -14,7 +14,7 @@ public class PaymentDTO {
     public PaymentDTO() {
     }
 
-    public PaymentDTO(int id, String method, String status, String transactionId, BigDecimal amount, LocalDateTime date) {
+    public PaymentDTO(Integer id, String method, String status, String transactionId, BigDecimal amount, LocalDateTime date) {
         this.id = id;
         this.method = method;
         this.status = status;
@@ -23,11 +23,11 @@ public class PaymentDTO {
         this.date = date;
     }
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 

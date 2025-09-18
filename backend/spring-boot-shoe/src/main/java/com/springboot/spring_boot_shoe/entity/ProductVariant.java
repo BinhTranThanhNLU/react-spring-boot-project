@@ -33,6 +33,12 @@ public class ProductVariant {
         this.stockQuantity = stockQuantity;
     }
 
+    public void decrementStockQuantity(int quantity) {
+        if(stockQuantity >= quantity) {
+            stockQuantity -= quantity;
+        }
+    }
+
     public int getId() {
         return id;
     }

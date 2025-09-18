@@ -3,9 +3,12 @@ package com.springboot.spring_boot_shoe.service;
 import com.springboot.spring_boot_shoe.dao.PaymentRepository;
 import com.springboot.spring_boot_shoe.dto.PaymentDTO;
 import com.springboot.spring_boot_shoe.entity.Payment;
+import com.springboot.spring_boot_shoe.entity.PaymentMethod;
+import com.springboot.spring_boot_shoe.entity.PaymentStatus;
 import com.springboot.spring_boot_shoe.mapper.PaymentMapper;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 @Service
@@ -21,12 +24,22 @@ public class PaymentService {
 
     public PaymentDTO createPayment(PaymentDTO dto) {
         Payment payment = paymentMapper.toEntity(dto);
-        payment.setStatus("PENDING");
+        if (dto.getStatus() == null) payment.setStatus(PaymentStatus.PENDING);
         payment.setDate(LocalDateTime.now());
         return paymentMapper.toDTO(paymentRepository.save(payment));
     }
 
-    public PaymentDTO updatePaymentStatus(int id, String status) {
+    public PaymentDTO createPayment(PaymentMethod method, BigDecimal amount, String transactionId) {
+        Payment payment = new Payment();
+        payment.setMethod(method);
+        payment.setAmount(amount);
+        payment.setTransactionId(transactionId);
+        payment.setStatus(PaymentStatus.PENDING);
+        payment.setDate(LocalDateTime.now());
+        return paymentMapper.toDTO(paymentRepository.save(payment));
+    }
+
+    public PaymentDTO updatePaymentStatus(int id, PaymentStatus status) {
         Payment payment = paymentRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Payment not found"));
         payment.setStatus(status);

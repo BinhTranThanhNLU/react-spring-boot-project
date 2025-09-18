@@ -1,12 +1,9 @@
 package com.springboot.spring_boot_shoe.entity;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Size;
-import jakarta.validation.constraints.Pattern;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @Table(name = "users")
@@ -43,12 +40,12 @@ public class User {
     private Role role;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Address address;
+    private List<Address> addresses;
 
     public User() {
     }
 
-    public User(int id, String fullName, String email, String phone, String password, boolean status, LocalDateTime createdAt, LocalDateTime updatedAt, Role role) {
+    public User(int id, String fullName, String email, String phone, String password, boolean status, LocalDateTime createdAt, LocalDateTime updatedAt, Role role, List<Address> addresses) {
         this.id = id;
         this.fullName = fullName;
         this.email = email;
@@ -58,6 +55,7 @@ public class User {
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
         this.role = role;
+        this.addresses = addresses;
     }
 
     public int getId() {
@@ -130,6 +128,14 @@ public class User {
 
     public void setRole(Role role) {
         this.role = role;
+    }
+
+    public List<Address> getAddresses() {
+        return addresses;
+    }
+
+    public void setAddresses(List<Address> addresses) {
+        this.addresses = addresses;
     }
 
     @Override
