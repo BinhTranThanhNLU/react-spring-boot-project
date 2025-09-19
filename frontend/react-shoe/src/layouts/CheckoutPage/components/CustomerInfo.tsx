@@ -1,4 +1,9 @@
-export const CustomerInfo = () => {
+import React from "react";
+import { CustomerInfoProps } from "../../../types/CheckoutProps";
+
+export const CustomerInfo: React.FC<CustomerInfoProps> = ({
+  onCheckoutChange,
+}) => {
   return (
     <div className="checkout-section" id="customer-info">
       <div className="section-header">
@@ -10,31 +15,35 @@ export const CustomerInfo = () => {
           <label htmlFor="full-name">Họ và Tên</label>
           <input
             className="form-control"
-            name="full"
-            id="full"
-            placeholder="Họ và Tên"
+            type="text"
+            name="nameCustomer"
+            id="nameCustomer"
+            placeholder="Họ tên"
+            onChange={onCheckoutChange}
             required
           />
         </div>
         <div className="form-group">
           <label htmlFor="email">Email</label>
           <input
-            type="email"
             className="form-control"
-            name="email"
-            id="email"
+            type="email"
+            name="emailCustomer"
+            id="emailCustomer"
             placeholder="Email"
+            onChange={onCheckoutChange}
             required
           />
         </div>
         <div className="form-group">
           <label htmlFor="phone">Số điện thoại</label>
           <input
-            type="tel"
             className="form-control"
-            name="phone"
-            id="phone"
+            type="tel"
+            name="phoneCustomer"
+            id="phoneCustomer"
             placeholder="Số điện thoại"
+            onChange={onCheckoutChange}
             required
           />
         </div>

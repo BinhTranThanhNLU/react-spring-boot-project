@@ -91,9 +91,9 @@ export const CartSummary: React.FC<CartSummaryProps> = ({
       </div>
 
       <div className="checkout-button">
-        <a href="#" className="btn btn-accent w-100">
+        <Link to="/checkout" className="btn btn-accent w-100">
           Thanh toán <i className="bi bi-arrow-right"></i>
-        </a>
+        </Link>
       </div>
 
       <div className="continue-shopping">

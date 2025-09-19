@@ -7,6 +7,7 @@ import com.springboot.spring_boot_shoe.dto.CartDTO;
 import com.springboot.spring_boot_shoe.entity.*;
 import com.springboot.spring_boot_shoe.mapper.CartMapper;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.util.Optional;
@@ -137,4 +138,8 @@ public class CartService {
     }
 
 
+    @Transactional
+    public void clearCartByUserId(Integer userId) {
+        cartRepository.deleteByUserId(userId);
+    }
 }

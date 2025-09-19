@@ -1,48 +1,42 @@
-export const OrderSummary = () => {
+import React from "react";
+import { OrderSummaryProps } from "../../../types/CheckoutProps";
+
+export const OrderSummary:React.FC<OrderSummaryProps> = ({cart}) => {
+
+  if (!cart) return null;
+
   return (
     <div className="order-summary" data-aos="fade-left" data-aos-delay="200">
       <div className="order-summary-header">
         <h3>Tóm tắt đơn hàng</h3>
-        <span className="item-count">2 sản phẩm</span>
+        <span className="item-count">{cart.cartItems.length}</span>
       </div>
 
       <div className="order-summary-content">
         <div className="order-items">
-          <div className="order-item">
+          {
+            cart.cartItems.map((item) => (
+               <div className="order-item">
             <div className="order-item-image">
               <img
-                src="../../assets/img/product/product-1.webp"
-                alt="Sản phẩm"
+                src={item.image}
+                alt={item.title}
                 className="img-fluid"
               />
             </div>
             <div className="order-item-details">
-              <h4>Lorem Ipsum Dolor</h4>
-              <p className="order-item-variant">Màu: Đen | Size: M</p>
+              <h4>{item.title}</h4>
+              <p className="order-item-variant">
+                Màu: {item.color} | Size: {item.size}
+              </p>
               <div className="order-item-price">
-                <span className="quantity">1 ×</span>
-                <span className="price">89.99₫</span>
+                <span className="quantity">{item.quantity} ×</span>
+                <span className="price">{item.price.toLocaleString("vi-VN")}</span>
               </div>
             </div>
           </div>
-
-          <div className="order-item">
-            <div className="order-item-image">
-              <img
-                src="../../assets/img/product/product-1.webp"
-                alt="Sản phẩm"
-                className="img-fluid"
-              />
-            </div>
-            <div className="order-item-details">
-              <h4>Sit Amet Consectetur</h4>
-              <p className="order-item-variant">Màu: Trắng | Size: L</p>
-              <div className="order-item-price">
-                <span className="quantity">2 ×</span>
-                <span className="price">59.99₫</span>
-              </div>
-            </div>
-          </div>
+            ))
+          }
         </div>
 
         <div className="promo-code">
@@ -62,19 +56,19 @@ export const OrderSummary = () => {
         <div className="order-totals">
           <div className="order-subtotal d-flex justify-content-between">
             <span>Tạm tính</span>
-            <span>209.97₫</span>
+            <span>{cart.subPrice.toLocaleString("vi-VN")}</span>
           </div>
           <div className="order-shipping d-flex justify-content-between">
             <span>Phí vận chuyển</span>
-            <span>9.99₫</span>
+            <span>{cart.shippingFee.toLocaleString("vi-VN")}</span>
           </div>
           <div className="order-tax d-flex justify-content-between">
-            <span>Thuế</span>
-            <span>21.00₫</span>
+            <span>Giảm</span>
+            <span>{cart.discount.toLocaleString("vi-VN")}</span>
           </div>
           <div className="order-total d-flex justify-content-between">
             <span>Tổng cộng</span>
-            <span>240.96₫</span>
+            <span>{cart.total.toLocaleString("vi-VN")}</span>
           </div>
         </div>
 

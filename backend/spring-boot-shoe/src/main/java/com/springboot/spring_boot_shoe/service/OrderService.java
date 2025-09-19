@@ -1,7 +1,6 @@
 package com.springboot.spring_boot_shoe.service;
 
 import com.springboot.spring_boot_shoe.dao.OrderRepository;
-import com.springboot.spring_boot_shoe.dto.AddressDTO;
 import com.springboot.spring_boot_shoe.dto.CheckoutItemDTO;
 import com.springboot.spring_boot_shoe.dto.OrderDTO;
 import com.springboot.spring_boot_shoe.dto.PaymentDTO;
@@ -25,16 +24,18 @@ public class OrderService {
     private final PaymentService paymentService;
     private final AddressService addressService;
     private final ProductService productService;
+    private final CartService cartService;
     private final AuthService authService;
     private final OrderMapper orderMapper;
     private final AddressMapper addressMapper;
     private final PaymentMapper paymentMapper;
 
-    public OrderService(OrderRepository orderRepository, PaymentService paymentService, AddressService addressService, ProductService productService, AuthService authService, OrderMapper orderMapper, AddressMapper addressMapper, PaymentMapper paymentMapper) {
+    public OrderService(OrderRepository orderRepository, PaymentService paymentService, AddressService addressService, ProductService productService, CartService cartService, AuthService authService, OrderMapper orderMapper, AddressMapper addressMapper, PaymentMapper paymentMapper) {
         this.orderRepository = orderRepository;
         this.paymentService = paymentService;
         this.addressService = addressService;
         this.productService = productService;
+        this.cartService = cartService;
         this.authService = authService;
         this.orderMapper = orderMapper;
         this.addressMapper = addressMapper;
@@ -143,6 +144,9 @@ public class OrderService {
 
         // 8. lưu order
         Order saved = orderRepository.save(order);
+
+        // 9. sau khi lưu order thành công
+        cartService.clearCartByUserId(user.getId());
 
         return orderMapper.toDto(saved);
     }

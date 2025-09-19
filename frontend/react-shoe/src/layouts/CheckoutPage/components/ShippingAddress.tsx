@@ -1,4 +1,9 @@
-export const ShippingAddress = () => {
+import React from "react";
+import { ShippingAddressProps } from "../../../types/CheckoutProps";
+
+export const ShippingAddress: React.FC<ShippingAddressProps> = ({
+  onCheckoutChange,
+}) => {
   return (
     <div className="checkout-section" id="shipping-address">
       <div className="section-header">
@@ -9,33 +14,36 @@ export const ShippingAddress = () => {
         <div className="form-group">
           <label htmlFor="fullname">Họ và tên</label>
           <input
-            type="text"
             className="form-control"
+            type="text"
             name="fullname"
             id="fullname"
             placeholder="Nhập họ và tên"
+            onChange={onCheckoutChange}
             required
           />
         </div>
         <div className="form-group">
           <label htmlFor="phone">Số điện thoại</label>
           <input
-            type="tel"
             className="form-control"
+            type="tel"
             name="phone"
             id="phone"
             placeholder="Nhập số điện thoại"
+            onChange={onCheckoutChange}
             required
           />
         </div>
         <div className="form-group">
           <label htmlFor="address">Địa chỉ (Số nhà, tên đường)</label>
           <input
-            type="text"
             className="form-control"
+            type="text"
             name="address"
             id="address"
             placeholder="Ví dụ: 123 Lê Lợi"
+            onChange={onCheckoutChange}
             required
           />
         </div>
@@ -43,38 +51,41 @@ export const ShippingAddress = () => {
           <div className="col-md-4 form-group">
             <label htmlFor="ward">Phường/Xã</label>
             <input
+              className="form-control"
               type="text"
               name="ward"
-              className="form-control"
               id="ward"
               placeholder="Phường/Xã"
+              onChange={onCheckoutChange}
               required
             />
           </div>
           <div className="col-md-4 form-group">
             <label htmlFor="district">Quận/Huyện</label>
             <input
+              className="form-control"
               type="text"
               name="district"
-              className="form-control"
               id="district"
               placeholder="Quận/Huyện"
+              onChange={onCheckoutChange}
               required
             />
           </div>
           <div className="col-md-4 form-group">
             <label htmlFor="city">Tỉnh/Thành phố</label>
             <input
+              className="form-control"
               type="text"
               name="city"
-              className="form-control"
               id="city"
               placeholder="Tỉnh/Thành phố"
+              onChange={onCheckoutChange}
               required
             />
           </div>
         </div>
-      
+
         <div className="form-check">
           <input
             className="form-check-input"

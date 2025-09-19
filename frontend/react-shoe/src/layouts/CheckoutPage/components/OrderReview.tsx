@@ -1,4 +1,6 @@
-export const OrderReview = () => {
+import { OrderReviewProps } from "../../../types/CheckoutProps";
+
+export const OrderReview: React.FC<OrderReviewProps> = ({ totalAmount }) => {
   return (
     <div className="checkout-section" id="order-review">
       <div className="section-header">
@@ -31,7 +33,9 @@ export const OrderReview = () => {
         <div className="place-order-container">
           <button type="submit" className="btn btn-primary place-order-btn">
             <span className="btn-text">Thanh toán</span>
-            <span className="btn-price">$240.96</span>
+            <span className="btn-price">
+              {totalAmount.toLocaleString("vi-VN")} ₫
+            </span>
           </button>
         </div>
       </div>
