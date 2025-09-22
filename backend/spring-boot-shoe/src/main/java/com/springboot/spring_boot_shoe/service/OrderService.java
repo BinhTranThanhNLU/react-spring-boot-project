@@ -81,10 +81,6 @@ public class OrderService {
                 .add(req.getShippingFee() != null ? req.getShippingFee() : BigDecimal.ZERO)
                 .subtract(req.getDiscount() != null ? req.getDiscount() : BigDecimal.ZERO);
 
-        System.out.println("Computed subtotal: " + computedSubtotal);
-        System.out.println("Client subtotal: " + req.getSubtotal());
-        System.out.println("Computed total: " + computedTotal);
-        System.out.println("Client total: " + req.getTotalAmount());
 
         if (computedSubtotal.compareTo(req.getSubtotal()) != 0) {
             throw new RuntimeException("Subtotal mismatch");
@@ -108,7 +104,7 @@ public class OrderService {
 
         // 5. Xử lý address, tạo mới nếu chưa có
         Address address;
-        if (req.getIdAddress() != null) {
+        if (req.getIdAddress() != null) { //can  nang cap
             address = addressService.getEntityByIdAndUserId(req.getIdAddress(), authenticatedUserId);
         } else {
             Address addr = new Address();
@@ -145,7 +141,12 @@ public class OrderService {
         // 8. lưu order
         Order saved = orderRepository.save(order);
 
-        // 9. sau khi lưu order thành công
+        //9. gan id order vao payment
+        Payment paymentEntity = saved.getPayment();
+        paymentEntity.setOrder(saved);
+        paymentService.savePaymentEntity(paymentEntity);
+
+        // 10. sau khi lưu order thành công
         cartService.clearCartByUserId(user.getId());
 
         return orderMapper.toDto(saved);
@@ -159,4 +160,28 @@ public class OrderService {
         order.setUpdatedAt(LocalDateTime.now());
         return orderMapper.toDto(orderRepository.save(order));
     }
+
+    public Order findById(int orderId) {
+        return orderRepository.findById(orderId)
+                .orElseThrow(() -> new RuntimeException("Order not found"));
+    }
+
+    @Transactional
+    public void markPaymentSuccess(int orderId) {
+        Order order = findById(orderId);
+        order.getPayment().setStatus(PaymentStatus.SUCCESS);
+        order.setStatus(OrderStatus.CONFIRMED.name());
+        orderRepository.save(order);
+    }
+
+    @Transactional
+    public void markPaymentFailed(int orderId) {
+        Order order = findById(orderId);
+        order.getPayment().setStatus(PaymentStatus.FAILED);
+        order.setStatus(OrderStatus.CANCELLED.name());
+        orderRepository.save(order);
+    }
+
+
+
 }

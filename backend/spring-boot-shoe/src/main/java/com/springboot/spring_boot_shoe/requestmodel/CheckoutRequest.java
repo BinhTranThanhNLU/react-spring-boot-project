@@ -1,7 +1,6 @@
 package com.springboot.spring_boot_shoe.requestmodel;
 
 import com.springboot.spring_boot_shoe.dto.CheckoutItemDTO;
-import com.springboot.spring_boot_shoe.entity.CartItem;
 
 import java.math.BigDecimal;
 import java.util.List;

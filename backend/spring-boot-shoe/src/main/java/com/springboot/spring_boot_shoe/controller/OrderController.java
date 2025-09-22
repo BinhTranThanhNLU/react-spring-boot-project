@@ -1,13 +1,18 @@
 package com.springboot.spring_boot_shoe.controller;
 
 import com.springboot.spring_boot_shoe.dto.OrderDTO;
+import com.springboot.spring_boot_shoe.entity.Order;
 import com.springboot.spring_boot_shoe.requestmodel.CheckoutRequest;
 import com.springboot.spring_boot_shoe.security.AppUserDetails;
 import com.springboot.spring_boot_shoe.service.OrderService;
+import com.springboot.spring_boot_shoe.service.VNPayService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.HashMap;
+import java.util.Map;
 
 @CrossOrigin(origins = "http://localhost:3000")
 @RestController
@@ -15,9 +20,11 @@ import org.springframework.web.bind.annotation.*;
 public class OrderController {
 
     private final OrderService orderService;
+    private final VNPayService vnPayService;
 
-    public OrderController(OrderService orderService) {
+    public OrderController(OrderService orderService, VNPayService vnPayService) {
         this.orderService = orderService;
+        this.vnPayService = vnPayService;
     }
 
     @PostMapping
@@ -30,6 +37,16 @@ public class OrderController {
     @PutMapping("/{id}/status")
     public ResponseEntity<OrderDTO> updateStatus(@PathVariable int id, @RequestParam String status) {
         return ResponseEntity.ok(orderService.updateOrderStatus(id, status));
+    }
+
+    @PostMapping("/{orderId}/vnpay")
+    public ResponseEntity<Map<String, String>> createVNPayPayment(@AuthenticationPrincipal AppUserDetails appUserDetails, @PathVariable int orderId) throws Exception {
+        Order order = orderService.findById(orderId);
+        long amount = order.getTotalAmount().longValue();
+        String url = vnPayService.createPaymentUrl(orderId, amount);
+        Map<String, String> response = new HashMap<>();
+        response.put("paymentUrl", url);
+        return ResponseEntity.ok(response);
     }
 
 }

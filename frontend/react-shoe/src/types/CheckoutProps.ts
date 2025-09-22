@@ -23,3 +23,7 @@ export interface CheckoutFormProps {
 export interface OrderSummaryProps {
   cart?: CartModel | null;
 }
+
+export interface PaymentMethodProps {
+  onCheckoutChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+}

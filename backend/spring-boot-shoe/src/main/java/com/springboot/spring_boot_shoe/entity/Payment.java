@@ -31,16 +31,21 @@ public class Payment {
     @Column(name = "date")
     private LocalDateTime date;
 
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "id_order")
+    private Order order;
+
     public Payment() {
     }
 
-    public Payment(int id, PaymentMethod method, PaymentStatus status, String transactionId, BigDecimal amount, LocalDateTime date) {
+    public Payment(int id, PaymentMethod method, PaymentStatus status, String transactionId, BigDecimal amount, LocalDateTime date, Order order) {
         this.id = id;
         this.method = method;
         this.status = status;
         this.transactionId = transactionId;
         this.amount = amount;
         this.date = date;
+        this.order = order;
     }
 
     public int getId() {
@@ -91,6 +96,14 @@ public class Payment {
 
     public void setStatus(PaymentStatus status) {
         this.status = status;
+    }
+
+    public Order getOrder() {
+        return order;
+    }
+
+    public void setOrder(Order order) {
+        this.order = order;
     }
 
     @Override

@@ -1,11 +1,10 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { CustomerInfo } from "./CustomerInfo";
 import { OrderReview } from "./OrderReview";
 import { PaymentMethod } from "./PaymentMethod";
 import { ShippingAddress } from "./ShippingAddress";
 import { CheckoutRequest } from "../../../modelRequest/CheckoutRequest";
 import { API_BASE_URL } from "../../../config/config";
-import { CartModel } from "../../../models/CartModel";
 import { CheckoutFormProps } from "../../../types/CheckoutProps";
 import { CheckoutSuccess } from "./CheckoutSuccess";
 
@@ -17,7 +16,6 @@ export const CheckoutForm:React.FC<CheckoutFormProps> = ({cart}) => {
 
   const [success, setSuccess] = useState(false);
   
-
   const token = localStorage.getItem("token");
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -50,6 +48,7 @@ export const CheckoutForm:React.FC<CheckoutFormProps> = ({cart}) => {
         })),
       } as CheckoutRequest;
 
+      //1. tao order
       const response = await fetch(`${API_BASE_URL}/orders`, {
         method: "POST",
         headers: {
@@ -64,10 +63,31 @@ export const CheckoutForm:React.FC<CheckoutFormProps> = ({cart}) => {
       };
 
       const order = await response.json();
-      alert("Đặt hàng thành công! Mã đơn hàng: " + order.id);
-      setSuccess(true);
 
-      window.dispatchEvent(new Event("cartUpdated"));
+      //2. neu chon cod => success
+      if(formData.paymentMethod === "COD") {
+        alert("Đặt hàng thành công! Mã đơn hàng: " + order.id);
+        setSuccess(true);
+        window.dispatchEvent(new Event("cartUpdated"));
+        return;
+      }
+
+      //3. neu chon vnpay
+      if(formData.paymentMethod === "VNPAY") {
+        const responseVnpay = await fetch(`${API_BASE_URL}/orders/${order.id}/vnpay`, {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${token}`
+          },
+        });
+
+        if(!responseVnpay.ok) {
+          throw new Error("Failed to create vnpay order!!!");
+        }
+
+        const data = await responseVnpay.json();
+        window.location.href = data.paymentUrl;
+      }
     } catch (error:any) {
       alert(error.message);      
     };
@@ -78,7 +98,7 @@ export const CheckoutForm:React.FC<CheckoutFormProps> = ({cart}) => {
       <form className="checkout-form" onSubmit={handleSubmit}>
         <CustomerInfo onCheckoutChange={handleChange}/>
         <ShippingAddress onCheckoutChange={handleChange}/>
-        <PaymentMethod/>
+        <PaymentMethod onCheckoutChange={handleChange}/>
         <OrderReview totalAmount={cart ? cart.total : 0}/>
       </form>
 

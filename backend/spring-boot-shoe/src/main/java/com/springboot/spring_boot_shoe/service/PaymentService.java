@@ -52,4 +52,8 @@ public class PaymentService {
                 .orElseThrow(() -> new RuntimeException("Payment not found"));
     }
 
+    public Payment savePaymentEntity(Payment payment) {
+        return paymentRepository.save(payment);
+    }
+
 }
