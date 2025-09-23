@@ -19,7 +19,7 @@ export const CheckoutPage = () => {
           headers: { Authorization: `Bearer ${token}` },
         });
         if (response.ok) {
-          const data = await response.json();
+          const data:CartModel = await response.json();
           setCart(data);
         }
       };

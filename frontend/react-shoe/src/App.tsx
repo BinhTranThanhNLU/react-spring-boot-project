@@ -16,6 +16,7 @@ import { ResetPasswordPage } from "./layouts/ResetPasswordPage/ResetPasswordPage
 import { GoogleCallback } from "./layouts/LoginPage/components/GoogleCallback";
 import { CartPage } from "./layouts/CartPage/CartPage";
 import { CheckoutPage } from "./layouts/CheckoutPage/CheckoutPage";
+import { AccountPage } from "./layouts/AccountPage/AccountPage";
 
 
 function App() {
@@ -45,6 +46,7 @@ function App() {
         <Route path="/reset-password" element={<ResetPasswordPage />} />
         <Route path="/cart" element={<CartPage />} />
         <Route path="/checkout" element={<CheckoutPage />} />
+        <Route path="/account" element={<AccountPage />} />
       </Routes>
       <Footer />
     </Router>

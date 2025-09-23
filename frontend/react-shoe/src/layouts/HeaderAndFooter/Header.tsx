@@ -188,34 +188,34 @@ export const Header = () => {
                     <p className="mb-0">Quản lý tài khoản &amp; đơn hàng</p>
                   </div>
                   <div className="dropdown-body">
-                    <a
+                    <Link
                       className="dropdown-item d-flex align-items-center"
-                      href="pages/user/account.html"
+                      to="/account"
                     >
                       <i className="bi bi-person-circle me-2"></i>
                       <span>Hồ sơ của tôi</span>
-                    </a>
-                    <a
+                    </Link>
+                    <Link
                       className="dropdown-item d-flex align-items-center"
-                      href="pages/user/account.html"
+                      to="/account"
                     >
                       <i className="bi bi-bag-check me-2"></i>
                       <span>Đơn hàng của tôi</span>
-                    </a>
-                    <a
+                    </Link>
+                    <Link
                       className="dropdown-item d-flex align-items-center"
-                      href="pages/user/account.html"
+                      to="/account"
                     >
                       <i className="bi bi-heart me-2"></i>
                       <span>Danh sách mong muốn của tôi</span>
-                    </a>
-                    <a
+                    </Link>
+                    <Link
                       className="dropdown-item d-flex align-items-center"
-                      href="pages/user/account.html"
+                      to="/account"
                     >
                       <i className="bi bi-gear me-2"></i>
                       <span>Cài đặt</span>
-                    </a>
+                    </Link>
                   </div>
                   <div className="dropdown-footer">
                     {user ? (
