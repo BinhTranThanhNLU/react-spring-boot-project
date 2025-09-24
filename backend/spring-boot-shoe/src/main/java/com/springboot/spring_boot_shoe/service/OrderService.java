@@ -182,6 +182,11 @@ public class OrderService {
         orderRepository.save(order);
     }
 
+    public List<OrderDTO> getOrdersByUserId(int userId) {
+        List<Order> orders = orderRepository.findByUserIdOrderByCreatedAtDesc(userId);
+        return orderMapper.toDtoList(orders);
+    }
+
 
 
 }

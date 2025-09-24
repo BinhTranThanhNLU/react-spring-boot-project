@@ -2,6 +2,7 @@ package com.springboot.spring_boot_shoe.controller;
 
 import com.springboot.spring_boot_shoe.dto.OrderDTO;
 import com.springboot.spring_boot_shoe.entity.Order;
+import com.springboot.spring_boot_shoe.entity.User;
 import com.springboot.spring_boot_shoe.requestmodel.CheckoutRequest;
 import com.springboot.spring_boot_shoe.security.AppUserDetails;
 import com.springboot.spring_boot_shoe.service.OrderService;
@@ -12,6 +13,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @CrossOrigin(origins = "http://localhost:3000")
@@ -47,6 +49,13 @@ public class OrderController {
         Map<String, String> response = new HashMap<>();
         response.put("paymentUrl", url);
         return ResponseEntity.ok(response);
+    }
+
+    @GetMapping("/my")
+    public ResponseEntity<List<OrderDTO>> getMyOrders(@AuthenticationPrincipal AppUserDetails appUserDetails) {
+        User user = appUserDetails.getUser();
+        List<OrderDTO> orders = orderService.getOrdersByUserId(user.getId());
+        return ResponseEntity.ok(orders);
     }
 
 }

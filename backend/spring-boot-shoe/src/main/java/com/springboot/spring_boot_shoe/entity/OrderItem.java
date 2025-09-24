@@ -37,6 +37,10 @@ public class OrderItem {
         this.variant = variant;
     }
 
+    public String getFirstProductImage() {
+        return variant.getProduct().getImages().get(0).getImageUrl();
+    }
+
     public int getId() {
         return id;
     }

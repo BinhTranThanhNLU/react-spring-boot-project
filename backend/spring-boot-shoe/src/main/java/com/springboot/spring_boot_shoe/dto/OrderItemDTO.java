@@ -8,6 +8,7 @@ public class OrderItemDTO {
     private Integer idVariant;
     private Integer quantity;
     private BigDecimal price;
+    private String image;
 
     public OrderItemDTO() {
     }
@@ -50,5 +51,13 @@ public class OrderItemDTO {
 
     public void setIdVariant(int idVariant) {
         this.idVariant = idVariant;
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
     }
 }

@@ -1,4 +1,7 @@
-export const ProfileMenu = () => {
+import React from "react";
+import { ProfileMenuProps } from "../../../types/AccountProps";
+
+export const ProfileMenu:React.FC<ProfileMenuProps> = ({orders}) => {
   return (
     <div className="col-lg-3">
       <div className="profile-menu collapse d-lg-block" id="profileMenu">
@@ -6,7 +9,7 @@ export const ProfileMenu = () => {
         <div className="user-info" data-aos="fade-right">
           <div className="user-avatar">
             <img
-              src="../../assets/img/person/person-f-1.webp"
+              src="/assets/img/avatar.png"
               alt="Profile"
               loading="lazy"
             />
@@ -32,7 +35,7 @@ export const ProfileMenu = () => {
               >
                 <i className="bi bi-box-seam"></i>
                 <span>Đơn hàng của tôi</span>
-                <span className="badge">3</span>
+                <span className="badge">{orders?.length ?? 0}</span>
               </a>
             </li>
             <li className="nav-item">

@@ -1,7 +1,9 @@
+import React from "react";
 import { OrderCard } from "./OrderCard";
 import { Pagination } from "./Pagination";
+import { OrderTabProps } from "../../../types/AccountProps";
 
-export const OrderTab = () => {
+export const OrderTab: React.FC<OrderTabProps> = ({ orders }) => {
   return (
     <div className="tab-pane fade show active" id="orders">
       <div className="section-header" data-aos="fade-up">
@@ -48,9 +50,15 @@ export const OrderTab = () => {
       </div>
 
       <div className="orders-grid">
-        <OrderCard />
+        {orders && orders.length > 0 ? (
+          orders.map((order) => <OrderCard key={order.id} order={order} />)
+        ) : (
+          <div className="alert alert-info text-center my-4" role="alert">
+            <i className="bi bi-cart-x fs-4 me-2"></i>
+            Bạn chưa có đơn hàng nào!
+          </div>
+        )}
       </div>
-
       <Pagination />
     </div>
   );

@@ -11,6 +11,7 @@ import java.util.List;
 public interface OrderItemMapper {
 
     @Mapping(source = "variant.id", target = "idVariant")
+    @Mapping(target = "image", expression = "java(entity.getFirstProductImage())")
     OrderItemDTO toDto(OrderItem entity);
 
     @Mapping(source = "idVariant", target = "variant.id")
