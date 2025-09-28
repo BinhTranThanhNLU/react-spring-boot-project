@@ -11,3 +11,11 @@ export interface OrderTabProps {
 export interface OrderCardProps {
     order: OrderModel;
 }
+
+export interface TrackingOrderProps {
+    order: OrderModel;
+}
+
+export interface OrderDetailProps {
+    order: OrderModel;
+}

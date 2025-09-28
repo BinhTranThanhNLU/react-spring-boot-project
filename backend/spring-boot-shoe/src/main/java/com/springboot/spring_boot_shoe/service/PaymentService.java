@@ -47,9 +47,9 @@ public class PaymentService {
     }
 
     public PaymentDTO getPaymentById(int id) {
-        return paymentRepository.findById(id)
-                .map(paymentMapper::toDTO)
+        Payment payment = paymentRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Payment not found"));
+        return paymentMapper.toDTO(payment);
     }
 
     public Payment savePaymentEntity(Payment payment) {

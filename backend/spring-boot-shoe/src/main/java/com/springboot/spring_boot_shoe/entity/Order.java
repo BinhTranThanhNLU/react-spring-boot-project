@@ -33,6 +33,10 @@ public class Order {
     @JoinColumn(name = "id_payment")
     private Payment payment;
 
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_shipping_method")
+    private ShippingMethod shippingMethod;
+
     @Column(name = "created_at")
     private LocalDateTime createdAt;
 
@@ -45,16 +49,30 @@ public class Order {
     public Order() {
     }
 
-    public Order(int id, BigDecimal totalAmount, String status, User user, Address address, Payment payment, LocalDateTime createdAt, LocalDateTime updatedAt, List<OrderItem> items) {
+    public Order(int id, BigDecimal totalAmount, String status, User user, Address address, Payment payment, ShippingMethod shippingMethod, LocalDateTime createdAt, LocalDateTime updatedAt, List<OrderItem> items) {
         this.id = id;
         this.totalAmount = totalAmount;
         this.status = status;
         this.user = user;
         this.address = address;
         this.payment = payment;
+        this.shippingMethod = shippingMethod;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
         this.items = items;
+    }
+
+    public BigDecimal getSubPrice() {
+        BigDecimal subPrice = new BigDecimal(0);
+        for (OrderItem item : items) {
+            subPrice = subPrice.add(item.getPrice());
+        }
+        return subPrice;
+    }
+
+    public BigDecimal getDiscount() {
+        BigDecimal discount = new BigDecimal(0);
+        return discount;
     }
 
     public int getId() {
@@ -127,6 +145,14 @@ public class Order {
 
     public void setPayment(Payment payment) {
         this.payment = payment;
+    }
+
+    public ShippingMethod getShippingMethod() {
+        return shippingMethod;
+    }
+
+    public void setShippingMethod(ShippingMethod shippingMethod) {
+        this.shippingMethod = shippingMethod;
     }
 
     @Override

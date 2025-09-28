@@ -12,8 +12,8 @@ export interface CheckoutRequest {
 
   // address
   idAddress?: number;
-  fullName: string;
-  phone: string;
+  fullName: string; // ten nguoi nhan
+  phone: string; //so dien thoai nguoi nhan
   street: string;
   ward: string;
   district: string;
@@ -21,6 +21,8 @@ export interface CheckoutRequest {
 
   // payment
   paymentMethod: "COD" | "BANK_TRANSFER" | "MOMO" | "ZALOPAY" | "VNPAY";
+
+  shippingMethodId?: number;
 
   // order
   subtotal: number;

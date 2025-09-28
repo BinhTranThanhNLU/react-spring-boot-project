@@ -12,19 +12,19 @@ export const ShippingAddress: React.FC<ShippingAddressProps> = ({
       </div>
       <div className="section-content">
         <div className="form-group">
-          <label htmlFor="fullname">Họ và tên</label>
+          <label htmlFor="fullname">Họ và tên người nhận</label>
           <input
             className="form-control"
             type="text"
-            name="fullname"
-            id="fullname"
+            name="fullName"
+            id="fullName"
             placeholder="Nhập họ và tên"
             onChange={onCheckoutChange}
             required
           />
         </div>
         <div className="form-group">
-          <label htmlFor="phone">Số điện thoại</label>
+          <label htmlFor="phone">Số điện thoại người nhận</label>
           <input
             className="form-control"
             type="tel"
@@ -36,12 +36,12 @@ export const ShippingAddress: React.FC<ShippingAddressProps> = ({
           />
         </div>
         <div className="form-group">
-          <label htmlFor="address">Địa chỉ (Số nhà, tên đường)</label>
+          <label htmlFor="street">Địa chỉ (Số nhà, tên đường)</label>
           <input
             className="form-control"
             type="text"
-            name="address"
-            id="address"
+            name="street"
+            id="street"
             placeholder="Ví dụ: 123 Lê Lợi"
             onChange={onCheckoutChange}
             required

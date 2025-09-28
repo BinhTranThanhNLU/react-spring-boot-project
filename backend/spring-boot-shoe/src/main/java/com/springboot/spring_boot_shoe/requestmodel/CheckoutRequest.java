@@ -14,8 +14,8 @@ public class CheckoutRequest {
 
     // address (nếu user muốn dùng địa chỉ mới)
     private Integer idAddress; // nếu null -> tạo mới
-    private String fullName;
-    private String phone;
+    private String fullName; //ten nguoi nhan
+    private String phone; //sdt nguoi nhan
     private String street;
     private String ward;
     private String district;
@@ -23,6 +23,9 @@ public class CheckoutRequest {
 
     // payment
     private String paymentMethod; // "COD","BANK_TRANSFER","MOMO","ZALOPAY","VNPAY"
+
+    //shipping-method
+    private Integer shippingMethodId;
 
     // order
     private BigDecimal subtotal;
@@ -179,5 +182,13 @@ public class CheckoutRequest {
 
     public void setDiscount(BigDecimal discount) {
         this.discount = discount;
+    }
+
+    public Integer getShippingMethodId() {
+        return shippingMethodId;
+    }
+
+    public void setShippingMethodId(Integer shippingMethodId) {
+        this.shippingMethodId = shippingMethodId;
     }
 }

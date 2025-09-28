@@ -1,6 +1,9 @@
-export const TrackingOrder = () => {
+import React from "react";
+import { TrackingOrderProps } from "../../../types/AccountProps";
+
+export const TrackingOrder:React.FC<TrackingOrderProps> = ({order}) => {
   return (
-    <div className="collapse tracking-info" id="tracking1">
+    <div className="collapse tracking-info" id={"tracking-" + order.id}>
       <div className="tracking-timeline">
         <div className="timeline-item completed">
           <div className="timeline-icon">

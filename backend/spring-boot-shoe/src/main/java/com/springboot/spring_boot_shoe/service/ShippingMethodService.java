@@ -24,4 +24,8 @@ public class ShippingMethodService {
         return shippingMethodMapper.toDtoList(shippingMethodRepository.findAll());
     }
 
+    public ShippingMethod getMethodById(int id) {
+        return shippingMethodRepository.findById(id).orElse(null);
+    }
+
 }

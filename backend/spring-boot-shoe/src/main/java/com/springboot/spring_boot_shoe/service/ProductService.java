@@ -120,4 +120,10 @@ public class ProductService {
         ProductVariant productVariant = getProductVariantEntityById(idVariant);
         productVariant.decrementStockQuantity(quantity);
     }
+
+    public ProductDTO getProductByIdVariant(int idVariant) {
+        ProductVariant variant = getProductVariantEntityById(idVariant);
+        Product product = variant.getProduct();
+        return productMapper.toDto(product);
+    }
 }

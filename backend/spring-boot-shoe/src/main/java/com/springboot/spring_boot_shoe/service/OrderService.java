@@ -23,6 +23,7 @@ public class OrderService {
     private final OrderRepository orderRepository;
     private final PaymentService paymentService;
     private final AddressService addressService;
+    private final ShippingMethodService shippingMethodService;
     private final ProductService productService;
     private final CartService cartService;
     private final AuthService authService;
@@ -30,10 +31,11 @@ public class OrderService {
     private final AddressMapper addressMapper;
     private final PaymentMapper paymentMapper;
 
-    public OrderService(OrderRepository orderRepository, PaymentService paymentService, AddressService addressService, ProductService productService, CartService cartService, AuthService authService, OrderMapper orderMapper, AddressMapper addressMapper, PaymentMapper paymentMapper) {
+    public OrderService(OrderRepository orderRepository, PaymentService paymentService, AddressService addressService, ShippingMethodService shippingMethodService, ProductService productService, CartService cartService, AuthService authService, OrderMapper orderMapper, AddressMapper addressMapper, PaymentMapper paymentMapper) {
         this.orderRepository = orderRepository;
         this.paymentService = paymentService;
         this.addressService = addressService;
+        this.shippingMethodService = shippingMethodService;
         this.productService = productService;
         this.cartService = cartService;
         this.authService = authService;
@@ -103,21 +105,17 @@ public class OrderService {
         Payment payment = paymentMapper.toEntity(paymentDTO);
 
         // 5. Xử lý address, tạo mới nếu chưa có
-        Address address;
-        if (req.getIdAddress() != null) { //can  nang cap
-            address = addressService.getEntityByIdAndUserId(req.getIdAddress(), authenticatedUserId);
-        } else {
-            Address addr = new Address();
-            addr.setFullName(req.getFullName());
-            addr.setPhone(req.getPhone());
-            addr.setStreet(req.getStreet());
-            addr.setWard(req.getWard());
-            addr.setDistrict(req.getDistrict());
-            addr.setProvince(req.getCity());
-            addr.setUser(user);
+        Address address = new Address();
 
-            address = addressService.createEntity(addr);
-        }
+        address.setFullName(req.getFullName());
+        address.setPhone(req.getPhone());
+        address.setStreet(req.getStreet());
+        address.setWard(req.getWard());
+        address.setDistrict(req.getDistrict());
+        address.setProvince(req.getCity());
+        address.setUser(user);
+
+        address = addressService.createEntity(address);
 
         // 6. Tạo entity Order
         Order order = new Order();
@@ -133,20 +131,24 @@ public class OrderService {
         order.setItems(orderItems);
         orderItems.forEach(i -> i.setOrder(order));
 
-        // 7. giảm số lượng stock
+        //7. shipping-method
+        ShippingMethod shippingMethod = shippingMethodService.getMethodById(req.getShippingMethodId());
+        order.setShippingMethod(shippingMethod);
+
+        // 8. giảm số lượng stock
         for (OrderItem oi : orderItems) {
             productService.decreaseStock(oi.getVariant().getId(), oi.getQuantity());
         }
 
-        // 8. lưu order
+        // 9. lưu order
         Order saved = orderRepository.save(order);
 
-        //9. gan id order vao payment
+        //10. gan id order vao payment
         Payment paymentEntity = saved.getPayment();
         paymentEntity.setOrder(saved);
         paymentService.savePaymentEntity(paymentEntity);
 
-        // 10. sau khi lưu order thành công
+        // 11. sau khi lưu order thành công
         cartService.clearCartByUserId(user.getId());
 
         return orderMapper.toDto(saved);

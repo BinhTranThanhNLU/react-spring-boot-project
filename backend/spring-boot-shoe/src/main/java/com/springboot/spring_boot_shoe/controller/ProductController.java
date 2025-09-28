@@ -59,5 +59,11 @@ public class ProductController {
                                                @RequestParam(defaultValue = "8") int limit) {
         return productService.getRelatedProducts(id, limit);
     }
+
+//    @GetMapping("/products/variant/{variantId}")
+//    public ResponseEntity<ProductDTO> getProductByIdVarariant(@PathVariable int idVariant) {
+//        ProductDTO productDTO = productService.getProductByIdVariant(idVariant);
+//        return ResponseEntity.ok(productDTO);
+//    }
 }
 

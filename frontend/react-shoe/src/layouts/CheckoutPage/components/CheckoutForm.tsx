@@ -38,6 +38,7 @@ export const CheckoutForm:React.FC<CheckoutFormProps> = ({cart}) => {
     try {
      const checkoutRequest: CheckoutRequest = {
         ...formData,
+        shippingMethodId: cart.shippingMethodId,
         subtotal: cart.subPrice,
         shippingFee: cart.shippingFee,
         discount: cart.discount,

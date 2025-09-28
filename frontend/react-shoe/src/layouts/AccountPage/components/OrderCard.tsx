@@ -68,8 +68,8 @@ export const OrderCard: React.FC<OrderCardProps> = ({ order }) => {
             </button>
           </div>
 
-          <TrackingOrder />
-          <OrderDetail />
+          <TrackingOrder order={order}/>
+          <OrderDetail order={order}/>
         </div>
       );
       break;
