@@ -1,4 +1,7 @@
-export const SettingTab = () => {
+import React from "react";
+import { SettingTabProps } from "../../../types/AccountProps";
+
+export const SettingTab:React.FC<SettingTabProps> = ({user}) => {
   return (
     <div className="tab-pane fade" id="settings">
       <div className="section-header" data-aos="fade-up">
@@ -11,30 +14,20 @@ export const SettingTab = () => {
           <h3>Thông tin cá nhân</h3>
           <form className="php-email-form settings-form">
             <div className="row g-3">
-              <div className="col-md-6">
-                <label htmlFor="firstName" className="form-label">
-                  Họ
+              <div className="col-md-12">
+                <label htmlFor="fullName" className="form-label">
+                  Họ và tên
                 </label>
                 <input
                   type="text"
                   className="form-control"
-                  id="firstName"
-                  value="Sarah"
+                  id="fullName"
+                  name="fullName"
+                  value={user?.fullName}
                   required
                 />
               </div>
-              <div className="col-md-6">
-                <label htmlFor="lastName" className="form-label">
-                  Tên
-                </label>
-                <input
-                  type="text"
-                  className="form-control"
-                  id="lastName"
-                  value="Anderson"
-                  required
-                />
-              </div>
+              
               <div className="col-md-6">
                 <label htmlFor="email" className="form-label">
                   Email
@@ -43,7 +36,8 @@ export const SettingTab = () => {
                   type="email"
                   className="form-control"
                   id="email"
-                  value="sarah@example.com"
+                  name="email"
+                  value={user?.email}
                   required
                 />
               </div>
@@ -55,7 +49,8 @@ export const SettingTab = () => {
                   type="tel"
                   className="form-control"
                   id="phone"
-                  value="+84 912 345 678"
+                  name="phone"
+                  value={user?.phone ?? "+84"}
                 />
               </div>
             </div>

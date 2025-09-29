@@ -1,7 +1,7 @@
 import React from "react";
 import { ProfileMenuProps } from "../../../types/AccountProps";
 
-export const ProfileMenu:React.FC<ProfileMenuProps> = ({orders}) => {
+export const ProfileMenu:React.FC<ProfileMenuProps> = ({orders, user}) => {
   return (
     <div className="col-lg-3">
       <div className="profile-menu collapse d-lg-block" id="profileMenu">
@@ -17,7 +17,7 @@ export const ProfileMenu:React.FC<ProfileMenuProps> = ({orders}) => {
               <i className="bi bi-shield-check"></i>
             </span>
           </div>
-          <h4>Sarah Anderson</h4>
+          <h4>{user?.fullName}</h4>
           <div className="user-status">
             <i className="bi bi-award"></i>
             <span>Premium Member</span>

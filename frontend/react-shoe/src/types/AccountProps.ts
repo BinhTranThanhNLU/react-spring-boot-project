@@ -1,7 +1,9 @@
 import { OrderModel } from "../models/OrderModel";
+import { UserModel } from "../models/UserModel";
 
 export interface ProfileMenuProps {
     orders: OrderModel[] | null;
+    user: UserModel | null;
 }
 
 export interface OrderTabProps {
@@ -18,4 +20,8 @@ export interface TrackingOrderProps {
 
 export interface OrderDetailProps {
     order: OrderModel;
+}
+
+export interface SettingTabProps {
+    user: UserModel | null;
 }
