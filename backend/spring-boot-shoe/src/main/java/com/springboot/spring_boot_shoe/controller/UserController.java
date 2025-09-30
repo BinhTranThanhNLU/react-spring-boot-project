@@ -1,11 +1,12 @@
 package com.springboot.spring_boot_shoe.controller;
 
 import com.springboot.spring_boot_shoe.dto.UserDTO;
+import com.springboot.spring_boot_shoe.requestmodel.UpdateUserRequest;
+import com.springboot.spring_boot_shoe.security.AppUserDetails;
 import com.springboot.spring_boot_shoe.service.UserService;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.web.bind.annotation.*;
 
 @CrossOrigin(origins = "http://localhost:3000")
 @RestController
@@ -18,9 +19,18 @@ public class UserController {
         this.userService = userService;
     }
 
-    @GetMapping("/{id}")
-    public UserDTO getUserById(int id) {
-        return userService.getUserById(id).getBody();
+    @GetMapping
+    public ResponseEntity<UserDTO> getUserById(@AuthenticationPrincipal AppUserDetails appUserDetail) {
+        int id = appUserDetail.getUser().getId();
+        return userService.getUserById(id);
     }
+
+    @PatchMapping
+    public ResponseEntity<UserDTO> updateUser(@AuthenticationPrincipal AppUserDetails appUserDetail,
+                                              @RequestBody UpdateUserRequest req) {
+        int id = appUserDetail.getUser().getId();
+        return userService.updateUser(id, req);
+    }
+
 
 }

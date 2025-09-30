@@ -1,7 +1,63 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { SettingTabProps } from "../../../types/AccountProps";
+import { API_BASE_URL } from "../../../config/config";
 
-export const SettingTab:React.FC<SettingTabProps> = ({user}) => {
+export const SettingTab:React.FC<SettingTabProps> = ({user, onUserUpdated}) => {
+
+  const [formData, setFormData] = useState({
+    fullName: "",
+    email: "",
+    phone: "",
+  });
+
+  const [isLoading, setIsLoading] = useState(false);
+  const [message, setMessage] = useState("");
+
+  const token = localStorage.getItem("token");
+
+  useEffect(() => {
+    if(user) {
+      setFormData({
+        fullName: user.fullName,
+        email: user.email,
+        phone: user.phone ?? "",
+      });
+    };
+  },[user]);
+
+  const handleChange = (e:React.ChangeEvent<HTMLInputElement>) => {
+    const {name, value} = e.target;
+    setFormData((prev) => ({...prev, [name]:value}));
+  };
+
+  const handleSubmit = async (e:React.FormEvent) => {
+    e.preventDefault();
+    setIsLoading(true);
+    setMessage("");
+
+    try {
+      const response = await fetch(`${API_BASE_URL}/users`, {
+        method: "PATCH",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      });
+
+      if(!response.ok) throw new Error("Failed to update user !");
+
+      setMessage("Update user successfully !!");
+
+      onUserUpdated();
+
+    } catch (error:any) {
+      setMessage(""+error.message);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   return (
     <div className="tab-pane fade" id="settings">
       <div className="section-header" data-aos="fade-up">
@@ -12,7 +68,7 @@ export const SettingTab:React.FC<SettingTabProps> = ({user}) => {
         {/*User Information*/}
         <div className="settings-section" data-aos="fade-up">
           <h3>Thông tin cá nhân</h3>
-          <form className="php-email-form settings-form">
+          <form className="php-email-form settings-form" onSubmit={handleSubmit}>
             <div className="row g-3">
               <div className="col-md-12">
                 <label htmlFor="fullName" className="form-label">
@@ -23,7 +79,8 @@ export const SettingTab:React.FC<SettingTabProps> = ({user}) => {
                   className="form-control"
                   id="fullName"
                   name="fullName"
-                  value={user?.fullName}
+                  value={formData.fullName}
+                  onChange={handleChange}
                   required
                 />
               </div>
@@ -37,7 +94,8 @@ export const SettingTab:React.FC<SettingTabProps> = ({user}) => {
                   className="form-control"
                   id="email"
                   name="email"
-                  value={user?.email}
+                  value={formData.email}
+                  onChange={handleChange}
                   required
                 />
               </div>
@@ -50,7 +108,8 @@ export const SettingTab:React.FC<SettingTabProps> = ({user}) => {
                   className="form-control"
                   id="phone"
                   name="phone"
-                  value={user?.phone ?? "+84"}
+                  value={formData.phone}
+                  onChange={handleChange}
                 />
               </div>
             </div>

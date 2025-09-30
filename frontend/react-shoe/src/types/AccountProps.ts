@@ -24,4 +24,5 @@ export interface OrderDetailProps {
 
 export interface SettingTabProps {
     user: UserModel | null;
+    onUserUpdated: () => void;
 }

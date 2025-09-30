@@ -19,10 +19,6 @@ export const AccountPage = () => {
   const [isLoading, setIsLoading] = useState(true);
 
   const token = localStorage.getItem("token");
-  const userStor = localStorage.getItem("user");
-  const userModel: UserModel | null = userStor ? JSON.parse(userStor) as UserModel : null;
-
-  const idUser = userModel?.id;
 
   const fetchOrders = async () => {
     try {
@@ -47,10 +43,10 @@ export const AccountPage = () => {
 
   const fetchUser = async () => {
     try {
-      const response = await fetch(`${API_BASE_URL}/users/${idUser}`, {
+      const response = await fetch(`${API_BASE_URL}/users`, {
         method: "GET",
         headers: {
-          authorization: `Bearer ${token}`,
+          Authorization: `Bearer ${token}`,
           "Content-Type": "application/json",
         },
       });
@@ -61,11 +57,8 @@ export const AccountPage = () => {
       setUser(data);
     } catch (error: any) {
       console.log(error);
-    } finally {
-      setIsLoading(false);
     }
   };
-
 
   useEffect(() => {
     fetchUser();
@@ -85,7 +78,7 @@ export const AccountPage = () => {
       <section id="account" className="account section">
         <div className="container" data-aos="fade-up" data-aos-delay="100">
           <div className="row g-4">
-            <ProfileMenu orders={orders} user={user}/>
+            <ProfileMenu orders={orders} user={user} />
             <div className="col-lg-9">
               <div className="content-area">
                 <div className="tab-content">
@@ -94,7 +87,7 @@ export const AccountPage = () => {
                   <PaymentMethodTab />
                   <ReviewTab />
                   <AddressTab />
-                  <SettingTab user={user}/>
+                  <SettingTab user={user} onUserUpdated={fetchUser} />
                 </div>
               </div>
             </div>
