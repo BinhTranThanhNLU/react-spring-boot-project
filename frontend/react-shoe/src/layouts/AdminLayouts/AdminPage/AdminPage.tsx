@@ -1,105 +1,14 @@
+import { SidebarPage } from "../utils/SidebarPage";
+import { TopbarPage } from "../utils/TopbarPage";
+
 export const AdminPage = () => {
   return (
     <div className="admin-layout-admin">
-      <aside className="sidebar-admin">
-        <div className="brand-logo-mini-admin">
-          <img src="image/logo.png" alt="logo" />
-        </div>
-        <div className="sidebar-title-admin">
-          <h2>Litte Whale</h2>
-        </div>
-
-        <div className="user-profile-section-admin">
-          <img
-            className="user-avatar-admin"
-            src="image/avatar-admin.png"
-            alt="avatar"
-          />
-          <div className="user-name-admin">AdminName</div>
-          <div className="user-greeting-admin">Chào mừng bạn trở lại</div>
-        </div>
-
-        <hr style={{ borderColor: "rgba(255,255,255,0.06)" }} />
-
-        <ul className="sidebar-menu-admin">
-          <li className="menu-item-admin">
-            <a className="menu-link-admin" href="#">
-              <i className="fa fa-tachometer-alt menu-icon-admin" />{" "}
-              <span>Bảng điều khiển</span>
-            </a>
-          </li>
-          <li className="menu-item-admin">
-            <a className="menu-link-admin" href="#">
-              <i className="fa fa-users menu-icon-admin" />{" "}
-              <span>Quản lý khách hàng</span>
-            </a>
-          </li>
-          <li className="menu-item-admin">
-            <a className="menu-link-admin" href="#">
-              <i className="fa fa-box menu-icon-admin" />{" "}
-              <span>Quản lý sản phẩm</span>
-            </a>
-          </li>
-          <li className="menu-item-admin">
-            <a className="menu-link-admin" href="#">
-              <i className="fa fa-tasks menu-icon-admin" />{" "}
-              <span>Quản lý đơn hàng</span>
-            </a>
-          </li>
-          <li className="menu-item-admin">
-            <a className="menu-link-admin" href="#">
-              <i className="fa-solid fa-ticket menu-icon-admin" />{" "}
-              <span>Quản lý mã giảm giá</span>
-            </a>
-          </li>
-          <li className="menu-item-admin">
-            <a className="menu-link-admin" href="#">
-              <i className="fa fa-chart-bar menu-icon-admin" />{" "}
-              <span>Quản lý danh mục</span>
-            </a>
-          </li>
-        </ul>
-      </aside>
+      <SidebarPage />
 
       <main className="main-admin">
-        <div className="topbar-admin d-flex align-items-center justify-content-between">
-          <div className="d-flex align-items-center gap-2">
-            <button
-              className="btn btn-light d-md-none"
-              aria-label="Toggle sidebar"
-            >
-              <i className="fa fa-bars" />
-            </button>
-            <div className="search-input-admin">
-              <input className="form-control" placeholder="Search products" />
-            </div>
-          </div>
-
-          <div className="d-flex align-items-center gap-3">
-            <a className="nav-link text-white" href="#">
-              <i className="fa-solid fa-plus" /> Thêm sản phẩm mới
-            </a>
-            <a className="nav-link text-white" href="#">
-              <i className="fa-solid fa-message" /> Tin Nhắn{" "}
-              <span className="badge bg-danger">0</span>
-            </a>
-            <a className="nav-link text-white" href="#">
-              <i className="fa-solid fa-bell" /> Thông Báo{" "}
-              <span className="badge bg-danger">0</span>
-            </a>
-            <div className="profile-container-admin d-flex align-items-center">
-              <img
-                className="profile-pic-admin rounded-circle"
-                src="https://anhcute.net/wp-content/uploads/2024/09/Hinh-anh-chibi-Spiderman-sieu-dang-yeu.jpg"
-                alt="profile"
-                width={36}
-                height={36}
-              />
-              <span className="profile-name-admin ms-2">AdminName</span>
-            </div>
-          </div>
-        </div>
-
+        <TopbarPage />
+        
         <div className="header-overview-admin">Bảng điều khiển</div>
 
         <div className="stats-row-admin">
@@ -154,7 +63,6 @@ export const AdminPage = () => {
 
         <div className="container-table-admin">
           <h5 className="mb-3">Tình trạng đơn hàng</h5>
-
           <div className="table-responsive">
             <table className="admin-table table table-striped table-hover">
               <thead>
