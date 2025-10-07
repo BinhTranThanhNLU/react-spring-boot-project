@@ -3,15 +3,7 @@ import { Link } from "react-router-dom";
 export const SidebarPage = () => {
   return (
     <aside className="sidebar-admin">
-      <div className="brand-logo-mini-admin">
-        <img
-          src="https://anhcute.net/wp-content/uploads/2024/09/Hinh-anh-chibi-Spiderman-sieu-dang-yeu.jpg"
-          alt="logo"
-        />
-      </div>
-      <div className="sidebar-title-admin">
-        <h2>Litte Whale</h2>
-      </div>
+
 
       <div className="user-profile-section-admin">
         <img

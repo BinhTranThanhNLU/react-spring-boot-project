@@ -20,6 +20,8 @@ import { AccountPage } from "./layouts/AccountPage/AccountPage";
 import { AdminPage } from "./layouts/AdminLayouts/AdminPage/AdminPage";
 import { ManageProductPage } from "./layouts/AdminLayouts/ManageProductPage/ManageProductPage";
 import { AddProductPage } from "./layouts/AdminLayouts/ManageProductPage/AddProductPage/AddProductPage";
+import { UpdateProductPage } from "./layouts/AdminLayouts/ManageProductPage/UpdateProductPage/UpdateProductPage";
+import { ErrorPage } from "./layouts/ErrorPage/ErrorPage";
 
 function AppContent() {
   const location = useLocation();
@@ -53,10 +55,13 @@ function AppContent() {
         <Route path="/cart" element={<CartPage />} />
         <Route path="/checkout" element={<CheckoutPage />} />
         <Route path="/account" element={<AccountPage />} />
+        <Route path="/404" element={<ErrorPage />} />
 
         <Route path="/admin" element={<AdminPage />} />
         <Route path="/admin/manage-product" element={<ManageProductPage />} />
         <Route path="/admin/manage-product/add" element={<AddProductPage />} />
+        <Route path="/admin/manage-product/update" element={<UpdateProductPage />} />
+        
       </Routes>
       {!isAdminPage && <Footer />}
     </>

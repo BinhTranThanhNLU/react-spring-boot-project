@@ -42,7 +42,7 @@ const columns = [
       <div>
         <Link
           className="btn btn-sm btn-primary-admin me-2"
-          to="/admin/manage-product/add"
+          to="/admin/manage-product/update"
         >
           <i className="fa fa-edit"></i>
         </Link>
@@ -78,8 +78,12 @@ export const ManageProductPage = () => {
         <div className="header-overview-admin">Quản lý sản phẩm</div>
 
         <div className="manage-product-admin p-4">
-          {" "}
-          <h5 className="fw-bold text-dark mb-3">Danh sách sản phẩm</h5>{" "}
+          <div className="d-flex align-items-center mb-3">
+            <h5 className="fw-bold text-dark mb-0">Danh sách sản phẩm</h5>
+            <Link to="/admin/manage-product/add" className="btn btn-success ms-auto">
+              <i className="bi bi-plus-circle me-1"></i> Thêm sản phẩm
+            </Link>
+          </div>
           <DataTable
             columns={columns}
             data={data}
@@ -87,7 +91,7 @@ export const ManageProductPage = () => {
             highlightOnHover
             striped
             className="table-admin"
-          />{" "}
+          />
         </div>
       </main>
     </div>

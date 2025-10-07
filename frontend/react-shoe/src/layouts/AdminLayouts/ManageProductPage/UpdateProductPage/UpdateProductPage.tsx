@@ -1,9 +1,9 @@
-import { SidebarPage } from "../../utils/SidebarPage";
-import { TopbarPage } from "../../utils/TopbarPage";
 import { CKEditor } from "@ckeditor/ckeditor5-react";
 import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
+import { SidebarPage } from "../../utils/SidebarPage";
+import { TopbarPage } from "../../utils/TopbarPage";
 
-export const AddProductPage = () => {
+export const UpdateProductPage = () => {
   return (
     <div className="admin-layout-admin">
       <SidebarPage />
@@ -12,7 +12,7 @@ export const AddProductPage = () => {
         <TopbarPage />
 
         <div className="manage-product-admin p-4">
-          <h5 className="fw-bold text-dark mb-3">Thêm sản phẩm</h5>
+          <h5 className="fw-bold text-dark mb-3">Cập nhật sản phẩm</h5>
 
           {/* Code giao dien o phia duoi */}
           <div className="card shadow-sm p-4 add-product-admin">
