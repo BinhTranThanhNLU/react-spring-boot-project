@@ -6,7 +6,13 @@ import { HomePage } from "./layouts/HomePage/HomePage";
 import { CategoryPage } from "./layouts/CategoryPage/CategoryPage";
 import AOS from "aos";
 import "aos/dist/aos.css";
-import { BrowserRouter as Router, Routes, Route, Navigate, useLocation } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  Navigate,
+  useLocation,
+} from "react-router-dom";
 import { ProductDetailPage } from "./layouts/ProductDetailPage/ProductDetailPage";
 import { SearchPage } from "./layouts/SearchPage/SearchPage";
 import { LoginPage } from "./layouts/LoginPage/LoginPage";
@@ -22,6 +28,7 @@ import { ManageProductPage } from "./layouts/AdminLayouts/ManageProductPage/Mana
 import { AddProductPage } from "./layouts/AdminLayouts/ManageProductPage/AddProductPage/AddProductPage";
 import { UpdateProductPage } from "./layouts/AdminLayouts/ManageProductPage/UpdateProductPage/UpdateProductPage";
 import { ErrorPage } from "./layouts/ErrorPage/ErrorPage";
+import { AdminRoute } from "./layouts/AdminLayouts/utils/AdminRoute";
 
 function AppContent() {
   const location = useLocation();
@@ -55,13 +62,42 @@ function AppContent() {
         <Route path="/cart" element={<CartPage />} />
         <Route path="/checkout" element={<CheckoutPage />} />
         <Route path="/account" element={<AccountPage />} />
-        <Route path="/404" element={<ErrorPage />} />
+        <Route path="/403" element={<ErrorPage />} />
 
-        <Route path="/admin" element={<AdminPage />} />
-        <Route path="/admin/manage-product" element={<ManageProductPage />} />
-        <Route path="/admin/manage-product/add" element={<AddProductPage />} />
-        <Route path="/admin/manage-product/update" element={<UpdateProductPage />} />
-        
+        <Route path="/admin/*"
+          element={
+            <AdminRoute>
+              <AdminPage />
+            </AdminRoute>
+          }
+        />
+        <Route
+          path="/admin/manage-product"
+          element={
+            <AdminRoute>
+              <ManageProductPage />
+            </AdminRoute>
+          }
+        />
+        <Route
+          path="/admin/manage-product/update"
+          element={
+            <AdminRoute>
+              <UpdateProductPage />
+            </AdminRoute>
+          }
+        />
+        <Route
+          path="/admin/manage-product/add"
+          element={
+            <AdminRoute>
+              <AddProductPage />
+            </AdminRoute>
+          }
+        />
+          
+          
+       
       </Routes>
       {!isAdminPage && <Footer />}
     </>

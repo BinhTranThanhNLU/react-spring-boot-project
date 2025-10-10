@@ -5,8 +5,8 @@ export const ErrorPage = () => {
   return (
     <main className="main">
       <PageTitle
-        title="404"
-        breadcrumbs={[{ label: "Trang chủ", path: "/home" }, { label: "404" }]}
+        title="403"
+        breadcrumbs={[{ label: "Trang chủ", path: "/home" }, { label: "403" }]}
       />
 
       <section id="error-404" className="error-404 section">
@@ -25,7 +25,7 @@ export const ErrorPage = () => {
               data-aos="fade-up"
               data-aos-delay="300"
             >
-              404
+              403
             </h1>
 
             <h2

@@ -38,6 +38,7 @@ public class SecurityConfig {
                         .requestMatchers("/api/orders/**").permitAll()
                         .requestMatchers("/api/vpn/return").permitAll()
                         .requestMatchers("/api/users/**").permitAll()
+                        .requestMatchers("/api/admin/**").hasAuthority("ADMIN")
                         .requestMatchers(org.springframework.http.HttpMethod.OPTIONS, "/**").permitAll() // cho preflight
                         .anyRequest().authenticated()
                 )

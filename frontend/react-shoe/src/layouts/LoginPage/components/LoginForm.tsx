@@ -36,6 +36,11 @@ export const LoginForm = () => {
       localStorage.setItem("token", data.token);
       localStorage.setItem("user", JSON.stringify(data.user));
 
+      if(data.user.role.name === "ADMIN") {
+        navigate("/admin");
+        return;
+      }
+
       navigate("/home");
     } catch (error: any) {
       setError(error.message);
