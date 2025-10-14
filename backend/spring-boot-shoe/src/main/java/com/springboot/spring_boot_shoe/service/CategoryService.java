@@ -38,4 +38,9 @@ public class CategoryService {
                 .map(categoryMapper::toDtoWithSubs)
                 .orElseThrow(() -> new RuntimeException("Category not found"));
     }
+
+    public Category findById(int categoryId) {
+        return categoryRepository.findById(categoryId)
+                .orElseThrow(() -> new RuntimeException("Category not found"));
+    }
 }

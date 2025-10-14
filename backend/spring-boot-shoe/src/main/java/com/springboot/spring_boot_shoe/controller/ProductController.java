@@ -1,10 +1,15 @@
 package com.springboot.spring_boot_shoe.controller;
 
+import com.springboot.spring_boot_shoe.requestmodel.AddProductRequest;
 import com.springboot.spring_boot_shoe.responsemodel.ProductPageResponse;
+import com.springboot.spring_boot_shoe.service.BrandService;
+import com.springboot.spring_boot_shoe.service.CategoryService;
 import com.springboot.spring_boot_shoe.service.ProductService;
 import com.springboot.spring_boot_shoe.dto.ProductDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
@@ -15,8 +20,15 @@ import java.util.List;
 @RequestMapping("/api/products")
 public class ProductController {
 
-    @Autowired
-    private ProductService productService;
+    private final ProductService productService;
+    private final BrandService brandService;
+    private final CategoryService categoryService;
+
+    public ProductController(ProductService productService, BrandService brandService, CategoryService categoryService) {
+        this.productService = productService;
+        this.brandService = brandService;
+        this.categoryService = categoryService;
+    }
 
     @GetMapping
     public List<ProductDTO> getAllProducts() {
@@ -60,10 +72,12 @@ public class ProductController {
         return productService.getRelatedProducts(id, limit);
     }
 
-//    @GetMapping("/products/variant/{variantId}")
-//    public ResponseEntity<ProductDTO> getProductByIdVarariant(@PathVariable int idVariant) {
-//        ProductDTO productDTO = productService.getProductByIdVariant(idVariant);
-//        return ResponseEntity.ok(productDTO);
-//    }
+    @PostMapping("/add")
+    public ResponseEntity<ProductDTO> addProduct(@RequestBody AddProductRequest productRequest) {
+        ProductDTO newProduct = productService.addProduct(productRequest);
+        return new ResponseEntity<>(newProduct, HttpStatus.CREATED);
+    }
+
+
 }
 

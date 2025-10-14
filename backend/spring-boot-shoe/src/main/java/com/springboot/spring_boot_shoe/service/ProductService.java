@@ -3,9 +3,9 @@ package com.springboot.spring_boot_shoe.service;
 import com.springboot.spring_boot_shoe.dao.ProductRepository;
 import com.springboot.spring_boot_shoe.dao.ProductVariantRepository;
 import com.springboot.spring_boot_shoe.dto.ProductDTO;
-import com.springboot.spring_boot_shoe.entity.Product;
-import com.springboot.spring_boot_shoe.entity.ProductVariant;
+import com.springboot.spring_boot_shoe.entity.*;
 import com.springboot.spring_boot_shoe.mapper.ProductMapper;
+import com.springboot.spring_boot_shoe.requestmodel.AddProductRequest;
 import com.springboot.spring_boot_shoe.responsemodel.ProductPageResponse;
 import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
@@ -14,6 +14,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 
 import java.math.BigDecimal;
+import java.util.Collections;
 import java.util.List;
 
 @Service
@@ -22,11 +23,15 @@ public class ProductService {
     private final ProductRepository productRepository;
     private final ProductVariantRepository productVariantRepository;
     private final ProductMapper productMapper;
+    private final BrandService brandService;
+    private final CategoryService categoryService;
 
-    public ProductService(ProductRepository productRepository, ProductVariantRepository productVariantRepository, ProductMapper productMapper) {
+    public ProductService(ProductRepository productRepository, ProductVariantRepository productVariantRepository, ProductMapper productMapper, BrandService brandService, CategoryService categoryService) {
         this.productRepository = productRepository;
         this.productVariantRepository = productVariantRepository;
         this.productMapper = productMapper;
+        this.brandService = brandService;
+        this.categoryService = categoryService;
     }
 
     public List<ProductDTO> getAllProducts() {
@@ -125,5 +130,43 @@ public class ProductService {
         ProductVariant variant = getProductVariantEntityById(idVariant);
         Product product = variant.getProduct();
         return productMapper.toDto(product);
+    }
+
+
+    public ProductDTO addProduct(AddProductRequest request) {
+        // 1. Tìm Brand và Category từ ID
+        Brand brand = brandService.findById(request.getBrand());
+        Category category = categoryService.findById(request.getCategory());
+
+        // 2. Tạo Product
+        Product newProduct = new Product();
+        newProduct.setName(request.getName());
+        newProduct.setPrice(request.getPrice());
+        newProduct.setDescription(request.getDescription());
+        newProduct.setBrand(brand);
+        newProduct.setCategory(category);
+        newProduct.setDiscountPercent(0);
+
+        // 3. Tạo đối tượng ProductVariant
+        ProductVariant variant = new ProductVariant();
+        variant.setColor(request.getColor());
+        variant.setSize(request.getSize());
+        variant.setStockQuantity(request.getStockQuantity());
+        variant.setProduct(newProduct); // Quan trọng: Liên kết variant với product
+
+        // 4. Tạo ProductImage
+        ProductImage image = new ProductImage();
+        image.setImageUrl(request.getImageUrl());
+        image.setProduct(newProduct); // Quan trọng: Liên kết image với product
+
+        // 5. Gán danh sách variant và image cho product
+        newProduct.setVariants(Collections.singletonList(variant));
+        newProduct.setImages(Collections.singletonList(image));
+
+        // 6. Lưu Product (với cascade, variants và images sẽ được lưu tự động)
+        Product savedProduct = productRepository.save(newProduct);
+
+        // 7. Chuyển đổi sang DTO và trả về
+        return productMapper.toDto(savedProduct);
     }
 }
