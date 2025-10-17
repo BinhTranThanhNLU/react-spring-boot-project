@@ -6,6 +6,7 @@ import com.springboot.spring_boot_shoe.dto.ProductDTO;
 import com.springboot.spring_boot_shoe.entity.*;
 import com.springboot.spring_boot_shoe.mapper.ProductMapper;
 import com.springboot.spring_boot_shoe.requestmodel.AddProductRequest;
+import com.springboot.spring_boot_shoe.requestmodel.UpdateProductRequest;
 import com.springboot.spring_boot_shoe.responsemodel.ProductPageResponse;
 import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
@@ -168,5 +169,28 @@ public class ProductService {
 
         // 7. Chuyển đổi sang DTO và trả về
         return productMapper.toDto(savedProduct);
+    }
+
+    public ProductDTO updateProduct(int id, UpdateProductRequest request) {
+
+        Product existingProduct = getProductEntityById(id);
+
+        Brand brand = brandService.findById(request.getBrand());
+        Category category = categoryService.findById(request.getCategory());
+
+        existingProduct.setName(request.getName());
+        existingProduct.setPrice(request.getPrice());
+        existingProduct.setDescription(request.getDescription());
+        existingProduct.setBrand(brand);
+        existingProduct.setCategory(category);
+
+        Product updatedProduct = productRepository.save(existingProduct);
+        return productMapper.toDto(updatedProduct);
+    }
+
+
+    public void deleteProduct(int id) {
+        Product existingProduct = getProductEntityById(id);
+        productRepository.delete(existingProduct);
     }
 }

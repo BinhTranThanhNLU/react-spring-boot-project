@@ -80,7 +80,7 @@ function AppContent() {
           }
         />
         <Route
-          path="/admin/manage-product/update"
+          path="/admin/manage-product/update/:id"
           element={
             <AdminRoute>
               <UpdateProductPage />

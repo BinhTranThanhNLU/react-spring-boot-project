@@ -1,12 +1,12 @@
 package com.springboot.spring_boot_shoe.controller;
 
 import com.springboot.spring_boot_shoe.requestmodel.AddProductRequest;
+import com.springboot.spring_boot_shoe.requestmodel.UpdateProductRequest;
 import com.springboot.spring_boot_shoe.responsemodel.ProductPageResponse;
 import com.springboot.spring_boot_shoe.service.BrandService;
 import com.springboot.spring_boot_shoe.service.CategoryService;
 import com.springboot.spring_boot_shoe.service.ProductService;
 import com.springboot.spring_boot_shoe.dto.ProductDTO;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -33,6 +33,19 @@ public class ProductController {
     @GetMapping
     public List<ProductDTO> getAllProducts() {
         return productService.getAllProducts();
+    }
+
+    @PostMapping("/add")
+    public ResponseEntity<ProductDTO> addProduct(@RequestBody AddProductRequest productRequest) {
+        ProductDTO newProduct = productService.addProduct(productRequest);
+        return new ResponseEntity<>(newProduct, HttpStatus.CREATED);
+    }
+
+    @PutMapping("/{id}/update")
+    public ResponseEntity<ProductDTO> updateProduct(@PathVariable int id,
+                                                    @RequestBody UpdateProductRequest request) {
+        ProductDTO updatedProduct = productService.updateProduct(id, request);
+        return new ResponseEntity<>(updatedProduct, HttpStatus.OK);
     }
     
     @GetMapping("/{id}")
@@ -72,11 +85,13 @@ public class ProductController {
         return productService.getRelatedProducts(id, limit);
     }
 
-    @PostMapping("/add")
-    public ResponseEntity<ProductDTO> addProduct(@RequestBody AddProductRequest productRequest) {
-        ProductDTO newProduct = productService.addProduct(productRequest);
-        return new ResponseEntity<>(newProduct, HttpStatus.CREATED);
+    @DeleteMapping("/{id}/delete")
+    public ResponseEntity<Void> deleteProduct(@PathVariable int id) {
+        productService.deleteProduct(id);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
+
+
 
 
 }

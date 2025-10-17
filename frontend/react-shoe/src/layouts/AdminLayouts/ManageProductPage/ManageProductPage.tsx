@@ -88,25 +88,49 @@ const columns = [
 
 export const ManageProductPage = () => {
   const [products, setProducts] = useState<ProductModel[]>([]);
+
   const [isLoading, setIsLoading] = useState(false);
   const [httpError, setHttpError] = useState<string | null>(null);
 
-  useEffect(() => {
-    const fetchProducts = async () => {
-      setIsLoading(true);
-      try {
-        const response = await fetch(`${API_BASE_URL}/products`);
-        if (!response.ok) {
-          throw new Error("Failed to fetch products");
-        }
-        const data: ProductModel[] = await response.json();
-        setProducts(data);
-      } catch (error: any) {
-        setHttpError(error.message);
-      } finally {
-        setIsLoading(false);
+  const handleDelete = async (id: number) => {
+    if (!window.confirm("Bạn có chắc chắn muốn xóa sản phẩm này không?"))
+      return;
+
+    try {
+      const response = await fetch(`${API_BASE_URL}/products/${id}/delete`, {
+        method: "DELETE",
+      });
+
+      if (!response.ok) {
+        throw new Error("Không thể xóa sản phẩm");
       }
-    };
+
+      alert("Xóa sản phẩm thành công!");
+      // Cập nhật lại danh sách
+      setProducts((prev) => prev.filter((p) => p.id !== id));
+    } catch (error: any) {
+      console.error(error);
+      alert("Lỗi khi xóa sản phẩm!");
+    }
+  };
+
+  const fetchProducts = async () => {
+    setIsLoading(true);
+    try {
+      const response = await fetch(`${API_BASE_URL}/products`);
+      if (!response.ok) {
+        throw new Error("Failed to fetch products");
+      }
+      const data: ProductModel[] = await response.json();
+      setProducts(data);
+    } catch (error: any) {
+      setHttpError(error.message);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  useEffect(() => {
     fetchProducts();
   }, []);
 
@@ -144,6 +168,7 @@ export const ManageProductPage = () => {
         price: p.discountedPrice ?? p.price,
         images: p.images || [], // Truyền cả mảng ảnh
         status: totalStock > 0 ? "Còn hàng" : "Hết hàng",
+        onDelete: handleDelete
       };
     });
   }, [products]);
